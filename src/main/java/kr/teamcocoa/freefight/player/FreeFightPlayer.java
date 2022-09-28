@@ -33,6 +33,9 @@ public class FreeFightPlayer {
 
     private Stats stats;
 
+    @Setter
+    private boolean challengeAble;
+
     // Thread safe 한 LinkedList 가 없어서 어거지라도 이거 써야지 :sadblob:
     private LinkedBlockingQueue<FreeFightPlayer> challengedPlayerList;
 
@@ -41,6 +44,7 @@ public class FreeFightPlayer {
         this.state = GameState.LOBBY;
         this.currentKit = Kits.ONLYSWORD;
         this.challengedPlayerList = new LinkedBlockingQueue<>();
+        this.challengeAble = true;
 
         this.stats = new Stats(player.getUniqueId());
     }
@@ -117,6 +121,10 @@ public class FreeFightPlayer {
     }
 
     public void challenge(FreeFightPlayer enemyFightPlayer) {
+
+        if(!challengeAble) {
+            return;
+        }
 
         // 내 state 가 LOBBY 인가?
         // 만약 INGAME 이거나 SPECTATE 면 챌린지를 할 수 없음
