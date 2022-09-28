@@ -2,15 +2,23 @@ package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.freefight.items.ChallengeItem;
 import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
+import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.SessionManager;
+import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class FreeFightPlayer {
@@ -23,6 +31,8 @@ public class FreeFightPlayer {
     @Setter
     private Kits currentKit;
 
+    private Stats stats;
+
     // Thread safe 한 LinkedList 가 없어서 어거지라도 이거 써야지 :sadblob:
     private LinkedBlockingQueue<FreeFightPlayer> challengedPlayerList;
 
@@ -31,6 +41,29 @@ public class FreeFightPlayer {
         this.state = GameState.LOBBY;
         this.currentKit = Kits.ONLYSWORD;
         this.challengedPlayerList = new LinkedBlockingQueue<>();
+
+        this.stats = new Stats(player.getUniqueId());
+    }
+
+    public void join() {
+        // 동기 실행할 몇몇 코드들
+        moveToSpawn();
+        setInventory(GameState.LOBBY);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // 비동기 실행할 몇몇 코드들
+            stats.loadStats();
+        });
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(FreeFight.getInstance(), () -> ScoreboardManager.sendScoreboard(player), 0L, 20L);
+
+    }
+
+    public void quit() {
+        // 동기 실행할 몇몇 코드들
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            stats.saveStats();
+        });
     }
 
     public void setInventory(GameState state) {
@@ -43,6 +76,14 @@ public class FreeFightPlayer {
                 });
             }
             case INGAME -> {
+                setInGameKit();
+            }
+        }
+    }
+
+    private void setInGameKit() {
+        switch (currentKit) {
+            case ONLYSWORD -> {
                 ItemStack[] armorContent = new ItemStack[4];
                 armorContent[3] = new ItemStack(Material.DIAMOND_HELMET);
                 armorContent[2] = new ItemStack(Material.DIAMOND_CHESTPLATE);
@@ -63,11 +104,16 @@ public class FreeFightPlayer {
     }
 
     public void moveToSpawn() {
-
+        Location location = new Location(Bukkit.getWorld("TestFreeFight"), 0, 101, 0);
+        player.teleport(location);
     }
 
     public void death() {
+        stats.addDeaths();
+    }
 
+    public void kill() {
+        stats.addKills();
     }
 
     public void challenge(FreeFightPlayer enemyFightPlayer) {
@@ -90,13 +136,21 @@ public class FreeFightPlayer {
 
         // 만약에 상대는 이미 나한테 듀얼을 건 적이 있는지?
         if(enemyFightPlayer.getChallengedPlayerList().contains(this)) {
-            // TODO : 게임 스타트!
+            for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                freeFightPlayer.getChallengedPlayerList().remove(this);
+                freeFightPlayer.getChallengedPlayerList().remove(enemyFightPlayer);
+            }
+            SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
+            FreeFightSession session = SessionManager.getSession(this);
+            session.start();
             return;
         }
 
         challengedPlayerList.add(enemyFightPlayer);
-        // TODO : 이 인스턴스의 Player 에게 듀얼을 걸었다는 메시지 보내기
-        // TODO : enemyFightPlayer 에게 이 인스턴스의 Player 로 부터 듀얼을 받았다는 메시지 보내기
+        player.sendMessage(Component.text(StringUtils.color(
+                FreeFight.getPrefix() + "&aYou challenged to &e" + enemyFightPlayer.getPlayer().getName())));
+        enemyFightPlayer.getPlayer().sendMessage(Component.text(StringUtils.color(
+                FreeFight.getPrefix() + "&e" + player.getName() + " &ahas challenged you!")));
 
     }
 

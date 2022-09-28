@@ -3,6 +3,8 @@ package kr.teamcocoa.freefight.listener;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemFactory;
@@ -49,6 +51,16 @@ public class EntityDamageByEntityListener implements Listener {
         if(enemyFreeFightPlayer.getState() != GameState.INGAME) {
             e.setCancelled(true);
         }
+
+        FreeFightSession session = SessionManager.getSession(freeFightPlayer);
+        if(session != null) {
+            if(player.getHealth() - e.getFinalDamage() <= 0.0) {
+                e.setCancelled(true);
+                session.stop(freeFightPlayer);
+            }
+        }
+
+
     }
 
     private void challengerHandle(EntityDamageByEntityEvent e) {

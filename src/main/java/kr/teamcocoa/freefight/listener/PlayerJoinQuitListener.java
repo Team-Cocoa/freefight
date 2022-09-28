@@ -4,6 +4,8 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -17,6 +19,7 @@ public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        e.setJoinMessage(null);
         Player player = e.getPlayer();
         boolean saved = FreeFightPlayerManager.addPlayer(player);
         if(!saved) {
@@ -24,16 +27,24 @@ public class PlayerJoinQuitListener implements Listener {
             player.kick(Component.text(StringUtils.color(
                     FreeFight.getPrefix() + "&cFailed to init FreeFightPlayer! Contact to developer!")));
         }
-
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
-        freeFightPlayer.moveToSpawn();
-        freeFightPlayer.setInventory(GameState.LOBBY);
+        freeFightPlayer.join();
 
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
+        e.setQuitMessage(null);
         Player player = e.getPlayer();
+        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+
+        FreeFightSession session = SessionManager.getSession(freeFightPlayer);
+
+        if(session != null) {
+            session.stop(freeFightPlayer);
+        }
+
+        freeFightPlayer.quit();
         boolean removed = FreeFightPlayerManager.removePlayer(player);
         if(!removed) {
             Bukkit.getLogger().info("[FreeFight] FreeFightPlayerManager.removePlayer(Player player) returned false! class : PlayerJoinQuitListener");

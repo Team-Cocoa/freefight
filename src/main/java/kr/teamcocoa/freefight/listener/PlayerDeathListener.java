@@ -3,6 +3,8 @@ package kr.teamcocoa.freefight.listener;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.SessionManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,9 +21,16 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        freeFightPlayer.setInventory(GameState.LOBBY);
-        freeFightPlayer.moveToSpawn();
-        e.setCancelled(true);
+        FreeFightSession session = SessionManager.getSession(freeFightPlayer);
+
+        if(session == null) {
+            return;
+        }
+
+        if(session.isRunning()) {
+            e.setCancelled(true);
+            session.stop(freeFightPlayer);
+        }
     }
 
 }

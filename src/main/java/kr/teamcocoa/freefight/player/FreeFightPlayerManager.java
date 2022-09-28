@@ -1,12 +1,17 @@
 package kr.teamcocoa.freefight.player;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FreeFightPlayerManager {
 
+    @Getter
     private static Map<Player, FreeFightPlayer> playerTable = new ConcurrentHashMap<>();
 
     public static boolean addPlayer(Player player) {
