@@ -76,7 +76,7 @@ public class FreeFightPlayer {
                 ItemStack challengeItem = new ChallengeItem().toItemStack(player);
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
-                   player.getInventory().setItemInMainHand(challengeItem);
+                   player.getInventory().setItem(0, challengeItem);
                 });
             }
             case INGAME -> {
@@ -101,8 +101,11 @@ public class FreeFightPlayer {
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                     player.getInventory().clear();
                     player.getInventory().setArmorContents(armorContent);
-                    player.getInventory().setItemInMainHand(sword);
+                    player.getInventory().setItem(0, sword);
                 });
+            }
+            case SHIELD -> {
+
             }
         }
     }
