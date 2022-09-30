@@ -27,7 +27,7 @@ public class MySQL {
             try {
                 connection = DriverManager.getConnection(MessageFormat.format(
                         "jdbc:mysql://{0}:{1}/{2}", host, port, database), user, password);
-                task.schedule(() -> {
+                task.scheduleAtFixedRate(() -> {
                     try(    PreparedStatement preparedStatement = getPreparedStatement("select 1");
                             ResultSet rs = preparedStatement.executeQuery()) {
 
@@ -35,7 +35,7 @@ public class MySQL {
                     catch (SQLException e) {
                         e.printStackTrace();
                     }
-                }, 1, TimeUnit.HOURS);
+                }, 0, 1, TimeUnit.HOURS);
                 System.out.println("[DeathMatch] Successfully connected to MySQL!");
             }
             catch (SQLException e) {
