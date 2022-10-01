@@ -1,6 +1,6 @@
 package kr.teamcocoa.freefight.player;
 
-import kr.teamcocoa.freefight.items.ChallengeItem;
+import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 @Getter
 public class FreeFightPlayer {
@@ -28,7 +27,6 @@ public class FreeFightPlayer {
     @Setter
     private GameState state;
 
-    @Setter
     private Kits currentKit;
 
     private Stats stats;
@@ -73,7 +71,7 @@ public class FreeFightPlayer {
     public void setInventory(GameState state) {
         switch (state) {
             case LOBBY -> {
-                ItemStack challengeItem = new ChallengeItem().toItemStack(player);
+                ItemStack challengeItem = ChallengeItem.getInstance().toItemStack(player);
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
                    player.getInventory().setItem(0, challengeItem);
@@ -83,6 +81,16 @@ public class FreeFightPlayer {
                 setInGameKit();
             }
         }
+    }
+
+    public void changeKit(Kits kit) {
+        if(state != GameState.LOBBY) {
+            return;
+        }
+        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            freeFightPlayer.getChallengedPlayerList().remove(this);
+        }
+        currentKit = kit;
     }
 
     private void setInGameKit() {
@@ -105,7 +113,28 @@ public class FreeFightPlayer {
                 });
             }
             case SHIELD -> {
+                ItemStack[] armorContent = new ItemStack[4];
+                armorContent[3] = new ItemStack(Material.DIAMOND_HELMET);
+                armorContent[2] = new ItemStack(Material.DIAMOND_CHESTPLATE);
+                armorContent[1] = new ItemStack(Material.DIAMOND_LEGGINGS);
+                armorContent[0] = new ItemStack(Material.DIAMOND_BOOTS);
 
+                ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
+                ItemStack axe = new ItemStack(Material.DIAMOND_AXE);
+                ItemStack crossbow = new ItemStack(Material.CROSSBOW);
+                ItemStack bow = new ItemStack(Material.BOW);
+                ItemStack arrow = new ItemStack(Material.ARROW);
+                ItemStack shield = new ItemStack(Material.SHIELD);
+                Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
+                   player.getInventory().clear();
+                   player.getInventory().setArmorContents(armorContent);
+                   player.getInventory().setItemInOffHand(shield);
+                   player.getInventory().setItem(0, sword);
+                   player.getInventory().setItem(1, axe);
+                   player.getInventory().setItem(2, crossbow);
+                   player.getInventory().setItem(3, bow);
+                   player.getInventory().setItem(4, arrow);
+                });
             }
         }
     }
@@ -140,9 +169,18 @@ public class FreeFightPlayer {
             return;
         }
 
-        // 이전에 듀얼을 걸었는지?
+        // 이전에 그 상대방에게 듀얼을 걸었는지?
         if(challengedPlayerList.contains(enemyFightPlayer)) {
             return;
+        }
+
+        // 상대방의 킷이랑 내 킷이랑 같은지?
+        if(currentKit != enemyFightPlayer.getCurrentKit()) {
+            player.sendMessage(StringUtils.color(
+                    FreeFight.getPrefix() + "&cYou can't challenge to this player since this player is on &e"
+                            + Kits.getNameByEnum(enemyFightPlayer.getCurrentKit())
+                            + " &c!"
+            ));
         }
 
         // 만약에 상대는 이미 나한테 듀얼을 건 적이 있는지?

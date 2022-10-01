@@ -35,6 +35,12 @@ public class CountDownTask extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        if(!freeFightSession.isRunning()) {
+            cancel();
+            return;
+        }
+
         switch (count) {
             case 3 -> {
                 PlayerUtils.sendTitle(player1, "&e3", "", 5, 10, 5);

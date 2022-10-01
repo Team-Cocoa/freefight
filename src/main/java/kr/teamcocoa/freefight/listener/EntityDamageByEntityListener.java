@@ -6,10 +6,8 @@ import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.utils.StringUtils;
-import net.kyori.adventure.text.Component;
-import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemFactory;
-import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -19,6 +17,7 @@ public class EntityDamageByEntityListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
+        projectileDamageHandle(e);
         damageHandle(e);
         challengerHandle(e);
     }
@@ -68,6 +67,10 @@ public class EntityDamageByEntityListener implements Listener {
     }
 
     private void challengerHandle(EntityDamageByEntityEvent e) {
+        if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) {
+            return;
+        }
+
         Player player = (Player) e.getEntity();
         Player enemy = (Player) e.getDamager();
 
@@ -81,6 +84,41 @@ public class EntityDamageByEntityListener implements Listener {
 
             enemyFreeFightPlayer.challenge(freeFightPlayer);
         }
+    }
+
+    public void projectileDamageHandle(EntityDamageByEntityEvent e) {
+        if(!(e.getDamager() instanceof Projectile)) {
+            return;
+        }
+        if(!(e.getEntity() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) e.getEntity();
+        Projectile projectile = (Projectile) e.getDamager();
+
+        if(!(projectile.getShooter() instanceof Player)) {
+            return;
+        }
+
+        Player shooter = (Player) projectile.getShooter();
+
+        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+        FreeFightPlayer enemyFightPlayer = FreeFightPlayerManager.getPlayer(shooter);
+
+        if(freeFightPlayer == null || enemyFightPlayer == null) {
+            return;
+        }
+
+        FreeFightSession session1 = SessionManager.getSession(freeFightPlayer);
+        FreeFightSession session2 = SessionManager.getSession(enemyFightPlayer);
+
+        if(session1 == null || session2 == null) {
+            return;
+        }
+
+        e.setCancelled(!session1.equals(session2));
+
     }
 
 }

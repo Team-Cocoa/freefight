@@ -6,6 +6,7 @@ import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.player.Kits;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 @Getter
+@EqualsAndHashCode
 public class FreeFightSession {
 
     private FreeFightPlayer freeFightPlayer1;

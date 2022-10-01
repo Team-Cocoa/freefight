@@ -1,0 +1,34 @@
+package kr.teamcocoa.freefight.items.inventory.icon;
+
+import kr.teamcocoa.freefight.items.AbstractItem;
+import kr.teamcocoa.freefight.utils.StringUtils;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+public class IconShieldItem extends AbstractItem {
+
+    private static IconShieldItem instance;
+
+    public static IconShieldItem getInstance() {
+        if (instance == null) {
+            instance = new IconShieldItem();
+        }
+        return instance;
+    }
+
+    private IconShieldItem() {
+        super(Material.SHIELD);
+    }
+
+    @Override
+    public ItemStack toItemStack(Player player) {
+        ItemStack itemStack = new ItemStack(getMaterial());
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.displayName(Component.text(StringUtils.color("&e&lShieldPvP")));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+}
