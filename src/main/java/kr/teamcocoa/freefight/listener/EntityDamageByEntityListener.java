@@ -6,6 +6,7 @@ import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -62,8 +63,6 @@ public class EntityDamageByEntityListener implements Listener {
                 session.stop(freeFightPlayer);
             }
         }
-
-
     }
 
     private void challengerHandle(EntityDamageByEntityEvent e) {

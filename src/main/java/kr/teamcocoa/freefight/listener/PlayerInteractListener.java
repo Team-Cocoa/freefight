@@ -2,9 +2,11 @@ package kr.teamcocoa.freefight.listener;
 
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +23,7 @@ public class PlayerInteractListener implements Listener {
             if(blockedItemList.contains(e.getItem().getType())) {
                 e.setCancelled(true);
             }
-            if(e.getItem().hasItemMeta() && e.getItem().getItemMeta().hasDisplayName()) {
+            if(e.getItem().hasItemMeta()) {
                 handleItemsClick(e);
             }
         }

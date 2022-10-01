@@ -8,6 +8,8 @@ import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +35,7 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
         ItemStack itemStack = new ItemStack(getMaterial());
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.displayName(Component.text(StringUtils.color(
-                "&6Kit Select"
+                "&6&lKit Select"
         )));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -48,7 +50,11 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(StringUtils.componentEquals(e.getItem().displayName(), "&6Kit Select")) {
+        if(!player.getInventory().getItemInMainHand().hasItemMeta()) {
+            return;
+        }
+
+        if(StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lKit Select")) {
             KitSelectInventory.getInstance().openInventory(player);
         }
     }

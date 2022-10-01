@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
+import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
@@ -71,10 +72,10 @@ public class FreeFightPlayer {
     public void setInventory(GameState state) {
         switch (state) {
             case LOBBY -> {
-                ItemStack challengeItem = ChallengeItem.getInstance().toItemStack(player);
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
-                   player.getInventory().setItem(0, challengeItem);
+                   player.getInventory().setItem(0, ChallengeItem.getInstance().toItemStack(player));
+                   player.getInventory().setItem(8, KitSelectItem.getInstance().toItemStack(player));
                 });
             }
             case INGAME -> {
@@ -90,6 +91,7 @@ public class FreeFightPlayer {
         for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
             freeFightPlayer.getChallengedPlayerList().remove(this);
         }
+        challengedPlayerList.clear();
         currentKit = kit;
     }
 
@@ -123,7 +125,7 @@ public class FreeFightPlayer {
                 ItemStack axe = new ItemStack(Material.DIAMOND_AXE);
                 ItemStack crossbow = new ItemStack(Material.CROSSBOW);
                 ItemStack bow = new ItemStack(Material.BOW);
-                ItemStack arrow = new ItemStack(Material.ARROW);
+                ItemStack arrow = new ItemStack(Material.ARROW, 7);
                 ItemStack shield = new ItemStack(Material.SHIELD);
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
@@ -153,7 +155,6 @@ public class FreeFightPlayer {
     }
 
     public void challenge(FreeFightPlayer enemyFightPlayer) {
-
         if(!challengeAble) {
             return;
         }
@@ -181,6 +182,7 @@ public class FreeFightPlayer {
                             + Kits.getNameByEnum(enemyFightPlayer.getCurrentKit())
                             + " &c!"
             ));
+            return;
         }
 
         // 만약에 상대는 이미 나한테 듀얼을 건 적이 있는지?
@@ -189,9 +191,19 @@ public class FreeFightPlayer {
                 freeFightPlayer.getChallengedPlayerList().remove(this);
                 freeFightPlayer.getChallengedPlayerList().remove(enemyFightPlayer);
             }
-            SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
-            FreeFightSession session = SessionManager.getSession(this);
-            session.start();
+            boolean created = SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
+            if(created) {
+                FreeFightSession session = SessionManager.getSession(this);
+                session.start();
+            }
+            else {
+                player.sendMessage(StringUtils.color(
+                        FreeFight.getPrefix() + "&cAn error has occurred while creating a session. Try again."
+                ));
+                enemyFightPlayer.getPlayer().sendMessage(StringUtils.color(
+                        FreeFight.getPrefix() + "&cAn error has occurred while creating a session. Try again."
+                ));
+            }
             return;
         }
 

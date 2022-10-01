@@ -28,7 +28,7 @@ public class KitSelectInventory extends AbstractGUI {
     }
 
     private KitSelectInventory() {
-        super(1 * 9, "");
+        super(1 * 9, "&6&lKit Select");
         fillInventory();
     }
 
@@ -55,14 +55,14 @@ public class KitSelectInventory extends AbstractGUI {
                 }
 
                 ItemStack itemStack = e.getCurrentItem();
-                if(StringUtils.componentEquals(itemStack.displayName(), "&e&lOnlySword")) {
+                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lOnlySword")) {
                     freeFightPlayer.changeKit(Kits.ONLYSWORD);
                     player.closeInventory();
                     player.sendMessage(StringUtils.color(
                             FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.ONLYSWORD) + "&a !"
                     ));
                 }
-                if(StringUtils.componentEquals(itemStack.displayName(), "&e&lShieldPvP")) {
+                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {
                     freeFightPlayer.changeKit(Kits.SHIELD);
                     player.closeInventory();
                     player.sendMessage(StringUtils.color(

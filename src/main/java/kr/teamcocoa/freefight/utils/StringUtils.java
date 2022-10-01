@@ -15,7 +15,7 @@ public class StringUtils {
 
     public static boolean componentEquals(Component component, String string) {
         if(component instanceof TextComponent textComponent) {
-            return textComponent.content().equals(string);
+            return textComponent.content().equals(StringUtils.color(string));
         }
         return false;
     }

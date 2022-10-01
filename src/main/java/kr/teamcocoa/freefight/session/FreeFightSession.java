@@ -13,6 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.text.MessageFormat;
+
 @Getter
 @EqualsAndHashCode
 public class FreeFightSession {
@@ -92,24 +94,30 @@ public class FreeFightSession {
         freeFightPlayer1.setInventory(GameState.LOBBY);
         freeFightPlayer2.setInventory(GameState.LOBBY);
 
+        PlayerUtils.sendTitle(
+                winner.getPlayer(),
+                "&aVICTORY",
+                MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
+                10, 80, 10);
+        PlayerUtils.sendTitle(
+                loser.getPlayer(),
+                "&cDEFEAT",
+                MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
+                10, 80, 10);
+
         freeFightPlayer1.getPlayer().setHealth(20);
         freeFightPlayer2.getPlayer().setHealth(20);
 
-        PlayerUtils.sendTitle(winner.getPlayer(), "&aVICTORY", "&a" + winner.getPlayer().getName() + "&7 has won the fight", 10, 80, 10);
-        PlayerUtils.sendTitle(loser.getPlayer(), "&cDEFEAT", "&a" + winner.getPlayer().getName() + "&7 has won the fight", 10, 80, 10);
-
-//        Location loserLocation = loser.getPlayer().getLocation();
-
         winner.getPlayer().playSound(winner.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5F, 100F);
         loser.getPlayer().playSound(loser.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5F, 100F);
+
+        winner.getPlayer().setArrowsInBody(0);
+        loser.getPlayer().setArrowsInBody(0);
 
         Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> {
             freeFightPlayer1.setChallengeAble(true);
             freeFightPlayer2.setChallengeAble(true);
         }, 60L);
-
-//        PlayerUtils.sendFakeLightning(player1, loserLocation.getX(), loserLocation.getY(), loserLocation.getZ());
-//        PlayerUtils.sendFakeLightning(player2, loserLocation.getX(), loserLocation.getY(), loserLocation.getZ());
 
         running = false;
     }
