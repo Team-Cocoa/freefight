@@ -2,7 +2,7 @@ package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.GameState;
-import kr.teamcocoa.freefight.player.Kits;
+import kr.teamcocoa.freefight.kits.Kits;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

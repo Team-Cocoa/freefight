@@ -2,8 +2,9 @@ package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
+import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
-import kr.teamcocoa.freefight.player.Kits;
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
 import lombok.EqualsAndHashCode;
@@ -72,11 +73,13 @@ public class FreeFightSession {
 
         Player player1 = freeFightPlayer1.getPlayer();
         Player player2 = freeFightPlayer2.getPlayer();
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.showPlayer(FreeFight.getInstance(), player1);
-            onlinePlayer.showPlayer(FreeFight.getInstance(), player2);
-            player1.showPlayer(FreeFight.getInstance(), onlinePlayer);
-            player2.showPlayer(FreeFight.getInstance(), onlinePlayer);
+        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            if(freeFightPlayer.getState() == GameState.LOBBY) {
+                freeFightPlayer.getPlayer().showPlayer(FreeFight.getInstance(), player1);
+                freeFightPlayer.getPlayer().showPlayer(FreeFight.getInstance(), player2);
+                player1.showPlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+                player2.showPlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+            }
         }
 
         FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;

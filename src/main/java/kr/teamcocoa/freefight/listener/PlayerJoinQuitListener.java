@@ -19,7 +19,6 @@ public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.setJoinMessage(null);
         Player player = e.getPlayer();
         boolean saved = FreeFightPlayerManager.addPlayer(player);
         if(!saved) {
@@ -29,6 +28,10 @@ public class PlayerJoinQuitListener implements Listener {
         }
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
         freeFightPlayer.join();
+
+        e.joinMessage(Component.text(StringUtils.color(
+                FreeFight.getPrefix() + "&e" + player.getName() + " &ahas joined!"
+        )));
 
     }
 
@@ -49,6 +52,10 @@ public class PlayerJoinQuitListener implements Listener {
         if(!removed) {
             Bukkit.getLogger().info("[FreeFight] FreeFightPlayerManager.removePlayer(Player player) returned false! class : PlayerJoinQuitListener");
         }
+
+        e.quitMessage(Component.text(StringUtils.color(
+                FreeFight.getPrefix() + "&e" + player.getName() + " &ahas left!"
+        )));
     }
 
 }

@@ -1,11 +1,12 @@
 package kr.teamcocoa.freefight.gui;
 
+import kr.teamcocoa.freefight.items.inventory.icon.IconDiamondPotItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconOnlySwordItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconShieldItem;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
-import kr.teamcocoa.freefight.player.Kits;
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ public class KitSelectInventory extends AbstractGUI {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle()));
         newInventory.setContents(getInventory().getContents());
         newInventory.setItem(2, IconOnlySwordItem.getInstance().toItemStack(player));
+        newInventory.setItem(4, IconDiamondPotItem.getInstance().toItemStack(player));
         newInventory.setItem(6, IconShieldItem.getInstance().toItemStack(player));
         player.openInventory(newInventory);
     }
@@ -60,6 +62,13 @@ public class KitSelectInventory extends AbstractGUI {
                     player.closeInventory();
                     player.sendMessage(StringUtils.color(
                             FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.ONLYSWORD) + "&a !"
+                    ));
+                }
+                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lDiamond Pot")) {
+                    freeFightPlayer.changeKit(Kits.DIAMOND_POT);
+                    player.closeInventory();
+                    player.sendMessage(StringUtils.color(
+                            FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.DIAMOND_POT) + "&a !"
                     ));
                 }
                 if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {

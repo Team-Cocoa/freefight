@@ -2,6 +2,9 @@ package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
+import kr.teamcocoa.freefight.kits.Kits;
+import kr.teamcocoa.freefight.kits.OnlySwordKit;
+import kr.teamcocoa.freefight.kits.ShieldPvPKit;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
@@ -19,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class FreeFightPlayer {
@@ -57,7 +61,14 @@ public class FreeFightPlayer {
             stats.loadStats();
         });
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(FreeFight.getInstance(), () -> ScoreboardManager.sendScoreboard(player), 0L, 20L);
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> ScoreboardManager.sendScoreboard(player), 0, 1, TimeUnit.SECONDS);
+
+        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            if(freeFightPlayer.getState() == GameState.INGAME) {
+                player.hidePlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+                freeFightPlayer.getPlayer().hidePlayer(FreeFight.getInstance(), player);
+            }
+        }
 
     }
 
@@ -79,7 +90,7 @@ public class FreeFightPlayer {
                 });
             }
             case INGAME -> {
-                setInGameKit();
+                Kits.makePlayerKit(player, currentKit);
             }
         }
     }
@@ -93,52 +104,6 @@ public class FreeFightPlayer {
         }
         challengedPlayerList.clear();
         currentKit = kit;
-    }
-
-    private void setInGameKit() {
-        switch (currentKit) {
-            case ONLYSWORD -> {
-                ItemStack[] armorContent = new ItemStack[4];
-                armorContent[3] = new ItemStack(Material.DIAMOND_HELMET);
-                armorContent[2] = new ItemStack(Material.DIAMOND_CHESTPLATE);
-                armorContent[1] = new ItemStack(Material.DIAMOND_LEGGINGS);
-                armorContent[0] = new ItemStack(Material.DIAMOND_BOOTS);
-                for (ItemStack itemStack : armorContent) {
-                    itemStack.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
-                }
-                ItemStack sword = new ItemStack(Material.STONE_SWORD);
-                sword.addEnchantment(Enchantment.DURABILITY, 3);
-                Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
-                    player.getInventory().clear();
-                    player.getInventory().setArmorContents(armorContent);
-                    player.getInventory().setItem(0, sword);
-                });
-            }
-            case SHIELD -> {
-                ItemStack[] armorContent = new ItemStack[4];
-                armorContent[3] = new ItemStack(Material.DIAMOND_HELMET);
-                armorContent[2] = new ItemStack(Material.DIAMOND_CHESTPLATE);
-                armorContent[1] = new ItemStack(Material.DIAMOND_LEGGINGS);
-                armorContent[0] = new ItemStack(Material.DIAMOND_BOOTS);
-
-                ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-                ItemStack axe = new ItemStack(Material.DIAMOND_AXE);
-                ItemStack crossbow = new ItemStack(Material.CROSSBOW);
-                ItemStack bow = new ItemStack(Material.BOW);
-                ItemStack arrow = new ItemStack(Material.ARROW, 7);
-                ItemStack shield = new ItemStack(Material.SHIELD);
-                Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
-                   player.getInventory().clear();
-                   player.getInventory().setArmorContents(armorContent);
-                   player.getInventory().setItemInOffHand(shield);
-                   player.getInventory().setItem(0, sword);
-                   player.getInventory().setItem(1, axe);
-                   player.getInventory().setItem(2, crossbow);
-                   player.getInventory().setItem(3, bow);
-                   player.getInventory().setItem(4, arrow);
-                });
-            }
-        }
     }
 
     public void moveToSpawn() {
@@ -209,7 +174,7 @@ public class FreeFightPlayer {
 
         challengedPlayerList.add(enemyFightPlayer);
         player.sendMessage(Component.text(StringUtils.color(
-                FreeFight.getPrefix() + "&aYou challenged to &e" + enemyFightPlayer.getPlayer().getName())));
+                FreeFight.getPrefix() + "&aYou challenged &e" + enemyFightPlayer.getPlayer().getName())));
         enemyFightPlayer.getPlayer().sendMessage(Component.text(StringUtils.color(
                 FreeFight.getPrefix() + "&e" + player.getName() + " &ahas challenged you!")));
 
