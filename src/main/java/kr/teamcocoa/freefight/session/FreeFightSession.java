@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.text.MessageFormat;
 
@@ -51,6 +52,9 @@ public class FreeFightSession {
             player1.hidePlayer(FreeFight.getInstance(), onlinePlayer);
             player2.hidePlayer(FreeFight.getInstance(), onlinePlayer);
         }
+
+        freeFightPlayer1.resetPlayer();
+        freeFightPlayer2.resetPlayer();
 
         freeFightPlayer1.setChallengeAble(false);
         freeFightPlayer2.setChallengeAble(false);
@@ -108,8 +112,8 @@ public class FreeFightSession {
                 MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
                 10, 80, 10);
 
-        freeFightPlayer1.getPlayer().setHealth(20);
-        freeFightPlayer2.getPlayer().setHealth(20);
+        freeFightPlayer1.resetPlayer();
+        freeFightPlayer2.resetPlayer();
 
         winner.getPlayer().playSound(winner.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5F, 100F);
         loser.getPlayer().playSound(loser.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5F, 100F);

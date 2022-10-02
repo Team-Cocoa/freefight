@@ -1,9 +1,11 @@
 package kr.teamcocoa.freefight.listener;
 
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,6 +35,13 @@ public class PotionSplashListener implements Listener {
                 }
                 else {
                     e.getAffectedEntities().remove(affectedEntity);
+                }
+            }
+
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                if(session.getFreeFightPlayer1().getPlayer() != onlinePlayer &&
+                        session.getFreeFightPlayer2().getPlayer() != onlinePlayer) {
+                    onlinePlayer.hideEntity(FreeFight.getInstance(), e.getEntity());
                 }
             }
 

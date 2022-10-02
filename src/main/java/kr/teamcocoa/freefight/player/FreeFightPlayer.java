@@ -3,22 +3,19 @@ package kr.teamcocoa.freefight.player;
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
 import kr.teamcocoa.freefight.kits.Kits;
-import kr.teamcocoa.freefight.kits.OnlySwordKit;
-import kr.teamcocoa.freefight.kits.ShieldPvPKit;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.freefight.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -39,6 +36,9 @@ public class FreeFightPlayer {
     @Setter
     private boolean challengeAble;
 
+    @Setter
+    private boolean pearlThrowable;
+
     // Thread safe 한 LinkedList 가 없어서 어거지라도 이거 써야지 :sadblob:
     private LinkedBlockingQueue<FreeFightPlayer> challengedPlayerList;
 
@@ -48,6 +48,7 @@ public class FreeFightPlayer {
         this.currentKit = Kits.ONLYSWORD;
         this.challengedPlayerList = new LinkedBlockingQueue<>();
         this.challengeAble = true;
+        this.pearlThrowable = true;
 
         this.stats = new Stats(player.getUniqueId());
     }
@@ -180,6 +181,15 @@ public class FreeFightPlayer {
 
     }
 
-
+    public void resetPlayer() {
+        Utils.catchAsynchronous();
+        player.setLevel(0);
+        for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(activePotionEffect.getType());
+        }
+        player.setFoodLevel(20);
+        player.setHealth(20);
+        player.setSaturation(12);
+    }
 
 }
