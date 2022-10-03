@@ -106,6 +106,7 @@ public class FreeFightSession {
                 "&aVICTORY",
                 MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
                 10, 80, 10);
+
         PlayerUtils.sendTitle(
                 loser.getPlayer(),
                 "&cDEFEAT",
