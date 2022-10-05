@@ -5,6 +5,7 @@ import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.utils.ItemUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -33,11 +34,7 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.displayName(Component.text(StringUtils.color(
-                "&6&lKit Select"
-        )));
-        itemStack.setItemMeta(itemMeta);
+        ItemUtils.name(itemStack, "&6&lKit Select");
         return itemStack;
     }
 

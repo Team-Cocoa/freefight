@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.items.inventory.icon;
 
 import kr.teamcocoa.freefight.items.AbstractItem;
+import kr.teamcocoa.freefight.utils.ItemUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -26,9 +27,7 @@ public class IconOnlySwordItem extends AbstractItem {
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.displayName(Component.text(StringUtils.color("&e&lOnlySword")));
-        itemStack.setItemMeta(itemMeta);
+        ItemUtils.name(itemStack, "&e&lOnlySword");
         return itemStack;
     }
 }

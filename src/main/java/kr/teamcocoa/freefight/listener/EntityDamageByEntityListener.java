@@ -12,7 +12,10 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.text.MessageFormat;
 
 public class EntityDamageByEntityListener implements Listener {
 
@@ -58,6 +61,11 @@ public class EntityDamageByEntityListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
+            FreeFightPlayer sessionEnemy = session.getFreeFightPlayer1() == freeFightPlayer ? session.getFreeFightPlayer2() : session.getFreeFightPlayer1();
+            if(sessionEnemy != enemyFreeFightPlayer) {
+                e.setCancelled(true);
+                return;
+            }
             if(player.getHealth() - e.getFinalDamage() <= 0.0) {
                 e.setCancelled(true);
                 session.stop(freeFightPlayer);
@@ -77,7 +85,7 @@ public class EntityDamageByEntityListener implements Listener {
 
         if(mainHandItem.hasItemMeta()
                 && mainHandItem.getItemMeta().hasDisplayName()
-                && mainHandItem.getItemMeta().getDisplayName().equals(StringUtils.color("&6&lChallenger"))) {
+                && StringUtils.componentEquals(mainHandItem.getItemMeta().displayName(), "&6&lChallenger")) {
             FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
             FreeFightPlayer enemyFreeFightPlayer = FreeFightPlayerManager.getPlayer(enemy);
 

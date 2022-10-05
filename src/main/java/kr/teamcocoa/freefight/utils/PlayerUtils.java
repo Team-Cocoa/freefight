@@ -7,13 +7,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -39,13 +33,6 @@ public class PlayerUtils {
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void sendFakeLightning(Player player, double x, double y, double z) {
-        LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, ((CraftWorld) player.getWorld()).getHandle());
-        lightningBolt.getAddEntityPacket();
-        ClientboundSoundPacket clientboundSoundPacket = new ClientboundSoundPacket(SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, x, y, z, 10000F, 63);
-        sendPackets(player, lightningBolt.getAddEntityPacket(), clientboundSoundPacket);
     }
 
 }

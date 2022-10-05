@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import net.kyori.adventure.text.Component;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -26,7 +27,7 @@ public class Utils {
     public static ItemStack getBackground() {
         ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(" ");
+        itemMeta.displayName(Component.empty());
         itemMeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES });
         itemStack.setItemMeta(itemMeta);
         return itemStack;
