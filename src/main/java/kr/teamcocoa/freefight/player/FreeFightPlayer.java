@@ -131,7 +131,7 @@ public class FreeFightPlayer {
             return;
         }
 
-        // 상대도 똑같이!
+        // 상대도 똑같이 검사!
         if(enemyFightPlayer.getState() != GameState.LOBBY) {
             return;
         }
@@ -173,6 +173,7 @@ public class FreeFightPlayer {
             return;
         }
 
+        // 상대방에게 듀얼 걸기!
         challengedPlayerList.add(enemyFightPlayer);
         player.sendMessage(Component.text(StringUtils.color(
                 FreeFight.getPrefix() + "&aYou challenged &e" + enemyFightPlayer.getPlayer().getName())));

@@ -38,7 +38,7 @@ public class KitSelectInventory extends AbstractGUI {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle()));
         newInventory.setContents(getInventory().getContents());
         newInventory.setItem(2, IconOnlySwordItem.getInstance().toItemStack(player));
-        newInventory.setItem(4, IconDiamondPotItem.getInstance().toItemStack(player));
+//        newInventory.setItem(4, IconDiamondPotItem.getInstance().toItemStack(player));
         newInventory.setItem(6, IconShieldItem.getInstance().toItemStack(player));
         player.openInventory(newInventory);
     }
@@ -64,13 +64,13 @@ public class KitSelectInventory extends AbstractGUI {
                             FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.ONLYSWORD) + "&a !"
                     ));
                 }
-                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lDiamond Pot")) {
-                    freeFightPlayer.changeKit(Kits.DIAMOND_POT);
-                    player.closeInventory();
-                    player.sendMessage(StringUtils.color(
-                            FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.DIAMOND_POT) + "&a !"
-                    ));
-                }
+//                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lDiamond Pot")) {
+//                    freeFightPlayer.changeKit(Kits.DIAMOND_POT);
+//                    player.closeInventory();
+//                    player.sendMessage(StringUtils.color(
+//                            FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.DIAMOND_POT) + "&a !"
+//                    ));
+//                }
                 if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {
                     freeFightPlayer.changeKit(Kits.SHIELD);
                     player.closeInventory();
