@@ -62,6 +62,11 @@ public class DiamondPotKit extends AbstractKit {
 
         ItemStack pearl = new ItemStack(Material.ENDER_PEARL, 16);
 
+        ItemStack regen = new ItemStack(Material.SPLASH_POTION);
+        PotionMeta regenPotionMeta = (PotionMeta) regen.getItemMeta();
+        regenPotionMeta.setBasePotionData(new PotionData(PotionType.REGEN, false, false));
+        regen.setItemMeta(regenPotionMeta);
+
         ItemStack speed = new ItemStack(Material.SPLASH_POTION);
         PotionMeta speedPotionMeta = (PotionMeta) speed.getItemMeta();
         speedPotionMeta.setBasePotionData(new PotionData(PotionType.SPEED, false, true));
@@ -79,6 +84,10 @@ public class DiamondPotKit extends AbstractKit {
 
         inventory[0] = sword;
         inventory[1] = pearl;
+
+        for(Integer i : Arrays.asList(6, 15, 24, 33)) {
+            inventory[i] = regen;
+        }
 
         for (Integer i : Arrays.asList(7, 16, 25, 34)) {
             inventory[i] = speed;
