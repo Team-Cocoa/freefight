@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import kr.teamcocoa.freefight.gui.KitSelectInventory;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -51,6 +52,10 @@ public class SpectateItem extends AbstractItem implements ClickAble {
 
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
         if (freeFightPlayer == null) {
+            return;
+        }
+
+        if(!StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lSpectate")) {
             return;
         }
 
