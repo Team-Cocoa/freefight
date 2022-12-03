@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
+import kr.teamcocoa.freefight.items.lobby.SpectateItem;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
@@ -87,6 +88,7 @@ public class FreeFightPlayer {
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
                    player.getInventory().setItem(0, ChallengeItem.getInstance().toItemStack(player));
+                   player.getInventory().setItem(4, SpectateItem.getInstance().toItemStack(player));
                    player.getInventory().setItem(8, KitSelectItem.getInstance().toItemStack(player));
                 });
             }

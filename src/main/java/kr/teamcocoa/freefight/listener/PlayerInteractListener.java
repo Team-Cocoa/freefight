@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.listener;
 
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
+import kr.teamcocoa.freefight.items.lobby.SpectateItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +32,7 @@ public class PlayerInteractListener implements Listener {
 
     private void handleItemsClick(PlayerInteractEvent e) {
         KitSelectItem.getInstance().onClick(e);
+        SpectateItem.getInstance().onClick(e);
     }
 
 }
