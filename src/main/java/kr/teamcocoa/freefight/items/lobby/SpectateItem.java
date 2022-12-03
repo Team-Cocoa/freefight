@@ -72,6 +72,9 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             freeFightPlayer.setState(GameState.LOBBY);
             player.setAllowFlight(false);
             player.setFlying(false);
+            for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+                player.removePotionEffect(potionEffect.getType());
+            }
             freeFightPlayer.moveToSpawn();
             for (FreeFightSession session : SessionManager.getSessions()) {
                 player.hidePlayer(FreeFight.getInstance(), session.getFreeFightPlayer1().getPlayer());
