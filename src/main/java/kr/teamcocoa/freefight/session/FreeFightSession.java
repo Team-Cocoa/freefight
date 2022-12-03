@@ -43,12 +43,15 @@ public class FreeFightSession {
         }
         Player player1 = freeFightPlayer1.getPlayer();
         Player player2 = freeFightPlayer2.getPlayer();
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            Player onlinePlayer = freeFightPlayer.getPlayer();
             if(onlinePlayer == player1 || onlinePlayer == player2) {
                 continue;
             }
-            onlinePlayer.hidePlayer(FreeFight.getInstance(), player1);
-            onlinePlayer.hidePlayer(FreeFight.getInstance(), player2);
+            if(freeFightPlayer.getState() != GameState.SPECTATE) {
+                onlinePlayer.hidePlayer(FreeFight.getInstance(), player1);
+                onlinePlayer.hidePlayer(FreeFight.getInstance(), player2);
+            }
             player1.hidePlayer(FreeFight.getInstance(), onlinePlayer);
             player2.hidePlayer(FreeFight.getInstance(), onlinePlayer);
         }
