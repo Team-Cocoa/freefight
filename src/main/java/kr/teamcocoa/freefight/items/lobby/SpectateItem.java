@@ -36,7 +36,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, "&6&lSpectator");
+        ItemUtils.name(itemStack, "&6&lSpectate");
         return itemStack;
     }
 
