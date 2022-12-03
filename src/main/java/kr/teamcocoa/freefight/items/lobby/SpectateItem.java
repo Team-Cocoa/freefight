@@ -18,12 +18,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SpectateItem extends AbstractItem implements ClickAble {
 
     private static SpectateItem instance;
 
     public static SpectateItem getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new SpectateItem();
         }
         return instance;
@@ -32,6 +35,8 @@ public class SpectateItem extends AbstractItem implements ClickAble {
     private SpectateItem() {
         super(Material.COMPASS);
     }
+
+    private List<FreeFightPlayer> delayList = new LinkedList<>();
 
     @Override
     public ItemStack toItemStack(Player player) {
@@ -45,16 +50,20 @@ public class SpectateItem extends AbstractItem implements ClickAble {
         Player player = e.getPlayer();
 
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
-        if(freeFightPlayer == null) {
+        if (freeFightPlayer == null) {
             return;
         }
 
-        if(freeFightPlayer.getState() == GameState.INGAME) {
+        if (freeFightPlayer.getState() == GameState.INGAME) {
+            return;
+        }
+
+        if (delayList.contains(freeFightPlayer)) {
             return;
         }
 
         // 만약 상태가 로비라면?
-        if(freeFightPlayer.getState() == GameState.LOBBY) {
+        if (freeFightPlayer.getState() == GameState.LOBBY) {
             // 관전모드로 변경
             freeFightPlayer.setState(GameState.SPECTATE);
             player.setAllowFlight(true);
@@ -83,6 +92,9 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             player.sendMessage(StringUtils.color(
                     FreeFight.getPrefix() + "&cYou are no longer spectator now."
             ));
-       }
+        }
+
+        delayList.add(freeFightPlayer);
+        Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> delayList.remove(freeFightPlayer), 60L);
     }
 }
