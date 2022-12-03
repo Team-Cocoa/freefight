@@ -12,6 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 public class PotionSplashListener implements Listener {
 
     @EventHandler
@@ -30,11 +34,11 @@ public class PotionSplashListener implements Listener {
             for (LivingEntity affectedEntity : e.getAffectedEntities()) {
                 if(affectedEntity instanceof Player affectedPlayer) {
                     if(session.getFreeFightPlayer1().getPlayer() != affectedPlayer && session.getFreeFightPlayer2().getPlayer() != affectedPlayer) {
-                        e.getAffectedEntities().remove(affectedEntity);
+                        e.setIntensity(affectedEntity, 0);
                     }
                 }
                 else {
-                    e.getAffectedEntities().remove(affectedEntity);
+                    e.setIntensity(affectedEntity, 0);
                 }
             }
 
