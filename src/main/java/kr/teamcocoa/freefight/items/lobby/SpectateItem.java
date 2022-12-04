@@ -86,9 +86,10 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             freeFightPlayer.setState(GameState.LOBBY);
             freeFightPlayer.resetPlayer();
             freeFightPlayer.moveToSpawn();
-            for (FreeFightSession session : SessionManager.getSessions()) {
-                player.hidePlayer(FreeFight.getInstance(), session.getFreeFightPlayer1().getPlayer());
-                player.hidePlayer(FreeFight.getInstance(), session.getFreeFightPlayer2().getPlayer());
+            for (FreeFightPlayer fightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                if(fightPlayer.getState() == GameState.INGAME) {
+                    player.hidePlayer(FreeFight.getInstance(), fightPlayer.getPlayer());
+                }
             }
             player.sendMessage(StringUtils.color(
                     FreeFight.getPrefix() + "&cYou are no longer spectator now."
