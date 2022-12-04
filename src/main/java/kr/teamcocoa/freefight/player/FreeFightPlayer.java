@@ -189,6 +189,8 @@ public class FreeFightPlayer {
         for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
             player.removePotionEffect(activePotionEffect.getType());
         }
+        player.setAllowFlight(false);
+        player.setFlying(false);
         player.setFoodLevel(20);
         player.setHealth(20);
         player.setSaturation(12);
