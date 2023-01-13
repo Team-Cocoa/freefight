@@ -13,7 +13,7 @@ public class FreeFight extends JavaPlugin {
     private static FreeFight instance;
 
     @Getter
-    private static String prefix = StringUtils.color("&a[&dFreeFight&a] &r");
+    private static final String prefix = StringUtils.color("&a[&dFreeFight&a] &r");
 
     @Override
     public void onLoad() {

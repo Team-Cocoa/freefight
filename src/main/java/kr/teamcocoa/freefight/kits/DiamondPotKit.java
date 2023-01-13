@@ -64,7 +64,7 @@ public class DiamondPotKit extends AbstractKit {
 
         ItemStack regen = new ItemStack(Material.SPLASH_POTION);
         PotionMeta regenPotionMeta = (PotionMeta) regen.getItemMeta();
-        regenPotionMeta.setBasePotionData(new PotionData(PotionType.REGEN, false, false));
+        regenPotionMeta.setBasePotionData(new PotionData(PotionType.REGEN, true, false));
         regen.setItemMeta(regenPotionMeta);
 
         ItemStack speed = new ItemStack(Material.SPLASH_POTION);

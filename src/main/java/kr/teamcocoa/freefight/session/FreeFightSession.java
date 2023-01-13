@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.messages.KillLogMessage;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
@@ -10,6 +11,7 @@ import kr.teamcocoa.freefight.utils.PlayerUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -115,6 +117,12 @@ public class FreeFightSession {
                 "&cDEFEAT",
                 MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
                 10, 80, 10);
+
+        KillLogMessage killLogMessage = new KillLogMessage(winner.getPlayer().getName(), loser.getPlayer().getName(), winner.getPlayer().getHealth(), kits);
+        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            String message = killLogMessage.getMessage(freeFightPlayer.getPlayer());
+            freeFightPlayer.getPlayer().sendMessage(Component.text(message));
+        }
 
         freeFightPlayer1.resetPlayer();
         freeFightPlayer2.resetPlayer();
