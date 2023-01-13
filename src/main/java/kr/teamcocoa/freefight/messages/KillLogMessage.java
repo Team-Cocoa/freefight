@@ -24,7 +24,7 @@ public class KillLogMessage extends BaseMessage {
         super(Messages.KILL_LOG);
         this.killer = killer;
         this.victim = victim;
-        this.leftHealth = String.format(".2f", leftHealth);
+        this.leftHealth = String.format("%.2f", leftHealth);
         this.kits = kits;
         this.arguments = new Object[] { killer, victim, leftHealth, Kits.getNameByEnum(kits) };
     }
