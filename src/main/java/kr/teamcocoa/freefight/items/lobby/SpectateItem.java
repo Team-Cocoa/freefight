@@ -88,6 +88,9 @@ public class SpectateItem extends AbstractItem implements ClickAble {
                 if(fightPlayer.getState() == GameState.INGAME) {
                     player.hidePlayer(FreeFight.getInstance(), fightPlayer.getPlayer());
                 }
+                else {
+                    fightPlayer.getPlayer().showPlayer(FreeFight.getInstance(), player);
+                }
             }
             player.sendMessage(StopSpectateMessage.getInstance().getMessage(player));
         }
