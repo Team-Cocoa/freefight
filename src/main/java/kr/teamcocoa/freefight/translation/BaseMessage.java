@@ -1,4 +1,4 @@
-package kr.teamcocoa.freefight.messages;
+package kr.teamcocoa.freefight.translation;
 
 import kr.teamcocoa.freefight.translation.Translatable;
 import lombok.AccessLevel;

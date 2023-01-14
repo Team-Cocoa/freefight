@@ -1,7 +1,7 @@
 package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.freefight.main.FreeFight;
-import kr.teamcocoa.freefight.messages.KillLogMessage;
+import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
@@ -15,7 +15,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 
 import java.text.MessageFormat;
 

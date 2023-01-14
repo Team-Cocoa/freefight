@@ -1,5 +1,6 @@
-package kr.teamcocoa.freefight.translation;
+package kr.teamcocoa.freefight.translation.messages;
 
+import kr.teamcocoa.freefight.translation.Translatable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
