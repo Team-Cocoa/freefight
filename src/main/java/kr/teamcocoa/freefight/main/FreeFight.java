@@ -55,5 +55,6 @@ public class FreeFight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerPickupArrowListener(), this);
         getServer().getPluginManager().registerEvents(new PotionSplashListener(), this);
         getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChangeLanguageListener(), this);
     }
 }

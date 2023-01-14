@@ -21,6 +21,7 @@ public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        e.setJoinMessage(null);
         Player player = e.getPlayer();
         boolean saved = FreeFightPlayerManager.addPlayer(player);
         if(!saved) {
