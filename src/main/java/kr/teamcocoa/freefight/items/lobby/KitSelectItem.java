@@ -5,6 +5,7 @@ import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.translation.items.KitSelectTitle;
 import kr.teamcocoa.freefight.utils.ItemUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.Material;
@@ -30,7 +31,7 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, "&6&lKit Select");
+        ItemUtils.name(itemStack, KitSelectTitle.getInstance().getMessage(player));
         return itemStack;
     }
 
@@ -47,7 +48,7 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lKit Select")) {
+        if(StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), KitSelectTitle.getInstance().getMessage(player))) {
             KitSelectGUI.getInstance().openInventory(player);
         }
     }

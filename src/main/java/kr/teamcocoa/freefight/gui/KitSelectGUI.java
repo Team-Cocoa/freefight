@@ -7,6 +7,8 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.kits.Kits;
+import kr.teamcocoa.freefight.translation.inventories.KitSelectInventories;
+import kr.teamcocoa.freefight.translation.messages.KitChangeMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -29,13 +31,13 @@ public class KitSelectGUI extends AbstractGUI {
     }
 
     private KitSelectGUI() {
-        super(1 * 9, "&6&lKit Select");
+        super(1 * 9, KitSelectInventories.getInstance());
         fillInventory();
     }
 
     @Override
     public void openInventory(Player player) {
-        Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle()));
+        Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle().getMessage(player)));
         newInventory.setContents(getInventory().getContents());
         newInventory.setItem(2, IconOnlySwordItem.getInstance().toItemStack(player));
         newInventory.setItem(4, IconDiamondPotItem.getInstance().toItemStack(player));
@@ -60,23 +62,20 @@ public class KitSelectGUI extends AbstractGUI {
                 if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lOnlySword")) {
                     freeFightPlayer.changeKit(Kits.ONLYSWORD);
                     player.closeInventory();
-                    player.sendMessage(StringUtils.color(
-                            FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.ONLYSWORD) + "&a !"
-                    ));
+                    KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.ONLYSWORD);
+                    player.sendMessage(kitChangeMessage.getMessage(player));
                 }
                 if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lDiamond Pot")) {
                     freeFightPlayer.changeKit(Kits.DIAMOND_POT);
                     player.closeInventory();
-                    player.sendMessage(StringUtils.color(
-                            FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.DIAMOND_POT) + "&a !"
-                    ));
+                    KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.DIAMOND_POT);
+                    player.sendMessage(kitChangeMessage.getMessage(player));
                 }
                 if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {
                     freeFightPlayer.changeKit(Kits.SHIELD);
                     player.closeInventory();
-                    player.sendMessage(StringUtils.color(
-                            FreeFight.getPrefix() + "&aYour kit has been changed to &e" + Kits.getNameByEnum(Kits.SHIELD) + "&a !"
-                    ));
+                    KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.SHIELD);
+                    player.sendMessage(kitChangeMessage.getMessage(player));
                 }
                 e.setCancelled(true);
             }

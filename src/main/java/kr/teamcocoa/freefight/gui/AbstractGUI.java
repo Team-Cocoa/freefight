@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.gui;
 
+import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import kr.teamcocoa.freefight.utils.Utils;
 import lombok.AccessLevel;
@@ -17,12 +18,12 @@ public abstract class AbstractGUI {
 
     private Inventory inventory;
     private int size;
-    private String title;
+    private BaseMessage title;
 
-    protected AbstractGUI(int size, String title) {
+    protected AbstractGUI(int size, BaseMessage title) {
         this.size = size;
-        this.title = StringUtils.color(title);
-        this.inventory = Bukkit.createInventory(null, size, Component.text(StringUtils.color(this.title)));
+        this.title = title;
+        this.inventory = Bukkit.createInventory(null, size, Component.empty());
     }
 
     private ItemStack background = Utils.getBackground();
@@ -38,7 +39,10 @@ public abstract class AbstractGUI {
     }
 
     protected final boolean checkThisInventoryClicked(InventoryClickEvent e) {
-        return StringUtils.componentEquals(e.getView().title(), title);
+        if(e.getWhoClicked() instanceof Player player) {
+            return StringUtils.componentEquals(e.getView().title(), title.getMessage(player));
+        }
+        return false;
     }
 
     protected final boolean checkItemStack(InventoryClickEvent e) {

@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.items.lobby;
 
 import kr.teamcocoa.freefight.items.AbstractItem;
+import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
 import kr.teamcocoa.freefight.utils.ItemUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
@@ -27,7 +28,7 @@ public class ChallengeItem extends AbstractItem {
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, "&6&lChallenger");
+        ItemUtils.name(itemStack, ChallengerTitle.getInstance().getMessage(player));
         return itemStack;
     }
 }

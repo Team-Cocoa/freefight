@@ -6,6 +6,9 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.translation.items.SpectateTitle;
+import kr.teamcocoa.freefight.translation.messages.StartSpectateMessage;
+import kr.teamcocoa.freefight.translation.messages.StopSpectateMessage;
 import kr.teamcocoa.freefight.utils.ItemUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -39,7 +42,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, "&6&lSpectate");
+        ItemUtils.name(itemStack, SpectateTitle.getInstance().getMessage(player));
         return itemStack;
     }
 
@@ -52,7 +55,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(!StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lSpectate")) {
+        if(!StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), SpectateTitle.getInstance().getMessage(player))) {
             return;
         }
 
@@ -74,9 +77,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 player.showPlayer(FreeFight.getInstance(), onlinePlayer);
             }
-            player.sendMessage(StringUtils.color(
-                    FreeFight.getPrefix() + "&aYou are spectator now."
-            ));
+            player.sendMessage(StartSpectateMessage.getInstance().getMessage(player));
         }
         else {
             // 아니라면 로비 모드로 바꾸고 기존 로비 위치로 TP + 아이템 지급
@@ -88,9 +89,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
                     player.hidePlayer(FreeFight.getInstance(), fightPlayer.getPlayer());
                 }
             }
-            player.sendMessage(StringUtils.color(
-                    FreeFight.getPrefix() + "&cYou are no longer spectator now."
-            ));
+            player.sendMessage(StopSpectateMessage.getInstance().getMessage(player));
         }
 
         delayList.add(freeFightPlayer);

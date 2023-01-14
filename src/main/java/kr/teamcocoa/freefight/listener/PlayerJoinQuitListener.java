@@ -6,6 +6,8 @@ import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import kr.teamcocoa.freefight.translation.messages.JoinPlayerMessage;
+import kr.teamcocoa.freefight.translation.messages.LeavePlayerMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -29,9 +31,11 @@ public class PlayerJoinQuitListener implements Listener {
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
         freeFightPlayer.join();
 
-        e.joinMessage(Component.text(StringUtils.color(
-                FreeFight.getPrefix() + "&e" + player.getName() + " &ahas joined!"
-        )));
+        JoinPlayerMessage joinPlayerMessage = new JoinPlayerMessage(player);
+        for (FreeFightPlayer fightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            Player onlinePlayer = fightPlayer.getPlayer();
+            onlinePlayer.sendMessage(joinPlayerMessage.getMessage(onlinePlayer));
+        }
 
     }
 
@@ -53,9 +57,11 @@ public class PlayerJoinQuitListener implements Listener {
             Bukkit.getLogger().info("[FreeFight] FreeFightPlayerManager.removePlayer(Player player) returned false! class : PlayerJoinQuitListener");
         }
 
-        e.quitMessage(Component.text(StringUtils.color(
-                FreeFight.getPrefix() + "&e" + player.getName() + " &ahas left!"
-        )));
+        LeavePlayerMessage leavePlayerMessage = new LeavePlayerMessage(player);
+        for (FreeFightPlayer fightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+            Player onlinePlayer = fightPlayer.getPlayer();
+            onlinePlayer.sendMessage(leavePlayerMessage.getMessage(onlinePlayer));
+        }
     }
 
 }

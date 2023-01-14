@@ -8,6 +8,10 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import kr.teamcocoa.freefight.translation.messages.ChallengeMessage;
+import kr.teamcocoa.freefight.translation.messages.ChallengedMessage;
+import kr.teamcocoa.freefight.translation.messages.DifferentKitMessage;
+import kr.teamcocoa.freefight.translation.messages.SessionErrorMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import kr.teamcocoa.freefight.utils.Utils;
 import lombok.Getter;
@@ -145,11 +149,8 @@ public class FreeFightPlayer {
 
         // 상대방의 킷이랑 내 킷이랑 같은지?
         if(currentKit != enemyFightPlayer.getCurrentKit()) {
-            player.sendMessage(StringUtils.color(
-                    FreeFight.getPrefix() + "&cYou can't challenge to this player since this player is on &e"
-                            + Kits.getNameByEnum(enemyFightPlayer.getCurrentKit())
-                            + " &c!"
-            ));
+            DifferentKitMessage differentKitMessage = new DifferentKitMessage(enemyFightPlayer.getCurrentKit());
+            player.sendMessage(Component.text(differentKitMessage.getMessage(player)));
             return;
         }
 
@@ -165,21 +166,17 @@ public class FreeFightPlayer {
                 session.start();
             }
             else {
-                player.sendMessage(StringUtils.color(
-                        FreeFight.getPrefix() + "&cAn error has occurred while creating a session. Try again."
-                ));
-                enemyFightPlayer.getPlayer().sendMessage(StringUtils.color(
-                        FreeFight.getPrefix() + "&cAn error has occurred while creating a session. Try again."
-                ));
+                player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
+                enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
             }
             return;
         }
 
         challengedPlayerList.add(enemyFightPlayer);
-        player.sendMessage(Component.text(StringUtils.color(
-                FreeFight.getPrefix() + "&aYou challenged &e" + enemyFightPlayer.getPlayer().getName())));
-        enemyFightPlayer.getPlayer().sendMessage(Component.text(StringUtils.color(
-                FreeFight.getPrefix() + "&e" + player.getName() + " &ahas challenged you!")));
+        ChallengeMessage challengeMessage = new ChallengeMessage(enemyFightPlayer.getPlayer());
+        ChallengedMessage challengedMessage = new ChallengedMessage(player);
+        player.sendMessage(challengeMessage.getMessage(player));
+        enemyFightPlayer.getPlayer().sendMessage(challengedMessage.getMessage(enemyFightPlayer.getPlayer()));
 
     }
 
