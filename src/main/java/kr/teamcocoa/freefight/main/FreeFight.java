@@ -1,7 +1,10 @@
 package kr.teamcocoa.freefight.main;
 
+import de.dytanic.cloudnet.driver.CloudNetDriver;
+import de.dytanic.cloudnet.wrapper.Wrapper;
 import kr.teamcocoa.freefight.listener.*;
 import kr.teamcocoa.freefight.mysql.MySQL;
+import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -29,6 +32,7 @@ public class FreeFight extends JavaPlugin {
     @Override
     public void onDisable() {
         MySQL.disconnect();
+
     }
 
     private void init() {
@@ -38,7 +42,8 @@ public class FreeFight extends JavaPlugin {
     }
 
     private void loadCommands() {
-
+        CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
+        Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());
     }
 
     private void loadListeners() {
@@ -56,5 +61,10 @@ public class FreeFight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PotionSplashListener(), this);
         getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChangeLanguageListener(), this);
+
+        TabListener tabListener = new TabListener();
+        getServer().getPluginManager().registerEvents(tabListener, this);
+
+        CloudNetDriver.getInstance().getEventManager().registerListener(tabListener);
     }
 }

@@ -8,6 +8,7 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.ChallengeMessage;
 import kr.teamcocoa.freefight.translation.messages.ChallengedMessage;
 import kr.teamcocoa.freefight.translation.messages.DifferentKitMessage;
@@ -111,6 +112,7 @@ public class FreeFightPlayer {
         }
         challengedPlayerList.clear();
         currentKit = kit;
+        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> TabManager.updateNameTags(player));
     }
 
     public void moveToSpawn() {

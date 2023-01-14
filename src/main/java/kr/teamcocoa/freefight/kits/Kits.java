@@ -22,6 +22,15 @@ public enum Kits {
         };
     }
 
+    public static String getShortNameByEnum(Kits kit) {
+        return switch (kit) {
+            case ONLYSWORD -> "Sword";
+            case SHIELD -> "Shield";
+            case DIAMOND_POT -> "DPot";
+            default -> "";
+        };
+    }
+
     public static Kits getKitByInt(int i) {
         return switch (i) {
             case 0 -> ONLYSWORD;

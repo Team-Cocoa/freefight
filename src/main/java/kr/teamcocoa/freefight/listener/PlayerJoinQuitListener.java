@@ -6,6 +6,7 @@ import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.JoinPlayerMessage;
 import kr.teamcocoa.freefight.translation.messages.LeavePlayerMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
@@ -13,13 +14,14 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerJoinQuitListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
         Player player = e.getPlayer();
@@ -31,6 +33,7 @@ public class PlayerJoinQuitListener implements Listener {
         }
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
         freeFightPlayer.join();
+        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> TabManager.updateNameTags(player));
 
         JoinPlayerMessage joinPlayerMessage = new JoinPlayerMessage(player);
         for (FreeFightPlayer fightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
