@@ -3,6 +3,7 @@ package kr.teamcocoa.freefight.task;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.translation.titles.EnemyTitle;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
 import lombok.Getter;
 import org.bukkit.Sound;
@@ -61,6 +62,9 @@ public class CountDownTask extends BukkitRunnable {
                 player2.playSound(player2.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
             }
             case 0 -> {
+
+                EnemyTitle
+
                 PlayerUtils.sendTitle(freeFightPlayer1.getPlayer(), "&6Game Start!", "&7Your enemy is &a" + freeFightPlayer2.getPlayer().getName(), 10, 40, 10);
                 PlayerUtils.sendTitle(freeFightPlayer2.getPlayer(), "&6Game Start!", "&7Your enemy is &a" + freeFightPlayer1.getPlayer().getName(), 10, 40, 10);
 

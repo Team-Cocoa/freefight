@@ -7,6 +7,9 @@ import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.task.CountDownTask;
+import kr.teamcocoa.freefight.translation.titles.DefeatTitle;
+import kr.teamcocoa.freefight.translation.titles.FinishGameTitle;
+import kr.teamcocoa.freefight.translation.titles.VictoryTitle;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -105,16 +108,18 @@ public class FreeFightSession {
         freeFightPlayer1.setInventory(GameState.LOBBY);
         freeFightPlayer2.setInventory(GameState.LOBBY);
 
+        FinishGameTitle finishGameTitle = new FinishGameTitle(winner.getPlayer().getName(), winner.getPlayer().getHealth());
+
         PlayerUtils.sendTitle(
                 winner.getPlayer(),
-                "&aVICTORY",
-                MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
+                VictoryTitle.getInstance().getMessage(winner.getPlayer()),
+                finishGameTitle.getMessage(winner.getPlayer()),
                 10, 80, 10);
 
         PlayerUtils.sendTitle(
                 loser.getPlayer(),
-                "&cDEFEAT",
-                MessageFormat.format("&a{0} &7has won the fight &0(&7{1} &4❤&0)", winner.getPlayer().getName(), String.format("%.2f", winner.getPlayer().getHealth())),
+                DefeatTitle.getInstance().getMessage(loser.getPlayer()),
+                finishGameTitle.getMessage(loser.getPlayer()),
                 10, 80, 10);
 
         KillLogMessage killLogMessage = new KillLogMessage(winner.getPlayer().getName(), loser.getPlayer().getName(), winner.getPlayer().getHealth(), kits);

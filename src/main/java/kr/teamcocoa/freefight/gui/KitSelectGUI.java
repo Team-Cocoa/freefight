@@ -17,18 +17,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 
-public class KitSelectInventory extends AbstractGUI {
+public class KitSelectGUI extends AbstractGUI {
 
-    private static KitSelectInventory instance;
+    private static KitSelectGUI instance;
 
-    public static KitSelectInventory getInstance() {
+    public static KitSelectGUI getInstance() {
         if (instance == null) {
-            instance = new KitSelectInventory();
+            instance = new KitSelectGUI();
         }
         return instance;
     }
 
-    private KitSelectInventory() {
+    private KitSelectGUI() {
         super(1 * 9, "&6&lKit Select");
         fillInventory();
     }

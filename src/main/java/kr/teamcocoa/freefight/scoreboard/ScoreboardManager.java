@@ -2,6 +2,9 @@ package kr.teamcocoa.freefight.scoreboard;
 
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.translation.scoreboards.DeathsScoreboard;
+import kr.teamcocoa.freefight.translation.scoreboards.KillStreakScoreboard;
+import kr.teamcocoa.freefight.translation.scoreboards.KillsScoreboard;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.AccessLevel;
@@ -78,13 +81,13 @@ public class ScoreboardManager {
         List<String> lines = new LinkedList<>();
         lines.add("&aMcPvP.kr");
         lines.add("");
-        lines.add("Kills:");
+        lines.add(KillsScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKills()) + " ");
         lines.add("");
-        lines.add("Deaths:");
+        lines.add(DeathsScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getDeaths()) + "  ");
         lines.add("");
-        lines.add("KillStreak:");
+        lines.add(KillStreakScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
 
         // getArrowMessage 뒤에 있는 공백들은 제거를 하면 절대 안됨
