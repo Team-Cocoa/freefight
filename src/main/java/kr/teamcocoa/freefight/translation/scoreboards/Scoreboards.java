@@ -9,7 +9,8 @@ public enum Scoreboards implements Translatable {
 
     KILLS("kills"),
     DEATHS("deaths"),
-    KILL_STREAK("kill_streak")
+    KILL_STREAK("kill_streak"),
+    CURRENT_KIT("current_kit"),
 
     ;
 

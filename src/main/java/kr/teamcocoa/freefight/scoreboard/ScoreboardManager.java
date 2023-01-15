@@ -1,7 +1,9 @@
 package kr.teamcocoa.freefight.scoreboard;
 
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.translation.scoreboards.CurrentKitScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.DeathsScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillStreakScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillsScoreboard;
@@ -89,6 +91,9 @@ public class ScoreboardManager {
         lines.add("");
         lines.add(KillStreakScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
+        lines.add("");
+        lines.add(CurrentKitScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(getArrowMessage(Kits.getNameByEnum(freeFightPlayer.getCurrentKit())));
 
         // getArrowMessage 뒤에 있는 공백들은 제거를 하면 절대 안됨
         // 만약에 저 모든 값들이 0 이라면 보이지 않는 것이 생기기 때문...

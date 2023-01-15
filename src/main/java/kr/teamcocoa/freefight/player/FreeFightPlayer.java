@@ -152,7 +152,7 @@ public class FreeFightPlayer {
         // 상대방의 킷이랑 내 킷이랑 같은지?
         if(currentKit != enemyFightPlayer.getCurrentKit()) {
             DifferentKitMessage differentKitMessage = new DifferentKitMessage(enemyFightPlayer.getCurrentKit());
-            player.sendMessage(Component.text(differentKitMessage.getMessage(player)));
+            player.sendMessage(differentKitMessage.getMessage(player));
             return;
         }
 

@@ -54,11 +54,15 @@ public class TabManager {
 
         initScoreboard(player);
 
+        FreeFightPlayer playerFreeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+
         Bukkit.getOnlinePlayers().forEach(all -> {
             initScoreboard(all);
 
+            FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(all);
+
             if (playerPermissionGroup.get() != null) {
-                addTeamEntry(player, all, playerPermissionGroup.get(), sortIdLength);
+                addTeamEntry(player, all, playerPermissionGroup.get(), sortIdLength, playerFreeFightPlayer.getCurrentKit());
             }
 
             IPermissionUser targetPermissionUser = CloudNetDriver.getInstance().getPermissionManagement()
@@ -76,12 +80,12 @@ public class TabManager {
             }
 
             if (targetPermissionGroup != null) {
-                addTeamEntry(all, player, targetPermissionGroup, sortIdLength);
+                addTeamEntry(all, player, targetPermissionGroup, sortIdLength, freeFightPlayer.getCurrentKit());
             }
         });
     }
 
-    private static void addTeamEntry(Player target, Player all, IPermissionGroup permissionGroup, int highestSortIdLength) {
+    private static void addTeamEntry(Player target, Player all, IPermissionGroup permissionGroup, int highestSortIdLength, Kits kits) {
         int sortIdLength = String.valueOf(permissionGroup.getSortId()).length();
         String teamName = (
                 highestSortIdLength == sortIdLength ?
@@ -98,11 +102,9 @@ public class TabManager {
             team = all.getScoreboard().registerNewTeam(teamName);
         }
 
-        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(target);
-
         String prefix = permissionGroup.getPrefix();
         String color = permissionGroup.getColor();
-        String suffix = String.format("&8 | &b[%s]", Kits.getShortNameByEnum(freeFightPlayer.getCurrentKit()));
+        String suffix = String.format("&8 | &b[%s]", Kits.getShortNameByEnum(kits));
 
         try {
             Method method = team.getClass().getDeclaredMethod("setColor", ChatColor.class);
