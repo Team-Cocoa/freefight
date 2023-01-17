@@ -141,8 +141,6 @@ public class TabManager {
 
         target.setDisplayName(ChatColor.translateAlternateColorCodes('&', permissionGroup.getDisplay() + target.getName()));
 
-        Bukkit.getLogger().info(MessageFormat.format("{0} s kit : {1} | appliedPlayer : {2}",
-                all.getName(), Kits.getNameByEnum(kits), target.getName()));
     }
 
     private static void initScoreboard(Player all) {
