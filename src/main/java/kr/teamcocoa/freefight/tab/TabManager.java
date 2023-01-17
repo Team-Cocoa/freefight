@@ -6,6 +6,7 @@ import de.dytanic.cloudnet.driver.permission.IPermissionGroup;
 import de.dytanic.cloudnet.driver.permission.IPermissionUser;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -57,6 +58,7 @@ public class TabManager {
         FreeFightPlayer playerFreeFightPlayer = FreeFightPlayerManager.getPlayer(player);
 
         Bukkit.getOnlinePlayers().forEach(all -> {
+
             initScoreboard(all);
 
             FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(all);
@@ -91,7 +93,7 @@ public class TabManager {
                 highestSortIdLength == sortIdLength ?
                         permissionGroup.getSortId() :
                         String.format("%0" + highestSortIdLength + "d", permissionGroup.getSortId())
-        ) + permissionGroup.getName();
+        ) + permissionGroup.getName() + Kits.getNameByEnum(kits);
 
         if (teamName.length() > 16) {
             teamName = teamName.substring(0, 16);
@@ -138,6 +140,9 @@ public class TabManager {
         team.addEntry(target.getName());
 
         target.setDisplayName(ChatColor.translateAlternateColorCodes('&', permissionGroup.getDisplay() + target.getName()));
+
+        Bukkit.getLogger().info(MessageFormat.format("{0} s kit : {1} | appliedPlayer : {2}",
+                all.getName(), Kits.getNameByEnum(kits), target.getName()));
     }
 
     private static void initScoreboard(Player all) {
