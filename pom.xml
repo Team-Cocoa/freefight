@@ -112,6 +112,13 @@
             <version>3.4.0-RELEASE</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>kr.teamcocoa</groupId>
+            <artifactId>KitManager</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/KitManager.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>
