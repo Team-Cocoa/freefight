@@ -9,10 +9,7 @@ import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.tab.TabManager;
-import kr.teamcocoa.freefight.translation.messages.ChallengeMessage;
-import kr.teamcocoa.freefight.translation.messages.ChallengedMessage;
-import kr.teamcocoa.freefight.translation.messages.DifferentKitMessage;
-import kr.teamcocoa.freefight.translation.messages.SessionErrorMessage;
+import kr.teamcocoa.freefight.translation.messages.*;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import kr.teamcocoa.freefight.utils.Utils;
 import lombok.Getter;
@@ -136,6 +133,10 @@ public class FreeFightPlayer {
         // 내 state 가 LOBBY 인가?
         // 만약 INGAME 이거나 SPECTATE 면 챌린지를 할 수 없음
         if(state != GameState.LOBBY) {
+            // state 가 SPECTATE 면 듀얼 불가 메시지 보내기
+            if(state == GameState.SPECTATE) {
+                player.sendMessage(CantDuelMessage.getInstance().getMessage(player));
+            }
             return;
         }
 
