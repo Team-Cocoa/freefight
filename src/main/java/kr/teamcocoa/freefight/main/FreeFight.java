@@ -3,7 +3,7 @@ package kr.teamcocoa.freefight.main;
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.wrapper.Wrapper;
 import kr.teamcocoa.freefight.listener.*;
-import kr.teamcocoa.freefight.mysql.MySQL;
+import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class FreeFight extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
-        MySQL.connect();
+        FreeFightDatabase.connect();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class FreeFight extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        MySQL.disconnect();
+        FreeFightDatabase.disconnect();
 
     }
 
