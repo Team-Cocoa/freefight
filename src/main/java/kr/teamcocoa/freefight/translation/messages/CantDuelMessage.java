@@ -1,0 +1,29 @@
+package kr.teamcocoa.freefight.translation.messages;
+
+import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.translation.BaseMessage;
+import kr.teamcocoa.language.enums.TypeEnum;
+import kr.teamcocoa.language.languages.LanguageController;
+import org.bukkit.entity.Player;
+
+public class CantDuelMessage extends BaseMessage {
+
+    private static CantDuelMessage instance;
+
+    public static CantDuelMessage getInstance() {
+        if(instance == null) {
+            instance = new CantDuelMessage();
+        }
+        return instance;
+    }
+
+    private CantDuelMessage() {
+        super(Messages.CANT_DUEL_MESSAGE);
+    }
+
+    @Override
+    public String getMessage(Player player) {
+        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        return FreeFight.getPrefix() + message;
+    }
+}
