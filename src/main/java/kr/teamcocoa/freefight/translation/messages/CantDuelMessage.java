@@ -18,7 +18,7 @@ public class CantDuelMessage extends BaseMessage {
     }
 
     private CantDuelMessage() {
-        super(Messages.CANT_DUEL_MESSAGE);
+        super(Messages.CANT_DUEL_WHILE_SPEC);
     }
 
     @Override
