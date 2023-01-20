@@ -86,7 +86,7 @@ public class FreeFightPlayer {
 
     public void setInventory(GameState state) {
         switch (state) {
-            case LOBBY -> {
+            case LOBBY, SPECTATE -> {
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
                    player.getInventory().setItem(0, ChallengeItem.getInstance().toItemStack(player));
