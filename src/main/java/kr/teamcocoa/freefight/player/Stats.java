@@ -1,7 +1,6 @@
 package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
-import kr.teamcocoa.freefight.utils.Utils;
 import lombok.Getter;
 
 import java.sql.PreparedStatement;
@@ -33,8 +32,7 @@ public class Stats {
     }
 
     public void loadStats() {
-        Utils.catchSynchronous();
-        try(PreparedStatement preparedStatement = FreeFightDatabase.getPreparedStatement("SELECT * FROM `stats` WHERE uuid = ?", uuid.toString());
+        try(PreparedStatement preparedStatement = FreeFightDatabase.getMySQL().getPreparedStatement("SELECT * FROM `stats` WHERE uuid = ?", uuid.toString());
             ResultSet rs = preparedStatement.executeQuery()) {
             if(rs.next()) {
                 this.kills = rs.getInt("kills");
@@ -42,7 +40,7 @@ public class Stats {
                 this.killStreak = rs.getInt("killStreak");
             }
             else {
-                FreeFightDatabase.update("INSERT INTO stats(uuid) VALUES(?);", uuid.toString());
+                FreeFightDatabase.getMySQL().update("INSERT INTO stats(uuid) VALUES(?);", uuid.toString());
                 this.kills = 0;
                 this.deaths = 0;
                 this.killStreak = 0;
@@ -54,8 +52,7 @@ public class Stats {
     }
 
     public void saveStats() {
-        Utils.catchSynchronous();
-        FreeFightDatabase.update("UPDATE stats SET kills = ?, deaths = ?, killStreak = ? WHERE uuid = ?", kills, deaths, killStreak, uuid.toString());
+        FreeFightDatabase.getMySQL().update("UPDATE stats SET kills = ?, deaths = ?, killStreak = ? WHERE uuid = ?", kills, deaths, killStreak, uuid.toString());
     }
 
 }

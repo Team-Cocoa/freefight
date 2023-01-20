@@ -21,7 +21,7 @@ public class FreeFight extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
-        FreeFightDatabase.connect();
+        FreeFightDatabase.init();
     }
 
     @Override
@@ -31,7 +31,6 @@ public class FreeFight extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        FreeFightDatabase.disconnect();
 
     }
 
