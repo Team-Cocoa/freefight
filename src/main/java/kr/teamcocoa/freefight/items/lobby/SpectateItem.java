@@ -55,7 +55,14 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(!StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), SpectateTitle.getInstance().getMessage(player))) {
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+
+        // NPE 방지
+        if(!itemInMainHand.hasItemMeta() || !itemInMainHand.getItemMeta().hasDisplayName()) {
+            return;
+        }
+
+        if(!StringUtils.componentEquals(itemInMainHand.getItemMeta().displayName(), SpectateTitle.getInstance().getMessage(player))) {
             return;
         }
 
