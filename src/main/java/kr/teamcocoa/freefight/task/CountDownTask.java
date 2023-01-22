@@ -71,12 +71,12 @@ public class CountDownTask extends BukkitRunnable {
                         player1,
                         StartGameTitle.getInstance().getMessage(player1),
                         enemyTitleForPlayer1.getMessage(player1),
-                        10, 40, 10);
+                        5, 20, 5);
                 PlayerUtils.sendTitle(
                         player2,
                         StartGameTitle.getInstance().getMessage(player2),
                         enemyTitleForPlayer2.getMessage(player2),
-                        10, 40, 10);
+                        5, 20, 5);
 
                 player1.playSound(player1.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0F, 100F);
                 player2.playSound(player2.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0F, 100F);
