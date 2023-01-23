@@ -90,7 +90,6 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             // 아니라면 로비 모드로 바꾸고 기존 로비 위치로 TP + 아이템 지급
             freeFightPlayer.setState(GameState.LOBBY);
             freeFightPlayer.resetPlayer();
-            freeFightPlayer.moveToSpawn();
             for (FreeFightPlayer fightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
                 if(fightPlayer.getState() == GameState.INGAME) {
                     player.hidePlayer(FreeFight.getInstance(), fightPlayer.getPlayer());
