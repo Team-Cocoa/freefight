@@ -14,7 +14,6 @@ public class FreeFightDatabase {
 
     private static String database = "freefight";
 
-
     @Getter
     private static MySQL mySQL;
 

@@ -1,12 +1,12 @@
 package kr.teamcocoa.freefight.session;
 
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
-import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
-import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.task.CountDownTask;
+import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.translation.titles.DefeatTitle;
 import kr.teamcocoa.freefight.translation.titles.FinishGameTitle;
 import kr.teamcocoa.freefight.translation.titles.VictoryTitle;
@@ -19,11 +19,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import java.text.MessageFormat;
-
 @Getter
 @EqualsAndHashCode
 public class FreeFightSession {
+
+    private int id;
 
     private FreeFightPlayer freeFightPlayer1;
     private FreeFightPlayer freeFightPlayer2;
@@ -41,8 +41,17 @@ public class FreeFightSession {
         this.damageAble = false;
     }
 
+    public void initId() {
+        if(id == 0) {
+            throw new IllegalStateException("id is already initialized!");
+        }
+
+        // TODO : id 추가하는 db 로직 추가
+
+    }
+
     public void start() {
-        if(running) {
+        if(id == 0 || running) {
             return;
         }
         Player player1 = freeFightPlayer1.getPlayer();
