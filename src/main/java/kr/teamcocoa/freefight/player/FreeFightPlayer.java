@@ -163,6 +163,16 @@ public class FreeFightPlayer {
                 freeFightPlayer.getChallengedPlayerList().remove(this);
                 freeFightPlayer.getChallengedPlayerList().remove(enemyFightPlayer);
             }
+
+            /*
+             * 서로의 인벤토리 창을 초기화 함으로써
+             * 다른 스레드에서 세션 추가 작업을 하는 동안
+             * 다른 듀얼을 걸지 못하도록 처리
+             */
+
+            this.getPlayer().getInventory().clear();
+            enemyFightPlayer.getPlayer().getInventory().clear();
+
             boolean created = SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
             if(created) {
                 FreeFightSession session = SessionManager.getSession(this);
