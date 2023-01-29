@@ -14,6 +14,7 @@ import kr.teamcocoa.freefight.translation.titles.DefeatTitle;
 import kr.teamcocoa.freefight.translation.titles.FinishGameTitle;
 import kr.teamcocoa.freefight.translation.titles.VictoryTitle;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
+import kr.teamcocoa.freefight.utils.Serializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.concurrent.Executors;
 
 @Getter
 @EqualsAndHashCode
@@ -137,6 +141,9 @@ public class FreeFightSession {
         freeFightPlayer1.setState(GameState.LOBBY);
         freeFightPlayer2.setState(GameState.LOBBY);
 
+        ItemStack[] player1Inventory = player1.getInventory().getContents().clone();
+        ItemStack[] player2Inventory = player2.getInventory().getContents().clone();
+
         freeFightPlayer1.setInventory(GameState.LOBBY);
         freeFightPlayer2.setInventory(GameState.LOBBY);
 
@@ -175,6 +182,12 @@ public class FreeFightSession {
         }, 60L);
 
         running = false;
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            byte[] serialized1Inv = Serializer.itemStacksToString(player1Inventory);
+            byte[] serialized2Inv = Serializer.itemStacksToString(player2Inventory);
+            SessionDatabase.finishGame(id, winner.getPlayer().getUniqueId(), loser.getPlayer().getUniqueId(), serialized1Inv, serialized2Inv);
+        });
     }
 
 }
