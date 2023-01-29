@@ -179,7 +179,10 @@ public class FreeFightPlayer {
                     FreeFightSession session = SessionManager.getSession(this);
                     boolean initSuccess = session.initId();
                     if(initSuccess) {
-                        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> session.start());
+                        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
+                            session.initReplay();
+                            session.start();
+                        });
                     }
                     else {
                         player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
