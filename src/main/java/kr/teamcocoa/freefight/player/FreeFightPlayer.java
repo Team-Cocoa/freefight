@@ -177,12 +177,22 @@ public class FreeFightPlayer {
                 boolean created = SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
                 if(created) {
                     FreeFightSession session = SessionManager.getSession(this);
-                    session.initId();
-                    Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> session.start());
+                    boolean initSuccess = session.initId();
+                    if(initSuccess) {
+                        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> session.start());
+                    }
+                    else {
+                        player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
+                        enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
+                        setInventory(GameState.LOBBY);
+                        enemyFightPlayer.setInventory(GameState.LOBBY);
+                    }
                 }
                 else {
                     player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
                     enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
+                    setInventory(GameState.LOBBY);
+                    enemyFightPlayer.setInventory(GameState.LOBBY);
                 }
             });
         }
