@@ -102,6 +102,6 @@ public class SpectateItem extends AbstractItem implements ClickAble {
         }
 
         delayList.add(freeFightPlayer);
-        Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> delayList.remove(freeFightPlayer), 60L);
+        Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> delayList.remove(freeFightPlayer), 20L);
     }
 }

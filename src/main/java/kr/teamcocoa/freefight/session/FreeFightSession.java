@@ -179,7 +179,7 @@ public class FreeFightSession {
         Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> {
             freeFightPlayer1.setChallengeAble(true);
             freeFightPlayer2.setChallengeAble(true);
-        }, 60L);
+        }, 30L);
 
         running = false;
 
