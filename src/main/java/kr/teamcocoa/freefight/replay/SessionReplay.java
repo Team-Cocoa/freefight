@@ -14,6 +14,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class SessionReplay {
@@ -45,11 +47,15 @@ public class SessionReplay {
                 "worldChangeData",
                 new WorldChangeData(new LocationData(0, 50, 0, "TestFreeFight"))));
 
+        SessionReplayManager.register(id, this);
+
     }
 
     public void stopReplay() {
         replay.setId(id);
         ReplayAPI.getInstance().stopReplay(id, true);
+
+        Executors.newSingleThreadScheduledExecutor().schedule(() -> SessionReplayManager.unregister(id), 5, TimeUnit.MINUTES);
     }
 
     public void addMessage(LogType logType, String message) {
