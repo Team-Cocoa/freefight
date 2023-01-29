@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
@@ -45,13 +46,19 @@ public class FreeFightSession {
         this.damageAble = false;
     }
 
-    public void initId() {
+    public boolean initId() {
         if(id != 0) {
             throw new IllegalStateException("id is already initialized!");
         }
 
-        // TODO : id 추가하는 db 로직 추가
+        int receivedId = SessionDatabase.registerId(this);
 
+        if(receivedId == -1) {
+            return false;
+        }
+
+        this.id = receivedId;
+        return true;
     }
 
     public void initReplay() {
