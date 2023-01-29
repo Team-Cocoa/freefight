@@ -63,6 +63,8 @@ public class EntityDamageByEntityListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
+            sessionEnemy.addDamageOut(e.getFinalDamage());
+            freeFightPlayer.addDamageIn(e.getFinalDamage());
             if(player.getHealth() - e.getFinalDamage() <= 0.0) {
                 e.setCancelled(true);
                 session.stop(freeFightPlayer);

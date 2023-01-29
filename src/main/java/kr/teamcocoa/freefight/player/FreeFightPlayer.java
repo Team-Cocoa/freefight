@@ -45,6 +45,12 @@ public class FreeFightPlayer {
     // Thread safe 한 LinkedList 가 없어서 어거지라도 이거 써야지 :sadblob:
     private LinkedBlockingQueue<FreeFightPlayer> challengedPlayerList;
 
+    @Setter
+    private double damageOut;
+
+    @Setter
+    private double damageIn;
+
     protected FreeFightPlayer(Player player) {
         this.player = player;
         this.state = GameState.LOBBY;
@@ -54,6 +60,9 @@ public class FreeFightPlayer {
         this.pearlThrowable = true;
 
         this.stats = new Stats(player.getUniqueId());
+
+        this.damageOut = 0.0;
+        this.damageIn = 0.0;
     }
 
     public void join() {
@@ -219,6 +228,14 @@ public class FreeFightPlayer {
         player.setFoodLevel(20);
         player.setHealth(20);
         player.setSaturation(12);
+    }
+
+    public void addDamageIn(double value) {
+        this.damageIn += value;
+    }
+
+    public void addDamageOut(double value) {
+        this.damageOut += value;
     }
 
 }
