@@ -42,14 +42,30 @@ public class SessionDatabase {
         return -1;
     }
 
-    public static void finishGame(int id, UUID winner, UUID loser, byte[] player1Inv, byte[] player2Inv) {
-        PlaceHolder placeHolder = new PlaceHolder(5);
+    public static void finishGame(int id, UUID winner, UUID loser, byte[] player1Inv, byte[] player2Inv,
+                                  double player1DamageIn, double player1DamageOut, double player2DamageIn, double player2DamageOut,
+                                  double player1Health, double player2Health, float player1Saturation, float player2Saturation,
+                                  int player1Hunger, int player2Hunger) {
+        PlaceHolder placeHolder = new PlaceHolder(15);
         placeHolder.addPlaceHolder(winner.toString());
         placeHolder.addPlaceHolder(loser.toString());
         placeHolder.addPlaceHolder(player1Inv);
+        placeHolder.addPlaceHolder(player1Health);
+        placeHolder.addPlaceHolder(player1DamageIn);
+        placeHolder.addPlaceHolder(player1DamageOut);
+        placeHolder.addPlaceHolder(player1Saturation);
+        placeHolder.addPlaceHolder(player1Hunger);
         placeHolder.addPlaceHolder(player2Inv);
+        placeHolder.addPlaceHolder(player2Health);
+        placeHolder.addPlaceHolder(player2DamageIn);
+        placeHolder.addPlaceHolder(player2DamageOut);
+        placeHolder.addPlaceHolder(player2Saturation);
+        placeHolder.addPlaceHolder(player2Hunger);
         placeHolder.addPlaceHolder(id);
-        String sql = "UPDATE sessions SET winner = ?, loser = ?, ended = 1, player1_inv = ?, player2_inv = ?, end_time = UNIX_TIMESTAMP() WHERE id = ?";
+        String sql = "UPDATE sessions SET winner = ?, loser = ?, ended = 1, " +
+                "player1_inv = ?, player1_health = ?, player1_damage_in = ?, player1_damage_out = ?, player1_saturation = ?, player1_hunger = ?, " +
+                "player2_inv = ?, player2_health = ?, player2_damage_in = ?, player2_damage_out = ?, player2_saturation = ?, player2_hunger = ?, " +
+                "end_time = UNIX_TIMESTAMP() WHERE id = ?";
         mysql.update(sql, placeHolder);
     }
 

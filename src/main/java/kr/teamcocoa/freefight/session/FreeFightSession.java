@@ -133,6 +133,23 @@ public class FreeFightSession {
 
         damageAble = false;
 
+        ItemStack[] player1Inventory = player1.getInventory().getContents().clone();
+        ItemStack[] player2Inventory = player2.getInventory().getContents().clone();
+
+        double player1DamageIn = freeFightPlayer1.getDamageIn();
+        double player1DamageOut = freeFightPlayer1.getDamageOut();
+        double player2DamageIn = freeFightPlayer2.getDamageIn();
+        double player2DamageOut = freeFightPlayer2.getDamageOut();
+
+        double player1Health = player1.getHealth();
+        double player2Health = player2.getHealth();
+
+        float player1Saturation = player1.getSaturation();
+        float player2Saturation = player2.getSaturation();
+
+        int player1Hunger = player1.getFoodLevel();
+        int player2Hunger = player2.getFoodLevel();
+
         sessionReplay.addMessage(LogType.ARENA, winner.getPlayer().getName() + "has won the session");
         sessionReplay.stopReplay();
 
@@ -140,9 +157,6 @@ public class FreeFightSession {
 
         freeFightPlayer1.setState(GameState.LOBBY);
         freeFightPlayer2.setState(GameState.LOBBY);
-
-        ItemStack[] player1Inventory = player1.getInventory().getContents().clone();
-        ItemStack[] player2Inventory = player2.getInventory().getContents().clone();
 
         freeFightPlayer1.setInventory(GameState.LOBBY);
         freeFightPlayer2.setInventory(GameState.LOBBY);
@@ -186,7 +200,9 @@ public class FreeFightSession {
         Executors.newSingleThreadExecutor().execute(() -> {
             byte[] serialized1Inv = Serializer.itemStacksToString(player1Inventory);
             byte[] serialized2Inv = Serializer.itemStacksToString(player2Inventory);
-            SessionDatabase.finishGame(id, winner.getPlayer().getUniqueId(), loser.getPlayer().getUniqueId(), serialized1Inv, serialized2Inv);
+            SessionDatabase.finishGame(id, winner.getPlayer().getUniqueId(), loser.getPlayer().getUniqueId(),
+                    serialized1Inv, serialized2Inv, player1DamageIn, player1DamageOut, player2DamageIn, player2DamageOut,
+                    player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
         });
     }
 
