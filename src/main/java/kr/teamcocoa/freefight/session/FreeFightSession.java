@@ -5,6 +5,8 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.replay.LogType;
+import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.translation.titles.DefeatTitle;
@@ -33,6 +35,8 @@ public class FreeFightSession {
     @Setter
     private boolean damageAble;
 
+    private SessionReplay sessionReplay;
+
     protected FreeFightSession(FreeFightPlayer freeFightPlayer1, FreeFightPlayer freeFightPlayer2, Kits kit) {
         this.freeFightPlayer1 = freeFightPlayer1;
         this.freeFightPlayer2 = freeFightPlayer2;
@@ -42,12 +46,19 @@ public class FreeFightSession {
     }
 
     public void initId() {
-        if(id == 0) {
+        if(id != 0) {
             throw new IllegalStateException("id is already initialized!");
         }
 
         // TODO : id 추가하는 db 로직 추가
 
+    }
+
+    public void initReplay() {
+        if(id == 0) {
+            throw new IllegalStateException("id isn't initialized!");
+        }
+        this.sessionReplay = new SessionReplay(this);
     }
 
     public void start() {
@@ -81,6 +92,8 @@ public class FreeFightSession {
         freeFightPlayer1.setInventory(GameState.INGAME);
         freeFightPlayer2.setInventory(GameState.INGAME);
 
+        sessionReplay.startReplay();
+
         new CountDownTask(this).runTaskTimer(FreeFight.getInstance(), 0L, 20L);
 
         running = true;
@@ -108,6 +121,9 @@ public class FreeFightSession {
         winner.kill();
 
         damageAble = false;
+
+        sessionReplay.addMessage(LogType.ARENA, winner.getPlayer().getName() + "has won the session");
+        sessionReplay.stopReplay();
 
         SessionManager.removeSession(this);
 

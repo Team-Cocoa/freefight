@@ -1,7 +1,7 @@
 package kr.teamcocoa.freefight.task;
 
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
-import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.replay.LogType;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.translation.titles.EnemyTitle;
 import kr.teamcocoa.freefight.translation.titles.StartGameTitle;
@@ -49,18 +49,21 @@ public class CountDownTask extends BukkitRunnable {
                 PlayerUtils.sendTitle(player2, "&e3", "", 5, 10, 5);
                 player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
                 player2.playSound(player2.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
+                freeFightSession.getSessionReplay().addMessage(LogType.ARENA, "The session starts in " + count + "seconds.");
             }
             case 2 -> {
                 PlayerUtils.sendTitle(player1, "&c2", "", 5, 10, 5);
                 PlayerUtils.sendTitle(player2, "&c2", "", 5, 10, 5);
                 player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
                 player2.playSound(player2.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
+                freeFightSession.getSessionReplay().addMessage(LogType.ARENA, "The session starts in " + count + "seconds.");
             }
             case 1 -> {
                 PlayerUtils.sendTitle(player1, "&41", "", 5, 10, 5);
                 PlayerUtils.sendTitle(player2, "&41", "", 5, 10, 5);
                 player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
                 player2.playSound(player2.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0F, 100F);
+                freeFightSession.getSessionReplay().addMessage(LogType.ARENA, "The session starts in " + count + "second.");
             }
             case 0 -> {
 
@@ -82,6 +85,7 @@ public class CountDownTask extends BukkitRunnable {
                 player2.playSound(player2.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0F, 100F);
 
                 freeFightSession.setDamageAble(true);
+                freeFightSession.getSessionReplay().addMessage(LogType.ARENA, "The session is started!");
 
                 cancel();
             }
