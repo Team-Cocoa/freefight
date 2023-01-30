@@ -3,6 +3,7 @@ package kr.teamcocoa.freefight.main;
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.wrapper.Wrapper;
 import kr.teamcocoa.freefight.commands.ForceTPCommand;
+import kr.teamcocoa.freefight.commands.ReportCommand;
 import kr.teamcocoa.freefight.listener.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
@@ -39,7 +40,8 @@ public class FreeFight extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
+        Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());
     }
 
     private void init() {
@@ -58,6 +60,7 @@ public class FreeFight extends JavaPlugin {
 
     private void loadCommands() {
         getCommand("forcetp").setExecutor(new ForceTPCommand());
+        getCommand("report").setExecutor(new ReportCommand());
 
         CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
         Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());
