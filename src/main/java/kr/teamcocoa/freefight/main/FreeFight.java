@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FreeFight extends JavaPlugin {
@@ -44,8 +45,15 @@ public class FreeFight extends JavaPlugin {
     private void init() {
         loadCommands();
         loadListeners();
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getWorld("TestFreeFight").setTime(0),0L, 1L);
-        Bukkit.getWorld("TestFreeFight").setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            for (World world : Bukkit.getWorlds()) {
+                world.setTime(0);
+            }
+        },0L, 1L);
+        for (World world : Bukkit.getWorlds()) {
+            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+            world.setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
+        }
     }
 
     private void loadCommands() {
