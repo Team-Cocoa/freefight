@@ -10,6 +10,7 @@ import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FreeFight extends JavaPlugin {
@@ -44,6 +45,7 @@ public class FreeFight extends JavaPlugin {
         loadCommands();
         loadListeners();
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getWorld("TestFreeFight").setTime(0),0L, 1L);
+        Bukkit.getWorld("TestFreeFight").setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
     }
 
     private void loadCommands() {
