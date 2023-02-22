@@ -103,6 +103,9 @@ public class FreeFightSession {
         freeFightPlayer1.setInventory(GameState.INGAME);
         freeFightPlayer2.setInventory(GameState.INGAME);
 
+        freeFightPlayer1.getChallengedPlayerList().clear();
+        freeFightPlayer2.getChallengedPlayerList().clear();
+
         sessionReplay.startReplay();
 
         new CountDownTask(this).runTaskTimer(FreeFight.getInstance(), 0L, 20L);
