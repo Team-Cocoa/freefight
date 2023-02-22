@@ -2,11 +2,13 @@ package kr.teamcocoa.freefight.main;
 
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.wrapper.Wrapper;
+import kr.teamcocoa.freefight.commands.ForceTPCommand;
 import kr.teamcocoa.freefight.listener.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,6 +19,10 @@ public class FreeFight extends JavaPlugin {
 
     @Getter
     private static final String prefix = StringUtils.color("&a[&dFreeFight&a] &r");
+
+    @Getter
+    @Setter
+    private static boolean forceTPMode = false;
 
     @Override
     public void onLoad() {
@@ -41,6 +47,8 @@ public class FreeFight extends JavaPlugin {
     }
 
     private void loadCommands() {
+        getCommand("forcetp").setExecutor(new ForceTPCommand());
+
         CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
         Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());
     }

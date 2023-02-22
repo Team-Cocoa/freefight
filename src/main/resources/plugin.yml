@@ -3,6 +3,8 @@ main: kr.teamcocoa.freefight.main.FreeFight
 version: 1.0
 author: fixca
 api-version: 1.13
+commands:
+  forcetp:
 depend:
   - CloudNet-CloudPerms
   - MySQL

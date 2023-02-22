@@ -131,8 +131,10 @@ public class FreeFightSession {
 
         FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;
 
-        loser.death();
-        winner.kill();
+        if(!FreeFight.isForceTPMode()) {
+            loser.death();
+            winner.kill();
+        }
 
         damageAble = false;
 
