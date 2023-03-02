@@ -50,8 +50,6 @@ public class EntityDamageListener implements Listener {
             e.setCancelled(true);
         }
 
-
-
     }
 
 }
