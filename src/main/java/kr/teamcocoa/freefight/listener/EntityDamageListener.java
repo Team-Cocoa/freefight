@@ -3,6 +3,8 @@ package kr.teamcocoa.freefight.listener;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.SessionManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +35,13 @@ public class EntityDamageListener implements Listener {
             return;
         }
 
-        if(freeFightPlayer.getState() != GameState.INGAME) {
+        FreeFightSession session = SessionManager.getSession(freeFightPlayer);
+
+        if(session == null) {
+            return;
+        }
+
+        if(!session.isDamageAble()) {
             e.setCancelled(true);
         }
 
