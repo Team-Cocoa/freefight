@@ -35,6 +35,11 @@ public class EntityDamageListener implements Listener {
             return;
         }
 
+        if(freeFightPlayer.getState() != GameState.INGAME) {
+            e.setCancelled(true);
+            return;
+        }
+
         FreeFightSession session = SessionManager.getSession(freeFightPlayer);
 
         if(session == null) {
@@ -44,6 +49,8 @@ public class EntityDamageListener implements Listener {
         if(!session.isDamageAble()) {
             e.setCancelled(true);
         }
+
+
 
     }
 
