@@ -15,6 +15,7 @@ public class EntityDamageListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
         handleFall(e);
+        handlePreGameDamage(e);
     }
 
     private void handleFall(EntityDamageEvent e) {
@@ -27,6 +28,17 @@ public class EntityDamageListener implements Listener {
             return;
         }
 
+        Player player = ((Player) e.getEntity());
+
+        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+
+        if(freeFightPlayer != null) {
+            e.setCancelled(true);
+        }
+
+    }
+
+    private void handlePreGameDamage(EntityDamageEvent e) {
         Player player = ((Player) e.getEntity());
 
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
@@ -49,7 +61,6 @@ public class EntityDamageListener implements Listener {
         if(!session.isDamageAble()) {
             e.setCancelled(true);
         }
-
     }
 
 }
