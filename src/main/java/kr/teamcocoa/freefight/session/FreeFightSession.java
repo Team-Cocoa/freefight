@@ -163,7 +163,6 @@ public class FreeFightSession {
 
         // 무승부가 아닐때
         if(loser != null) {
-
             FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;
 
             if (!FreeFight.isForceTPMode()) {
@@ -211,11 +210,6 @@ public class FreeFightSession {
         player1.setArrowsInBody(0);
         player2.setArrowsInBody(0);
 
-        Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> {
-            freeFightPlayer1.setChallengeAble(true);
-            freeFightPlayer2.setChallengeAble(true);
-        }, 30L);
-
         running = false;
 
         executor.execute(() -> {
@@ -237,6 +231,12 @@ public class FreeFightSession {
                         player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
             }
         });
+
+        Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> {
+            freeFightPlayer1.setChallengeAble(true);
+            freeFightPlayer2.setChallengeAble(true);
+        }, 30L);
+
     }
 
 }
