@@ -9,6 +9,8 @@ public enum Titles implements Translatable {
 
     VICTORY("victory"),
     DEFEAT("defeat"),
+    DRAW("draw"),
+    DRAW_GAME("draw_game"),
     START_GAME("start_game"),
     FINISH_GAME("finish_game"),
     ENEMY("enemy"),
