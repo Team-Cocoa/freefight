@@ -27,4 +27,10 @@ public class StringUtils {
         return false;
     }
 
+    public static String getTimeFormat(int sec) {
+        String minute = "0" + sec / 60;
+        String second = "0" + sec % 60;
+        return minute.substring(minute.length() - 2) + ":" + second.substring(second.length() - 2);
+    }
+
 }
