@@ -10,9 +10,7 @@ import kr.teamcocoa.freefight.replay.LogType;
 import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
-import kr.teamcocoa.freefight.translation.titles.DefeatTitle;
-import kr.teamcocoa.freefight.translation.titles.FinishGameTitle;
-import kr.teamcocoa.freefight.translation.titles.VictoryTitle;
+import kr.teamcocoa.freefight.translation.titles.*;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
 import kr.teamcocoa.freefight.utils.Serializer;
 import lombok.EqualsAndHashCode;
@@ -25,10 +23,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 @EqualsAndHashCode
 public class FreeFightSession {
+
+    private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     private int id;
 
@@ -129,13 +132,6 @@ public class FreeFightSession {
             }
         }
 
-        FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;
-
-        if(!FreeFight.isForceTPMode()) {
-            loser.death();
-            winner.kill();
-        }
-
         damageAble = false;
 
         ItemStack[] player1Inventory = player1.getInventory().getContents().clone();
@@ -155,7 +151,6 @@ public class FreeFightSession {
         int player1Hunger = player1.getFoodLevel();
         int player2Hunger = player2.getFoodLevel();
 
-        sessionReplay.addMessage(LogType.ARENA, winner.getPlayer().getName() + "has won the session");
         sessionReplay.stopReplay();
 
         SessionManager.removeSession(this);
@@ -166,34 +161,55 @@ public class FreeFightSession {
         freeFightPlayer1.setInventory(GameState.LOBBY);
         freeFightPlayer2.setInventory(GameState.LOBBY);
 
-        FinishGameTitle finishGameTitle = new FinishGameTitle(winner.getPlayer().getName(), winner.getPlayer().getHealth());
+        // 무승부가 아닐때
+        if(loser != null) {
 
-        PlayerUtils.sendTitle(
-                winner.getPlayer(),
-                VictoryTitle.getInstance().getMessage(winner.getPlayer()),
-                finishGameTitle.getMessage(winner.getPlayer()),
-                10, 80, 10);
+            FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;
 
-        PlayerUtils.sendTitle(
-                loser.getPlayer(),
-                DefeatTitle.getInstance().getMessage(loser.getPlayer()),
-                finishGameTitle.getMessage(loser.getPlayer()),
-                10, 80, 10);
+            if (!FreeFight.isForceTPMode()) {
+                loser.death();
+                winner.kill();
+            }
 
-        KillLogMessage killLogMessage = new KillLogMessage(winner.getPlayer().getName(), loser.getPlayer().getName(), winner.getPlayer().getHealth(), kits);
-        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
-            String message = killLogMessage.getMessage(freeFightPlayer.getPlayer());
-            freeFightPlayer.getPlayer().sendMessage(Component.text(message));
+            FinishGameTitle finishGameTitle = new FinishGameTitle(winner.getPlayer().getName(), winner.getPlayer().getHealth());
+
+            PlayerUtils.sendTitle(
+                    winner.getPlayer(),
+                    VictoryTitle.getInstance().getMessage(winner.getPlayer()),
+                    finishGameTitle.getMessage(winner.getPlayer()),
+                    10, 80, 10);
+
+            PlayerUtils.sendTitle(
+                    loser.getPlayer(),
+                    DefeatTitle.getInstance().getMessage(loser.getPlayer()),
+                    finishGameTitle.getMessage(loser.getPlayer()),
+                    10, 80, 10);
+
+            KillLogMessage killLogMessage = new KillLogMessage(winner.getPlayer().getName(), loser.getPlayer().getName(), winner.getPlayer().getHealth(), kits);
+            for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                String message = killLogMessage.getMessage(freeFightPlayer.getPlayer());
+                freeFightPlayer.getPlayer().sendMessage(Component.text(message));
+            }
+        }
+        else {
+            PlayerUtils.sendTitle(player1,
+                    DrawTitle.getInstance().getMessage(player1),
+                    DrawGameTitle.getInstance().getMessage(player1),
+                    10, 80, 10);
+            PlayerUtils.sendTitle(player2,
+                    DrawTitle.getInstance().getMessage(player2),
+                    DrawGameTitle.getInstance().getMessage(player2),
+                    10, 80, 10);
         }
 
         freeFightPlayer1.resetPlayer();
         freeFightPlayer2.resetPlayer();
 
-        winner.getPlayer().playSound(winner.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5F, 100F);
-        loser.getPlayer().playSound(loser.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5F, 100F);
+        player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5F, 100F);
+        player2.playSound(player2.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5F, 100F);
 
-        winner.getPlayer().setArrowsInBody(0);
-        loser.getPlayer().setArrowsInBody(0);
+        player1.setArrowsInBody(0);
+        player2.setArrowsInBody(0);
 
         Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> {
             freeFightPlayer1.setChallengeAble(true);
@@ -202,12 +218,24 @@ public class FreeFightSession {
 
         running = false;
 
-        Executors.newSingleThreadExecutor().execute(() -> {
+        executor.execute(() -> {
             byte[] serialized1Inv = Serializer.itemStacksToString(player1Inventory);
             byte[] serialized2Inv = Serializer.itemStacksToString(player2Inventory);
-            SessionDatabase.finishGame(id, winner.getPlayer().getUniqueId(), loser.getPlayer().getUniqueId(),
-                    serialized1Inv, serialized2Inv, player1DamageIn, player1DamageOut, player2DamageIn, player2DamageOut,
-                    player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
+
+            // 무승부 일때
+            if(loser == null) {
+                SessionDatabase.finishGame(id, null, null,
+                        serialized1Inv, serialized2Inv, player1DamageIn, player1DamageOut, player2DamageIn, player2DamageOut,
+                        player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
+            }
+            else {
+                FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;
+                SessionDatabase.finishGame(id,
+                        winner.getPlayer().getUniqueId(),
+                        loser.getPlayer().getUniqueId(),
+                        serialized1Inv, serialized2Inv, player1DamageIn, player1DamageOut, player2DamageIn, player2DamageOut,
+                        player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
+            }
         });
     }
 

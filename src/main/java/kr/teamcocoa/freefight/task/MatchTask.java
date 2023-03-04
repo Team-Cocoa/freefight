@@ -41,7 +41,15 @@ public class MatchTask extends BukkitRunnable {
         PlayerUtils.sendBar(p2.getPlayer(), remainTimeAction.getMessage(p2.getPlayer()));
 
         if(time == 0) {
-            session.stop((p1.getDamageOut() > p2.getDamageOut()) ? p2 : p1);
+            if(p1.getDamageOut() > p2.getDamageOut()) {
+                session.stop(p2);
+            }
+            else if (p1.getDamageOut() < p2.getDamageOut()) {
+                session.stop(p1);
+            }
+            else {
+                session.stop(null);
+            }
             cancel();
         }
 
