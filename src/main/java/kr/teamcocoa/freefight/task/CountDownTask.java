@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.task;
 
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.replay.LogType;
 import kr.teamcocoa.freefight.session.FreeFightSession;
@@ -86,6 +87,8 @@ public class CountDownTask extends BukkitRunnable {
 
                 freeFightSession.setDamageAble(true);
                 freeFightSession.getSessionReplay().addMessage(LogType.ARENA, "The session is started!");
+
+                new MatchTask(freeFightSession).runTaskTimer(FreeFight.getInstance(), 0L, 20L);
 
                 cancel();
             }
