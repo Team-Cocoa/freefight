@@ -1,6 +1,9 @@
 package kr.teamcocoa.freefight.task;
 
+import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.translation.actions.RemainTimeAction;
+import kr.teamcocoa.freefight.utils.PlayerUtils;
 import lombok.Getter;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -10,6 +13,9 @@ public class MatchTask extends BukkitRunnable {
     private FreeFightSession session;
     private int time;
 
+    private FreeFightPlayer p1;
+    private FreeFightPlayer p2;
+
     public MatchTask(FreeFightSession session) {
         this.session = session;
         this.time = switch (session.getKits()) {
@@ -18,6 +24,8 @@ public class MatchTask extends BukkitRunnable {
             case DIAMOND_POT -> 10 * 60;
             default -> throw new IllegalStateException();
         };
+        this.p1 = session.getFreeFightPlayer1();
+        this.p2 = session.getFreeFightPlayer2();
     }
 
     @Override
@@ -28,8 +36,13 @@ public class MatchTask extends BukkitRunnable {
             return;
         }
 
-        if(time == 0) {
+        RemainTimeAction remainTimeAction = new RemainTimeAction(time);
+        PlayerUtils.sendBar(p1.getPlayer(), remainTimeAction.getMessage(p1.getPlayer()));
+        PlayerUtils.sendBar(p2.getPlayer(), remainTimeAction.getMessage(p2.getPlayer()));
 
+        if(time == 0) {
+            session.stop((p1.getDamageOut() > p2.getDamageOut()) ? p2 : p1);
+            cancel();
         }
 
         time--;
