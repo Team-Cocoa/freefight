@@ -1,4 +1,4 @@
-package kr.teamcocoa.freefight.listener;
+package kr.teamcocoa.freefight.listener.bukkit;
 
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
 import kr.teamcocoa.freefight.items.lobby.SpectateItem;

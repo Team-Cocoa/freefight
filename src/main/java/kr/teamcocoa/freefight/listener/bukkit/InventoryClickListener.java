@@ -1,4 +1,4 @@
-package kr.teamcocoa.freefight.listener;
+package kr.teamcocoa.freefight.listener.bukkit;
 
 import kr.teamcocoa.freefight.gui.KitSelectGUI;
 import org.bukkit.event.EventHandler;

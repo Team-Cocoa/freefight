@@ -1,4 +1,4 @@
-package kr.teamcocoa.freefight.listener;
+package kr.teamcocoa.freefight.listener.bukkit;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
