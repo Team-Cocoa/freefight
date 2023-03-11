@@ -2,6 +2,9 @@ package kr.teamcocoa.freefight.main;
 
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.wrapper.Wrapper;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.settings.PacketEventsSettings;
+import io.github.retrooper.packetevents.utils.server.ServerVersion;
 import kr.teamcocoa.freefight.commands.ForceTPCommand;
 import kr.teamcocoa.freefight.listener.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
@@ -29,6 +32,7 @@ public class FreeFight extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        initPacketEvents();
         FreeFightDatabase.init();
     }
 
@@ -39,7 +43,17 @@ public class FreeFight extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        PacketEvents.get().terminate();
+    }
 
+    private void initPacketEvents() {
+        PacketEvents.create(this);
+        PacketEventsSettings settings = PacketEvents.get().getSettings();
+        settings
+                .fallbackServerVersion(ServerVersion.v_1_18_2)
+                .checkForUpdates(true)
+                .bStats(true);
+        PacketEvents.get().load();
     }
 
     private void init() {
