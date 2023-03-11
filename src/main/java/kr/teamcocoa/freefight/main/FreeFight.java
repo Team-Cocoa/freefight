@@ -6,7 +6,7 @@ import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.settings.PacketEventsSettings;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
 import kr.teamcocoa.freefight.commands.ForceTPCommand;
-import kr.teamcocoa.freefight.listener.*;
+import kr.teamcocoa.freefight.listener.bukkit.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.utils.StringUtils;
@@ -101,5 +101,9 @@ public class FreeFight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(tabListener, this);
 
         CloudNetDriver.getInstance().getEventManager().registerListener(tabListener);
+
+        // Packet Listeners
+
+        PacketEvents.get().init();
     }
 }
