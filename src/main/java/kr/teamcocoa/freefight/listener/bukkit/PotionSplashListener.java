@@ -1,13 +1,17 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
+import kr.teamcocoa.freefight.listener.packet.ParticleListener;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import net.minecraft.core.BlockPos;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftThrownPotion;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SplashPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -48,6 +52,11 @@ public class PotionSplashListener implements Listener {
                     onlinePlayer.hideEntity(FreeFight.getInstance(), e.getEntity());
                 }
             }
+
+            BlockPos pos = ((CraftThrownPotion) e.getPotion()).getHandle().blockPosition();
+            Bukkit.getLogger().info("PotionSplashListener pos = " + pos.toShortString());
+
+            ParticleListener.getSplashValid().put(pos, session);
 
         }
     }
