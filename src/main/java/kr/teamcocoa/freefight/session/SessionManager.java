@@ -1,15 +1,15 @@
 package kr.teamcocoa.freefight.session;
 
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.GameState;
-import kr.teamcocoa.freefight.kits.Kits;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionManager {
@@ -17,7 +17,7 @@ public class SessionManager {
     private static HashMap<FreeFightPlayer, FreeFightSession> playerTable = new HashMap<>();
 
     @Getter
-    private static Set<FreeFightSession> sessions = new HashSet<>();
+    private static LinkedList<FreeFightSession> sessions = new LinkedList<>();
 
     public static boolean addSession(FreeFightPlayer player1, FreeFightPlayer player2, Kits kit) {
         if(player1.getState() != GameState.LOBBY && player2.getState() != GameState.LOBBY) {
@@ -51,7 +51,10 @@ public class SessionManager {
 
         playerTable.remove(session.getFreeFightPlayer1());
         playerTable.remove(session.getFreeFightPlayer2());
-        sessions.remove(session);
+        boolean removed = sessions.remove(session);
+        if(!removed) {
+            Bukkit.getLogger().info("session removed failed");
+        }
 
         return true;
     }
