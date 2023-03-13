@@ -54,7 +54,6 @@ public class PotionSplashListener implements Listener {
             }
 
             BlockPos pos = ((CraftThrownPotion) e.getPotion()).getHandle().blockPosition();
-            Bukkit.getLogger().info("PotionSplashListener pos = " + pos.toShortString());
 
             ParticleListener.getSplashValid().put(pos, session);
 
