@@ -55,7 +55,7 @@ public class PotionSplashListener implements Listener {
 
             BlockPos pos = ((CraftThrownPotion) e.getPotion()).getHandle().blockPosition();
 
-            ParticleListener.getSplashValid().put(pos, session);
+            ParticleListener.add(pos, session);
 
         }
     }

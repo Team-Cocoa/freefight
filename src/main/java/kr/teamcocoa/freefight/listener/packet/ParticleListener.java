@@ -4,6 +4,7 @@ import io.github.retrooper.packetevents.event.PacketListenerAbstract;
 import io.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.packettype.PacketType;
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
@@ -11,6 +12,7 @@ import kr.teamcocoa.freefight.session.FreeFightSession;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -19,6 +21,11 @@ public class ParticleListener extends PacketListenerAbstract {
 
     @Getter
     private static HashMap<BlockPos, FreeFightSession> splashValid = new HashMap<>();
+
+    public static void add(BlockPos blockPos, FreeFightSession session) {
+        splashValid.put(blockPos, session);
+        Bukkit.getScheduler().runTaskLater(FreeFight.getInstance(), () -> splashValid.remove(blockPos), 2L);
+    }
 
     public ParticleListener() {
         super(PacketListenerPriority.HIGHEST);
