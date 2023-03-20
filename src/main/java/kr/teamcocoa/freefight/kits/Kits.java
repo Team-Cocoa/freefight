@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Kits {
 
-    ONLYSWORD(0), SHIELD(1), DIAMOND_POT(2);
+    ONLYSWORD(0), SHIELD(1), DIAMOND_POT(2), NETHERITE_POT(3);
 
     private int i;
 
@@ -18,6 +18,7 @@ public enum Kits {
             case ONLYSWORD -> "OnlySword";
             case SHIELD -> "Shield";
             case DIAMOND_POT -> "Diamond Pot";
+            case NETHERITE_POT -> "Netherite Pot";
             default -> "Error : Invalid Kit";
         };
     }
@@ -27,6 +28,7 @@ public enum Kits {
             case ONLYSWORD -> "Sword";
             case SHIELD -> "Shield";
             case DIAMOND_POT -> "DPot";
+            case NETHERITE_POT -> "NPot";
             default -> "";
         };
     }
@@ -36,6 +38,7 @@ public enum Kits {
             case 0 -> ONLYSWORD;
             case 1 -> SHIELD;
             case 2 -> DIAMOND_POT;
+            case 3 -> NETHERITE_POT;
             default -> throw new IllegalArgumentException("The parameter should be between 0 and 2!");
         };
     }
@@ -45,6 +48,7 @@ public enum Kits {
             case ONLYSWORD -> OnlySwordKit.getInstance().givePlayerKit(player);
             case SHIELD -> ShieldPvPKit.getInstance().givePlayerKit(player);
             case DIAMOND_POT -> DiamondPotKit.getInstance().givePlayerKit(player);
+            case NETHERITE_POT -> NetheritePotKit.getInstance().givePlayerKit(player);
         }
     }
 
