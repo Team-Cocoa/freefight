@@ -2,8 +2,6 @@ package kr.teamcocoa.freefight.translation.messages;
 
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.translation.BaseMessage;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import org.bukkit.entity.Player;
 
 import java.text.MessageFormat;

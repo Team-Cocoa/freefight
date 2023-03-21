@@ -2,8 +2,6 @@ package kr.teamcocoa.freefight.translation.actions;
 
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
