@@ -6,7 +6,6 @@ import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
-import kr.teamcocoa.freefight.replay.LogType;
 import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
@@ -22,7 +21,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
