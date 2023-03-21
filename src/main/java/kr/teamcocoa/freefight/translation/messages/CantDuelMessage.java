@@ -23,7 +23,7 @@ public class CantDuelMessage extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         return FreeFight.getPrefix() + message;
     }
 }

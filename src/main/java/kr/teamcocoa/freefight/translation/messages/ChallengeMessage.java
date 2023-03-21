@@ -19,7 +19,7 @@ public class ChallengeMessage extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         String formattedMessage = MessageFormat.format(message, playerName);
         return FreeFight.getPrefix() + formattedMessage;
     }

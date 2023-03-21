@@ -21,7 +21,7 @@ public class RemainTimeAction extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         String formattedMessage = MessageFormat.format(message, StringUtils.getTimeFormat(sec));
         return formattedMessage;
     }

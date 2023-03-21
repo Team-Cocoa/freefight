@@ -32,7 +32,7 @@ public class KillLogMessage extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         String formattedMessage = MessageFormat.format(message, arguments);
         return FreeFight.getPrefix() + formattedMessage;
     }
