@@ -1,8 +1,6 @@
 package kr.teamcocoa.freefight.translation.items;
 
 import kr.teamcocoa.freefight.translation.BaseMessage;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import org.bukkit.entity.Player;
 
 public class ChallengerTitle extends BaseMessage {
@@ -22,7 +20,7 @@ public class ChallengerTitle extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         return message;
     }
 }

@@ -2,8 +2,6 @@ package kr.teamcocoa.freefight.translation.actions;
 
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -21,7 +19,7 @@ public class RemainTimeAction extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         String formattedMessage = MessageFormat.format(message, StringUtils.getTimeFormat(sec));
         return formattedMessage;
     }

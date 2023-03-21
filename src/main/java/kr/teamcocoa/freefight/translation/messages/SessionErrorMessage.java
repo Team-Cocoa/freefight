@@ -2,8 +2,6 @@ package kr.teamcocoa.freefight.translation.messages;
 
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.translation.BaseMessage;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import org.bukkit.entity.Player;
 
 public class SessionErrorMessage extends BaseMessage {
@@ -23,7 +21,7 @@ public class SessionErrorMessage extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         return FreeFight.getPrefix() + message;
     }
 }
