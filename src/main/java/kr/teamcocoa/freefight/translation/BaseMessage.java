@@ -21,4 +21,14 @@ public abstract class BaseMessage {
         return LanguageController.getMessage(uuid, TypeEnum.FREEFIGHT, getTranslatable().getNode());
     }
 
+    protected String getArrayMessage(UUID uuid) {
+        StringBuilder sb = new StringBuilder();
+        String[] tokens = getRawMessage(uuid).replace("[", "").replace("]", "").split(",");
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            sb.append(token + (i == tokens.length - 1 ? "" : "\n"));
+        }
+        return sb.toString();
+    }
+
 }
