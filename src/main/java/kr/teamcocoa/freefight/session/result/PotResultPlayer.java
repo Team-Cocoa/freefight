@@ -11,14 +11,13 @@ public class PotResultPlayer extends ResultPlayer {
 
     public PotResultPlayer(
             UUID uuid,
-            String name,
             double health,
             double hunger,
             double saturation,
             double damageInComing,
             double damageOutComing,
             int leftPot) {
-        super(uuid, name, health, hunger, saturation, damageInComing, damageOutComing);
+        super(uuid, health, hunger, saturation, damageInComing, damageOutComing);
         this.leftPot = leftPot;
     }
 
