@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @EqualsAndHashCode
 public class FreeFightSession {
 
-    private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
 
     private int id;
 
