@@ -211,8 +211,8 @@ public class FreeFightSession {
         running = false;
 
         executor.execute(() -> {
-            byte[] serialized1Inv = Serializer.itemStacksToString(player1Inventory);
-            byte[] serialized2Inv = Serializer.itemStacksToString(player2Inventory);
+            byte[] serialized1Inv = Serializer.itemStacksToBytes(player1Inventory);
+            byte[] serialized2Inv = Serializer.itemStacksToBytes(player2Inventory);
 
             // 무승부 일때
             if(loser == null) {
