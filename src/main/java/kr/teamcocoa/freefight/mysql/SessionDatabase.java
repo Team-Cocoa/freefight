@@ -79,7 +79,11 @@ public class SessionDatabase {
                 ResultSet rs = preparedStatement.executeQuery()) {
             if(rs.next()) {
 
+                int sessionId = rs.getInt("id");
                 Kits kit = Kits.getKitByInt(rs.getInt("kit"));
+                UUID winner = rs.getString("winner") == null ? null : UUID.fromString(rs.getString("winner"));
+                long startTime = rs.getInt("start_time") * 1000L;
+                long endTime = rs.getInt("end_time") * 1000L;
 
                 UUID player1UUID = UUID.fromString(rs.getString("player1"));
                 double player1Health = rs.getDouble("player1_health");
@@ -140,7 +144,7 @@ public class SessionDatabase {
                             player2DamageOut);
                 }
 
-                SessionResult sessionResult = new SessionResult(resultPlayer1, resultPlayer2);
+                SessionResult sessionResult = new SessionResult(id, kit, winner, startTime, endTime, resultPlayer1, resultPlayer2);
 
                 // TODO : sessionResult 캐싱 만들기
 
