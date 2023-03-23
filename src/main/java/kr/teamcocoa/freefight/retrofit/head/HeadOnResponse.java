@@ -35,6 +35,7 @@ public class HeadOnResponse implements IResponse<MojangSessionResult> {
                     .get("url").getAsString().substring(37);
 
             HeadUtils.getHeadValueCache().put(uuid, skinValue);
+            HeadUtils.getNameCache().put(uuid, result.getName());
         }
         else {
             throw new IllegalStateException("Head API Failed! status : " + response.code());

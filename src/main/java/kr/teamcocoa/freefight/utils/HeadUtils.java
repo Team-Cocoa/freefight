@@ -20,11 +20,22 @@ public class HeadUtils {
     @Getter
     private static HashMap<UUID, String> headValueCache = new HashMap<>();
 
+    @Getter
+    private static HashMap<UUID, String> nameCache = new HashMap<>();
+
     public static ItemStack getHeadFromUUID(UUID uuid) {
+        String value = headValueCache.getOrDefault(uuid, null);
+        if(value == null) {
+            throw new IllegalStateException("Cache is not ready!");
+        }
+        return getHeadFromUUID(value);
+    }
+
+    public static ItemStack getHeadFromUUID(String value) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-        profile.getProperties().put("textures", new Property("textures", headValueCache.get(uuid)));
+        profile.getProperties().put("textures", new Property("textures", value));
         Field profileField = null;
         try {
             profileField = meta.getClass().getDeclaredField("profile");
