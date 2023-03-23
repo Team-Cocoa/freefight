@@ -2,15 +2,19 @@ package kr.teamcocoa.freefight.translation.lores;
 
 import kr.teamcocoa.freefight.session.result.ResultPlayer;
 import kr.teamcocoa.freefight.translation.BaseMessage;
+import kr.teamcocoa.freefight.translation.LoreMessage;
 import kr.teamcocoa.freefight.utils.HeadUtils;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
-public class MatchInfoLore extends BaseMessage {
+public class MatchInfoLore extends BaseMessage implements LoreMessage {
 
     private static final DecimalFormat format = new DecimalFormat("#.##");
 
@@ -39,5 +43,15 @@ public class MatchInfoLore extends BaseMessage {
     public String getMessage(Player player) {
         String message = getRawMessage(player.getUniqueId());
         return MessageFormat.format(message, arguments);
+    }
+
+    @Override
+    public List<Component> getLoreMessage(Player player) {
+        String[] rawMessages = getMessage(player).split("\n");
+        List<Component> list = new LinkedList<>();
+        for (String rawMessage : rawMessages) {
+            list.add(Component.text(rawMessage));
+        }
+        return list;
     }
 }
