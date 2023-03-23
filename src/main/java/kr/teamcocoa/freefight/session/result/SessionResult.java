@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.session.result;
 
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.translation.lores.MatchInfoLore;
 import kr.teamcocoa.freefight.translation.lores.PotLeftLore;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +24,12 @@ import java.util.concurrent.TimeUnit;
 public class SessionResult {
 
     private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
+
+    private int id;
+    private Kits kit;
+    private UUID winner;
+    private long startTime;
+    private long endTIme;
 
     private ResultPlayer resultPlayer1;
     private ResultPlayer resultPlayer2;
