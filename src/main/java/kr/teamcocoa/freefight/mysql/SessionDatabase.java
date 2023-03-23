@@ -1,6 +1,10 @@
 package kr.teamcocoa.freefight.mysql;
 
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.result.PotResultPlayer;
+import kr.teamcocoa.freefight.session.result.ResultPlayer;
+import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.mysql.mysql.MySQL;
 import kr.teamcocoa.mysql.mysql.PlaceHolder;
 import lombok.AccessLevel;
@@ -69,7 +73,86 @@ public class SessionDatabase {
         mysql.update(sql, placeHolder);
     }
 
+    public static SessionResult getResult(int id) {
+        String sql = "SELECT * FROM sessions WHERE id = ?";
+        try(    PreparedStatement preparedStatement = mysql.getPreparedStatement(sql, id);
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if(rs.next()) {
 
+                Kits kit = Kits.getKitByInt(rs.getInt("kit"));
+
+                UUID player1UUID = UUID.fromString(rs.getString("player1"));
+                double player1Health = rs.getDouble("player1_health");
+                double player1DamageIn = rs.getDouble("player1_damage_in");
+                double player1DamageOut = rs.getDouble("player1_damage_out");
+                double player1Saturation = rs.getDouble("player1_saturation");
+                double player1Hunger = rs.getDouble("player1_hunger");
+
+                ResultPlayer resultPlayer1;
+
+                if(kit == Kits.DIAMOND_POT) {
+                    // TODO : 팟 남은 개수 구하는 로직 추가
+                    resultPlayer1 = new PotResultPlayer(
+                            player1UUID,
+                            player1Health,
+                            player1Hunger,
+                            player1Saturation,
+                            player1DamageIn,
+                            player1DamageOut,
+                            0);
+                }
+                else {
+                    resultPlayer1 = new ResultPlayer(
+                            player1UUID,
+                            player1Health,
+                            player1Hunger,
+                            player1Saturation,
+                            player1DamageIn,
+                            player1DamageOut);
+                }
+
+                UUID player2UUID = UUID.fromString(rs.getString("player2"));
+                double player2Health = rs.getDouble("player2_health");
+                double player2DamageIn = rs.getDouble("player2_damage_in");
+                double player2DamageOut = rs.getDouble("player2_damage_out");
+                double player2Saturation = rs.getDouble("player2_saturation");
+                double player2Hunger = rs.getDouble("player2_hunger");
+
+                ResultPlayer resultPlayer2;
+
+                if(kit == Kits.DIAMOND_POT) {
+                    resultPlayer2 = new PotResultPlayer(
+                            player2UUID,
+                            player2Health,
+                            player2Hunger,
+                            player2Saturation,
+                            player2DamageIn,
+                            player2DamageOut,
+                            0);
+                }
+                else {
+                    resultPlayer2 = new ResultPlayer(
+                            player2UUID,
+                            player2Health,
+                            player2Hunger,
+                            player2Saturation,
+                            player2DamageIn,
+                            player2DamageOut);
+                }
+
+                SessionResult sessionResult = new SessionResult(resultPlayer1, resultPlayer2);
+
+                // TODO : sessionResult 캐싱 만들기
+
+                return sessionResult;
+
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 
