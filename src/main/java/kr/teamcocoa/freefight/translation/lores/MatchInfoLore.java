@@ -1,6 +1,8 @@
 package kr.teamcocoa.freefight.translation.lores;
 
+import kr.teamcocoa.freefight.session.result.ResultPlayer;
 import kr.teamcocoa.freefight.translation.BaseMessage;
+import kr.teamcocoa.freefight.utils.HeadUtils;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -21,14 +23,14 @@ public class MatchInfoLore extends BaseMessage {
 
     private Object[] arguments;
 
-    public MatchInfoLore(String playerName, double health, double hunger, double saturation, double damageInComing, double damageOutComing) {
+    public MatchInfoLore(ResultPlayer resultPlayer) {
         super(Lores.MATCH_INFO);
-        this.playerName = playerName;
-        this.health = format.format(health);
-        this.hunger = format.format(hunger);
-        this.saturation = format.format(saturation);
-        this.damageInComing = format.format(damageInComing);
-        this.damageOutComing = format.format(damageOutComing);
+        this.playerName = HeadUtils.getNameCache().get(resultPlayer.getUuid());
+        this.health = format.format(resultPlayer.getHealth());
+        this.hunger = format.format(resultPlayer.getHunger());
+        this.saturation = format.format(resultPlayer.getSaturation());
+        this.damageInComing = format.format(resultPlayer.getDamageInComing());
+        this.damageOutComing = format.format(resultPlayer.getDamageOutComing());
 
         this.arguments = new Object[] { playerName, health, hunger, saturation, damageInComing, damageOutComing };
     }
