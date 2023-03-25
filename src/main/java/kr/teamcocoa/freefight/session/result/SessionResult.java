@@ -41,8 +41,8 @@ public class SessionResult {
         ItemStack result2Head = resultPlayer2.getHeadItemStack();
         setHeadMeta(toSee, result2Head, resultPlayer2);
 
-        inventory.setItem(3, result1Head);
-        inventory.setItem(5, result2Head);
+        inventory.setItem(2, result1Head);
+        inventory.setItem(6, result2Head);
     }
 
     private void setHeadMeta(Player toSee, ItemStack itemStack, ResultPlayer resultPlayer) {
