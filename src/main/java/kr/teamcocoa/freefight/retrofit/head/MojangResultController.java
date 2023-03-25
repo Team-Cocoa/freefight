@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class MojangResultController {
 
@@ -13,12 +14,14 @@ public class MojangResultController {
 
     private static MojangSessionService service = retrofit.create(MojangSessionService.class);
 
-    public static void sendRequest(UUID uuid) {
+    public static CompletableFuture<Void> sendRequest(UUID uuid) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
         CallBackAdapter<MojangSessionResult> callBackAdapter = new CallBackAdapter<>();
-        callBackAdapter.setIResponse(new HeadOnResponse(uuid));
+        callBackAdapter.setIResponse(new HeadOnResponse(uuid, completableFuture));
         callBackAdapter.setIFailure((call, throwable) -> throwable.printStackTrace());
         Call<MojangSessionResult> call = service.getInfo(uuid);
         call.enqueue(callBackAdapter);
+        return completableFuture;
     }
 
 }

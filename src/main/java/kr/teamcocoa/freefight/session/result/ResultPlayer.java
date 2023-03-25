@@ -26,7 +26,12 @@ public class ResultPlayer {
         // 실행되면 안됨. catchSync 로 bukkit 스레드 실행 검사 코드가 꼭 필요함.
         Utils.catchSynchronous();
         if(!HeadUtils.getHeadValueCache().containsKey(uuid)) {
-            MojangResultController.sendRequest(uuid);
+            try {
+                MojangResultController.sendRequest(uuid).get();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return HeadUtils.getHeadFromUUID(uuid);
     }
