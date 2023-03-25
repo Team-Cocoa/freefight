@@ -5,6 +5,7 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.session.result.ResultCache;
 import kr.teamcocoa.freefight.session.result.SessionResult;
+import kr.teamcocoa.freefight.translation.messages.InvalidIdMessage;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,8 +51,7 @@ public class CheckMatchCommand implements CommandExecutor {
                 // 그럼에도 불구하고 result 가 null 이라면?
                 // 그냥 존재하지 않는 아이디
                 if(result == null) {
-                    // TODO : 존재 하지 않는 세션 아이디 번역 메시지 추가
-                    player.sendMessage(StringUtils.color(FreeFight.getPrefix() + "&cInvalid parameters."));
+                    player.sendMessage(InvalidIdMessage.getInstance().getMessage(player));
                     return;
                 }
             }
