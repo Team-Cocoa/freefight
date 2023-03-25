@@ -9,13 +9,19 @@ import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
+import kr.teamcocoa.freefight.translation.messages.MatchIdMessage;
+import kr.teamcocoa.freefight.translation.messages.MatchInfoButtonMessage;
 import kr.teamcocoa.freefight.translation.titles.*;
 import kr.teamcocoa.freefight.utils.PlayerUtils;
 import kr.teamcocoa.freefight.utils.Serializer;
+import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -211,6 +217,32 @@ public class FreeFightSession {
         running = false;
 
         executor.execute(() -> {
+
+            MatchIdMessage matchIdMessage = new MatchIdMessage(id);
+
+            TextComponent player1InfoButton = Component.text(MatchInfoButtonMessage.getInstance().getMessage(player1))
+                    .clickEvent(ClickEvent.runCommand(("/checkmatch " + id).replace(",", "")))
+                    .hoverEvent(HoverEvent.showText(Component.text(("/checkmatch " + id).replace(",", ""))));
+
+            TextComponent player2InfoButton = Component.text(MatchInfoButtonMessage.getInstance().getMessage(player2))
+                    .clickEvent(ClickEvent.runCommand(("/checkmatch " + id).replace(",", "")))
+                    .hoverEvent(HoverEvent.showText(Component.text(("/checkmatch " + id).replace(",", ""))));
+
+            Component player1MatchInfoMessage = Component.text(StringUtils.color("&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"))
+                    .append(Component.text("    " + matchIdMessage.getMessage(player1)))
+                    .append(Component.text("\n    "))
+                    .append(player1InfoButton)
+                    .append(Component.text(StringUtils.color("\n&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")));
+
+            Component player2MatchInfoMessage = Component.text(StringUtils.color("&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"))
+                    .append(Component.text("    " + matchIdMessage.getMessage(player2)))
+                    .append(Component.text("\n    "))
+                    .append(player2InfoButton)
+                    .append(Component.text(StringUtils.color("\n&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")));
+
+            player1.sendMessage(player1MatchInfoMessage);
+            player2.sendMessage(player2MatchInfoMessage);
+
             byte[] serialized1Inv = Serializer.itemStacksToBytes(player1Inventory);
             byte[] serialized2Inv = Serializer.itemStacksToBytes(player2Inventory);
 
