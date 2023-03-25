@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.gui;
 
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.freefight.translation.inventories.ResultInventory;
 import net.kyori.adventure.text.Component;
@@ -24,6 +25,7 @@ public class MatchCheckGUI extends AbstractGUI {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), getTitle().getMessage(player));
         newInventory.setContents(getInventory().getContents());
         sessionResult.initInventory(player, newInventory);
+        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> player.openInventory(newInventory));
     }
 
     @Override

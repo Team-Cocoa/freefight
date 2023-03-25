@@ -43,8 +43,6 @@ public class SessionResult {
 
         inventory.setItem(3, result1Head);
         inventory.setItem(5, result2Head);
-
-        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> toSee.openInventory(inventory));
     }
 
     private void setHeadMeta(Player toSee, ItemStack itemStack, ResultPlayer resultPlayer) {
