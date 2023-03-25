@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Getter
-public class MatchInfoLore extends BaseMessage implements LoreMessage {
+public class PlayerInfoLore extends BaseMessage implements LoreMessage {
 
     private static final DecimalFormat format = new DecimalFormat("#.##");
 
@@ -27,8 +27,8 @@ public class MatchInfoLore extends BaseMessage implements LoreMessage {
 
     private Object[] arguments;
 
-    public MatchInfoLore(ResultPlayer resultPlayer) {
-        super(Lores.MATCH_INFO);
+    public PlayerInfoLore(ResultPlayer resultPlayer) {
+        super(Lores.PLAYER_INFO);
         this.playerName = HeadUtils.getNameCache().get(resultPlayer.getUuid());
         this.health = format.format(resultPlayer.getHealth());
         this.hunger = format.format(resultPlayer.getHunger());

@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Lores implements Translatable {
 
-    MATCH_INFO("match_info"),
+    PLAYER_INFO("player_info"),
     POT_LEFT("pot_left"),
     ;
 
