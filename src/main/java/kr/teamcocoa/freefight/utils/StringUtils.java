@@ -42,7 +42,7 @@ public class StringUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+9"));
         String formattedDate = sdf.format(date);
-        return formattedDate;
+        return formattedDate + " (UTC +9)";
     }
 
 }
