@@ -37,7 +37,7 @@ public class StringUtils {
         return minute.substring(minute.length() - 2) + ":" + second.substring(second.length() - 2);
     }
 
-    public static String getTimestampToDate(long time){
+    public static String getTimestampToDate(long time) {
         Date date = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+9"));
