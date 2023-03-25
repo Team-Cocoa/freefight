@@ -3,6 +3,7 @@ package kr.teamcocoa.freefight.mysql;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.result.PotResultPlayer;
+import kr.teamcocoa.freefight.session.result.ResultCache;
 import kr.teamcocoa.freefight.session.result.ResultPlayer;
 import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.mysql.mysql.MySQL;
@@ -146,7 +147,7 @@ public class SessionDatabase {
 
                 SessionResult sessionResult = new SessionResult(id, kit, winner, startTime, endTime, resultPlayer1, resultPlayer2);
 
-                // TODO : sessionResult 캐싱 만들기
+                ResultCache.getResultCache().put(id, sessionResult);
 
                 return sessionResult;
 
