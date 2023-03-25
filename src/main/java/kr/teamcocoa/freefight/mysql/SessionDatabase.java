@@ -92,11 +92,11 @@ public class SessionDatabase {
                 double player1DamageOut = rs.getDouble("player1_damage_out");
                 double player1Saturation = rs.getDouble("player1_saturation");
                 double player1Hunger = rs.getDouble("player1_hunger");
+                byte[] player1Inventory = rs.getBytes("player1_inv");
 
                 ResultPlayer resultPlayer1;
 
                 if(kit == Kits.DIAMOND_POT) {
-                    // TODO : 팟 남은 개수 구하는 로직 추가
                     resultPlayer1 = new PotResultPlayer(
                             player1UUID,
                             player1Health,
@@ -104,7 +104,7 @@ public class SessionDatabase {
                             player1Saturation,
                             player1DamageIn,
                             player1DamageOut,
-                            0);
+                            player1Inventory);
                 }
                 else {
                     resultPlayer1 = new ResultPlayer(
@@ -122,6 +122,7 @@ public class SessionDatabase {
                 double player2DamageOut = rs.getDouble("player2_damage_out");
                 double player2Saturation = rs.getDouble("player2_saturation");
                 double player2Hunger = rs.getDouble("player2_hunger");
+                byte[] player2Inventory = rs.getBytes("player2_inv");
 
                 ResultPlayer resultPlayer2;
 
@@ -133,7 +134,7 @@ public class SessionDatabase {
                             player2Saturation,
                             player2DamageIn,
                             player2DamageOut,
-                            0);
+                            player2Inventory);
                 }
                 else {
                     resultPlayer2 = new ResultPlayer(
