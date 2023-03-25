@@ -2,8 +2,10 @@ package kr.teamcocoa.freefight.session.result;
 
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.translation.items.PlayerHeadTitle;
 import kr.teamcocoa.freefight.translation.lores.MatchInfoLore;
 import kr.teamcocoa.freefight.translation.lores.PotLeftLore;
+import kr.teamcocoa.freefight.utils.HeadUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -56,6 +58,10 @@ public class SessionResult {
         }
 
         itemMeta.lore(lore);
+
+        PlayerHeadTitle title = new PlayerHeadTitle(HeadUtils.getNameCache().get(resultPlayer.getUuid()));
+        itemMeta.displayName(Component.text(title.getMessage(toSee)));
+
         itemStack.setItemMeta(itemMeta);
     }
 
