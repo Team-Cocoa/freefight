@@ -6,6 +6,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StringUtils {
 
@@ -31,6 +35,14 @@ public class StringUtils {
         String minute = "0" + sec / 60;
         String second = "0" + sec % 60;
         return minute.substring(minute.length() - 2) + ":" + second.substring(second.length() - 2);
+    }
+
+    public static String getTimestampToDate(long time){
+        Date date = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+9"));
+        String formattedDate = sdf.format(date);
+        return formattedDate;
     }
 
 }

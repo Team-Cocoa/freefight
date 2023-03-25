@@ -9,6 +9,8 @@ public enum Lores implements Translatable {
 
     PLAYER_INFO("player_info"),
     POT_LEFT("pot_left"),
+    MATCH_INFO("match_info"),
+    NO_WINNER("no_winner"),
     ;
 
     private String node;

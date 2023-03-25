@@ -11,6 +11,7 @@ public enum Items implements Translatable {
     KIT_SELECT("kit_select"),
     SPECTATE("spectate"),
     PLAYER_HEAD("player_head"),
+    MATCH_HEAD("match_head"),
 
     ;
 
