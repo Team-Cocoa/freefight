@@ -41,8 +41,14 @@ public class MatchInfoLore extends BaseMessage implements LoreMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        return MessageFormat.format(message, arguments);
+        StringBuilder sb = new StringBuilder();
+
+        String[] messages = getArrayMessage(player.getUniqueId());
+        for (int i = 0; i < messages.length; i++) {
+            String message = messages[i];
+            sb.append(message + (i == message.length() - 1 ? "" : "\n"));
+        }
+        return MessageFormat.format(sb.toString(), arguments);
     }
 
     @Override
