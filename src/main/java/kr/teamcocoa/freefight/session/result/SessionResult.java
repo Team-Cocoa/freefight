@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class SessionResult {
 
-    private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
-
     private int id;
     private Kits kit;
     private UUID winner;
@@ -35,19 +33,16 @@ public class SessionResult {
     private ResultPlayer resultPlayer2;
 
     public void initInventory(Player toSee, Inventory inventory) {
-        executor.execute(() -> {
+        ItemStack result1Head = resultPlayer1.getHeadItemStack();
+        setHeadMeta(toSee, result1Head, resultPlayer1);
 
-            ItemStack result1Head = resultPlayer1.getHeadItemStack();
-            setHeadMeta(toSee, result1Head, resultPlayer1);
+        ItemStack result2Head = resultPlayer2.getHeadItemStack();
+        setHeadMeta(toSee, result2Head, resultPlayer2);
 
-            ItemStack result2Head = resultPlayer2.getHeadItemStack();
-            setHeadMeta(toSee, result2Head, resultPlayer2);
+        inventory.setItem(3, result1Head);
+        inventory.setItem(5, result2Head);
 
-            inventory.setItem(3, result1Head);
-            inventory.setItem(5, result2Head);
-
-            Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> toSee.openInventory(inventory));
-        });
+        Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> toSee.openInventory(inventory));
     }
 
     private void setHeadMeta(Player toSee, ItemStack itemStack, ResultPlayer resultPlayer) {
