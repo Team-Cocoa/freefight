@@ -42,7 +42,7 @@ public class MatchInfoLore extends BaseMessage implements LoreMessage {
 
         String[] messages = getArrayMessage(player.getUniqueId());
         for (int i = 0; i < messages.length; i++) {
-            String message = messages[i];
+            String message = messages[i].trim();
             sb.append(message + (i == message.length() - 1 ? "" : "\n"));
         }
         return MessageFormat.format(sb.toString(), arguments);

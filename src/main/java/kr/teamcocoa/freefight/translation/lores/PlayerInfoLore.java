@@ -17,8 +17,6 @@ import java.util.List;
 public class PlayerInfoLore extends BaseMessage implements LoreMessage {
 
     private static final DecimalFormat format = new DecimalFormat("#.##");
-
-    private String playerName;
     private String health;
     private String hunger;
     private String saturation;
@@ -29,14 +27,13 @@ public class PlayerInfoLore extends BaseMessage implements LoreMessage {
 
     public PlayerInfoLore(ResultPlayer resultPlayer) {
         super(Lores.PLAYER_INFO);
-        this.playerName = HeadUtils.getNameCache().get(resultPlayer.getUuid());
         this.health = format.format(resultPlayer.getHealth());
         this.hunger = format.format(resultPlayer.getHunger());
         this.saturation = format.format(resultPlayer.getSaturation());
         this.damageInComing = format.format(resultPlayer.getDamageInComing());
         this.damageOutComing = format.format(resultPlayer.getDamageOutComing());
 
-        this.arguments = new Object[] { playerName, health, hunger, saturation, damageInComing, damageOutComing };
+        this.arguments = new Object[] { health, hunger, saturation, damageInComing, damageOutComing };
     }
 
     @Override
@@ -45,7 +42,7 @@ public class PlayerInfoLore extends BaseMessage implements LoreMessage {
 
         String[] messages = getArrayMessage(player.getUniqueId());
         for (int i = 0; i < messages.length; i++) {
-            String message = messages[i];
+            String message = messages[i].trim();
             sb.append(message + (i == message.length() - 1 ? "" : "\n"));
         }
         return MessageFormat.format(sb.toString(), arguments);
