@@ -9,3 +9,4 @@ commands:
 depend:
   - CloudNet-CloudPerms
   - MySQL
+  - BukkitRetrofit
