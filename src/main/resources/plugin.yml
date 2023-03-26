@@ -5,6 +5,8 @@ author: fixca
 api-version: 1.13
 commands:
   forcetp:
+  checkmatch:
 depend:
   - CloudNet-CloudPerms
   - MySQL
+  - BukkitRetrofit

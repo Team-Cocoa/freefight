@@ -167,6 +167,13 @@
             <version>v1.8.4</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>kr.teamcocoa</groupId>
+            <artifactId>retrofit</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/BukkitRetrofit.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>

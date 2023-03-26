@@ -3,9 +3,6 @@ package kr.teamcocoa.freefight.translation.messages;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.translation.BaseMessage;
-import kr.teamcocoa.freefight.translation.messages.Messages;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -32,7 +29,7 @@ public class KillLogMessage extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         String formattedMessage = MessageFormat.format(message, arguments);
         return FreeFight.getPrefix() + formattedMessage;
     }

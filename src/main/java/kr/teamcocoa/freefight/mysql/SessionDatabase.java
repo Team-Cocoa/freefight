@@ -1,6 +1,11 @@
 package kr.teamcocoa.freefight.mysql;
 
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.result.PotResultPlayer;
+import kr.teamcocoa.freefight.session.result.ResultCache;
+import kr.teamcocoa.freefight.session.result.ResultPlayer;
+import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.mysql.mysql.MySQL;
 import kr.teamcocoa.mysql.mysql.PlaceHolder;
 import lombok.AccessLevel;
@@ -69,7 +74,91 @@ public class SessionDatabase {
         mysql.update(sql, placeHolder);
     }
 
+    public static SessionResult getResult(int id) {
+        String sql = "SELECT * FROM sessions WHERE id = ?";
+        try(    PreparedStatement preparedStatement = mysql.getPreparedStatement(sql, id);
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if(rs.next()) {
 
+                int sessionId = rs.getInt("id");
+                Kits kit = Kits.getKitByInt(rs.getInt("kit"));
+                UUID winner = rs.getString("winner") == null ? null : UUID.fromString(rs.getString("winner"));
+                long startTime = rs.getInt("start_time") * 1000L;
+                long endTime = rs.getInt("end_time") * 1000L;
+
+                UUID player1UUID = UUID.fromString(rs.getString("player1"));
+                double player1Health = rs.getDouble("player1_health");
+                double player1DamageIn = rs.getDouble("player1_damage_in");
+                double player1DamageOut = rs.getDouble("player1_damage_out");
+                double player1Saturation = rs.getDouble("player1_saturation");
+                double player1Hunger = rs.getDouble("player1_hunger");
+                byte[] player1Inventory = rs.getBytes("player1_inv");
+
+                ResultPlayer resultPlayer1;
+
+                if(kit == Kits.DIAMOND_POT) {
+                    resultPlayer1 = new PotResultPlayer(
+                            player1UUID,
+                            player1Health,
+                            player1Hunger,
+                            player1Saturation,
+                            player1DamageIn,
+                            player1DamageOut,
+                            player1Inventory);
+                }
+                else {
+                    resultPlayer1 = new ResultPlayer(
+                            player1UUID,
+                            player1Health,
+                            player1Hunger,
+                            player1Saturation,
+                            player1DamageIn,
+                            player1DamageOut);
+                }
+
+                UUID player2UUID = UUID.fromString(rs.getString("player2"));
+                double player2Health = rs.getDouble("player2_health");
+                double player2DamageIn = rs.getDouble("player2_damage_in");
+                double player2DamageOut = rs.getDouble("player2_damage_out");
+                double player2Saturation = rs.getDouble("player2_saturation");
+                double player2Hunger = rs.getDouble("player2_hunger");
+                byte[] player2Inventory = rs.getBytes("player2_inv");
+
+                ResultPlayer resultPlayer2;
+
+                if(kit == Kits.DIAMOND_POT) {
+                    resultPlayer2 = new PotResultPlayer(
+                            player2UUID,
+                            player2Health,
+                            player2Hunger,
+                            player2Saturation,
+                            player2DamageIn,
+                            player2DamageOut,
+                            player2Inventory);
+                }
+                else {
+                    resultPlayer2 = new ResultPlayer(
+                            player2UUID,
+                            player2Health,
+                            player2Hunger,
+                            player2Saturation,
+                            player2DamageIn,
+                            player2DamageOut);
+                }
+
+                SessionResult sessionResult = new SessionResult(id, kit, winner, startTime, endTime, resultPlayer1, resultPlayer2);
+
+                ResultCache.getResultCache().put(id, sessionResult);
+
+                return sessionResult;
+
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 

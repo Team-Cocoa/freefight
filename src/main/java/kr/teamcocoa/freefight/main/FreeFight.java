@@ -73,6 +73,7 @@ public class FreeFight extends JavaPlugin {
 
     private void loadCommands() {
         getCommand("forcetp").setExecutor(new ForceTPCommand());
+        getCommand("checkmatch").setExecutor(new CheckMatchCommand());
 
         CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
         Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());

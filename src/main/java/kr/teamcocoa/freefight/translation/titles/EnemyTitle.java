@@ -1,8 +1,6 @@
 package kr.teamcocoa.freefight.translation.titles;
 
 import kr.teamcocoa.freefight.translation.BaseMessage;
-import kr.teamcocoa.language.enums.TypeEnum;
-import kr.teamcocoa.language.languages.LanguageController;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -20,7 +18,7 @@ public class EnemyTitle extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = LanguageController.getMessage(player.getUniqueId(), TypeEnum.FREEFIGHT, getTranslatable().getNode());
+        String message = getRawMessage(player.getUniqueId());
         String formattedMessage = MessageFormat.format(message, enemy);
         return formattedMessage;
     }

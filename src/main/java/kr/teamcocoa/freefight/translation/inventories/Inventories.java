@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 public enum Inventories implements Translatable {
 
     KIT_SELECT("kit_select"),
+    RESULT("result"),
     ;
 
     private String node;

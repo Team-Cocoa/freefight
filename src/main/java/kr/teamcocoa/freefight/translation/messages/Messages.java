@@ -18,6 +18,9 @@ public enum Messages implements Translatable {
     CHALLENGED("challenged"),
     SESSION_ERROR("session_error"),
     CANT_DUEL_WHILE_SPEC("cant_duel_while_spec"),
+    INVALID_MATCH_ID("id_not_exist"),
+    MATCH_ID("match_id"),
+    MATCH_INFO_BUTTON("match_info_button"),
 
     ;
 
