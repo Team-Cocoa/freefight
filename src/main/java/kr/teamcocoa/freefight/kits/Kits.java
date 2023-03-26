@@ -39,7 +39,7 @@ public enum Kits {
             case 1 -> SHIELD;
             case 2 -> DIAMOND_POT;
             case 3 -> NETHERITE_POT;
-            default -> throw new IllegalArgumentException("The parameter should be between 0 and 2!");
+            default -> throw new IllegalArgumentException("The parameter should be between 0 and 3!");
         };
     }
 
