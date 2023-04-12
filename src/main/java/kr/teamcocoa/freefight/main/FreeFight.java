@@ -98,6 +98,7 @@ public class FreeFight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VulcanListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
 
         TabListener tabListener = new TabListener();
         getServer().getPluginManager().registerEvents(tabListener, this);
