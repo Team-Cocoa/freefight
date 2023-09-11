@@ -98,6 +98,7 @@ public class FreeFight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VulcanListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        getServer().getPluginManager().registerEvents(new ExpBottleListener(), this);
 
         TabListener tabListener = new TabListener();
         getServer().getPluginManager().registerEvents(tabListener, this);
@@ -106,7 +107,7 @@ public class FreeFight extends JavaPlugin {
 
         // Packet Listeners
         PacketEvents.get().registerListener(new ParticleListener());
-//        PacketEvents.get().registerListener(new SweepListener());
+        PacketEvents.get().registerListener(new SweepListener());
 
         PacketEvents.get().init();
     }
