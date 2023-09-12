@@ -1,7 +1,11 @@
 package kr.teamcocoa.freefight.main;
 
-import de.dytanic.cloudnet.driver.CloudNetDriver;
-import de.dytanic.cloudnet.wrapper.Wrapper;
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
+import eu.cloudnetservice.driver.event.EventManager;
+import eu.cloudnetservice.driver.permission.PermissionManagement;
+import eu.cloudnetservice.ext.platforminject.api.stereotype.Dependency;
+import eu.cloudnetservice.ext.platforminject.api.stereotype.PlatformPlugin;
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.settings.PacketEventsSettings;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
@@ -12,13 +16,39 @@ import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
+@Singleton
+@PlatformPlugin(
+        platform = "bukkit",
+        name = "FreeFight",
+        version = "1.0",
+        authors = "fixca",
+        dependencies = @Dependency(name = "CloudNet-CloudPerms")
+)
 public class FreeFight extends JavaPlugin {
+
+    @Getter
+    private static EventManager eventManager;
+
+    @Getter
+    private static PermissionManagement permissionManagement;
+
+    @Inject
+    public FreeFight(
+            @NonNull EventManager eventManager,
+            @NonNull PermissionManagement permissionManagement
+    ) {
+        FreeFight.eventManager = eventManager;
+        FreeFight.permissionManagement = permissionManagement;
+    }
+
 
     @Getter
     private static FreeFight instance;
@@ -75,8 +105,7 @@ public class FreeFight extends JavaPlugin {
         getCommand("forcetp").setExecutor(new ForceTPCommand());
         getCommand("checkmatch").setExecutor(new CheckMatchCommand());
 
-        CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
-        Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());
+        eventManager.unregisterListeners(this.getClass().getClassLoader());
     }
 
     private void loadListeners() {
@@ -103,7 +132,7 @@ public class FreeFight extends JavaPlugin {
         TabListener tabListener = new TabListener();
         getServer().getPluginManager().registerEvents(tabListener, this);
 
-        CloudNetDriver.getInstance().getEventManager().registerListener(tabListener);
+        eventManager.registerListener(tabListener);
 
         // Packet Listeners
         PacketEvents.get().registerListener(new ParticleListener());
