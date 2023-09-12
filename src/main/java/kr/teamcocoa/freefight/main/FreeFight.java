@@ -129,7 +129,7 @@ public class FreeFight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
 
-        TabListener tabListener = new TabListener();
+        TabListener tabListener = new TabListener(permissionManagement);
         getServer().getPluginManager().registerEvents(tabListener, this);
 
         eventManager.registerListener(tabListener);

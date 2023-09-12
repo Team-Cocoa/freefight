@@ -1,16 +1,16 @@
 package kr.teamcocoa.freefight.tab;
 
 import com.google.common.base.Preconditions;
-import de.dytanic.cloudnet.driver.CloudNetDriver;
-import de.dytanic.cloudnet.driver.permission.IPermissionGroup;
-import de.dytanic.cloudnet.driver.permission.IPermissionUser;
+import eu.cloudnetservice.driver.permission.PermissionGroup;
+import eu.cloudnetservice.driver.permission.PermissionManagement;
+import eu.cloudnetservice.driver.permission.PermissionUser;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import kr.teamcocoa.freefight.kits.Kits;
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import org.bukkit.Bukkit;
@@ -24,30 +24,32 @@ public class TabManager {
         updateNameTags(player, null);
     }
 
-    public static void updateNameTags(Player player, Function<Player, IPermissionGroup> playerIPermissionGroupFunction) {
+    public static void updateNameTags(Player player, Function<Player, PermissionGroup> playerIPermissionGroupFunction) {
         updateNameTags(player, playerIPermissionGroupFunction, null);
     }
 
-    public static void updateNameTags(Player player, Function<Player, IPermissionGroup> playerIPermissionGroupFunction,
-                               Function<Player, IPermissionGroup> allOtherPlayerPermissionGroupFunction) {
+    public static void updateNameTags(Player player, Function<Player, PermissionGroup> playerIPermissionGroupFunction,
+                               Function<Player, PermissionGroup> allOtherPlayerPermissionGroupFunction) {
+        PermissionManagement permissionManagement = FreeFight.getPermissionManagement();
+
         Preconditions.checkNotNull(player);
 
-        IPermissionUser playerPermissionUser = CloudNetDriver.getInstance().getPermissionManagement()
-                .getUser(player.getUniqueId());
-        AtomicReference<IPermissionGroup> playerPermissionGroup = new AtomicReference<>(
+        PermissionUser playerPermissionUser = permissionManagement.user(player.getUniqueId());
+        AtomicReference<PermissionGroup> playerPermissionGroup = new AtomicReference<>(
                 playerIPermissionGroupFunction != null ? playerIPermissionGroupFunction.apply(player) : null);
 
         if (playerPermissionUser != null && playerPermissionGroup.get() == null) {
+
             playerPermissionGroup
-                    .set(CloudNetDriver.getInstance().getPermissionManagement().getHighestPermissionGroup(playerPermissionUser));
+                    .set(permissionManagement.highestPermissionGroup(playerPermissionUser));
 
             if (playerPermissionGroup.get() == null) {
-                playerPermissionGroup.set(CloudNetDriver.getInstance().getPermissionManagement().getDefaultPermissionGroup());
+                playerPermissionGroup.set(permissionManagement.defaultPermissionGroup());
             }
         }
 
-        int sortIdLength = CloudNetDriver.getInstance().getPermissionManagement().getGroups().stream()
-                .map(IPermissionGroup::getSortId)
+        int sortIdLength = permissionManagement.groups().stream()
+                .map(PermissionGroup::sortId)
                 .map(String::valueOf)
                 .mapToInt(String::length)
                 .max()
@@ -67,17 +69,17 @@ public class TabManager {
                 addTeamEntry(player, all, playerPermissionGroup.get(), sortIdLength, playerFreeFightPlayer.getCurrentKit());
             }
 
-            IPermissionUser targetPermissionUser = CloudNetDriver.getInstance().getPermissionManagement()
-                    .getUser(all.getUniqueId());
-            IPermissionGroup targetPermissionGroup =
+            PermissionUser targetPermissionUser = permissionManagement
+                    .user(all.getUniqueId());
+            PermissionGroup targetPermissionGroup =
                     allOtherPlayerPermissionGroupFunction != null ? allOtherPlayerPermissionGroupFunction.apply(all) : null;
 
             if (targetPermissionUser != null && targetPermissionGroup == null) {
-                targetPermissionGroup = CloudNetDriver.getInstance().getPermissionManagement()
-                        .getHighestPermissionGroup(targetPermissionUser);
+                targetPermissionGroup = permissionManagement
+                        .highestPermissionGroup(targetPermissionUser);
 
                 if (targetPermissionGroup == null) {
-                    targetPermissionGroup = CloudNetDriver.getInstance().getPermissionManagement().getDefaultPermissionGroup();
+                    targetPermissionGroup = permissionManagement.defaultPermissionGroup();
                 }
             }
 
@@ -87,13 +89,13 @@ public class TabManager {
         });
     }
 
-    private static void addTeamEntry(Player target, Player all, IPermissionGroup permissionGroup, int highestSortIdLength, Kits kits) {
-        int sortIdLength = String.valueOf(permissionGroup.getSortId()).length();
+    private static void addTeamEntry(Player target, Player all, PermissionGroup permissionGroup, int highestSortIdLength, Kits kits) {
+        int sortIdLength = String.valueOf(permissionGroup.sortId()).length();
         String teamName = (
                 highestSortIdLength == sortIdLength ?
-                        permissionGroup.getSortId() :
-                        String.format("%0" + highestSortIdLength + "d", permissionGroup.getSortId())
-        ) + permissionGroup.getName() + Kits.getNameByEnum(kits);
+                        permissionGroup.sortId() :
+                        String.format("%0" + highestSortIdLength + "d", permissionGroup.sortId())
+        ) + permissionGroup.name() + Kits.getNameByEnum(kits);
 
         if (teamName.length() > 16) {
             teamName = teamName.substring(0, 16);
@@ -104,8 +106,8 @@ public class TabManager {
             team = all.getScoreboard().registerNewTeam(teamName);
         }
 
-        String prefix = permissionGroup.getPrefix();
-        String color = permissionGroup.getColor();
+        String prefix = permissionGroup.prefix();
+        String color = permissionGroup.color();
         String suffix = String.format("&8 | &b[%s]", Kits.getShortNameByEnum(kits));
 
         try {
@@ -122,8 +124,7 @@ public class TabManager {
                 if (!color.isEmpty()) {
                     ChatColor chatColor = ChatColor.getByChar(color.replaceAll("&", "").replaceAll("§", ""));
                     if (chatColor != null) {
-                        permissionGroup.setColor(color);
-                        CloudNetDriver.getInstance().getPermissionManagement().updateGroup(permissionGroup);
+                        FreeFight.getPermissionManagement().updateGroup(PermissionGroup.builder(permissionGroup).color(color).build());
                         method.invoke(team, chatColor);
                     }
                 }
@@ -139,7 +140,7 @@ public class TabManager {
 
         team.addEntry(target.getName());
 
-        target.setDisplayName(ChatColor.translateAlternateColorCodes('&', permissionGroup.getDisplay() + target.getName()));
+        target.setDisplayName(ChatColor.translateAlternateColorCodes('&', permissionGroup.display() + target.getName()));
 
     }
 
