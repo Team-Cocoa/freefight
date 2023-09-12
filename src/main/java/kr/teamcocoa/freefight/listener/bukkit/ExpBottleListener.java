@@ -8,7 +8,10 @@ import kr.teamcocoa.freefight.session.SessionManager;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftThrownExpBottle;
+import org.bukkit.craftbukkit.v1_18_R2.event.CraftEventFactory;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
@@ -19,6 +22,8 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.ExpBottleEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 public class ExpBottleListener implements Listener {
@@ -47,12 +52,47 @@ public class ExpBottleListener implements Listener {
 
         Player player = ((Player) thrownExpBottle.getShooter());
 
-        Location location = thrownExpBottle.getLocation();
-        Vec3 vec3 = new Vec3(location.getX(), location.getY(), location.getZ());
-        playerTable.put(vec3, player);
+        int exp = e.getExperience();
 
-        Bukkit.getLogger().info("EXPBottleEvent location : " + vec3.toString());
-        Bukkit.getLogger().info("ExpBottleOrigin : " + player.getName());
+        e.setExperience(0); // cancel exp orb spawning
+
+        Location location = thrownExpBottle.getLocation();
+
+        net.minecraft.world.entity.ExperienceOrb orb = new net.minecraft.world.entity.ExperienceOrb(
+                ((CraftWorld) e.getEntity().getWorld()).getHandle(),
+                location.getX(), location.getY(), location.getZ(), exp);
+
+        try {
+            Class clazz = orb.getClass();
+
+            Method repairPlayerItems = clazz.getDeclaredMethod("repairPlayerItems", net.minecraft.world.entity.player.Player.class, int.class);
+
+            int i = ((Integer) repairPlayerItems.invoke(orb, ((CraftPlayer) player).getHandle(), exp));
+
+            if (i > 0) {
+                ((CraftPlayer) player).getHandle().giveExperiencePoints(i); // CraftBukkit - this.value -> event.getAmount() // Paper - supply experience orb object
+            }
+        }
+        catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e1) {
+            e1.printStackTrace();
+        }
+
+//        orb.playerTouch(((CraftPlayer) player).getHandle());
+
+
+
+//        CraftPlayer
+//
+//        player.giveExp(exp);
+//
+////        CraftEventFactory
+//
+//
+//        Vec3 vec3 = new Vec3();
+//        playerTable.put(vec3, player);
+
+//        Bukkit.getLogger().info("EXPBottleEvent location : " + vec3.toString());
+//        Bukkit.getLogger().info("ExpBottleOrigin : " + player.getName());
 
     }
 
