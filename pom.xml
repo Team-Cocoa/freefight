@@ -140,6 +140,12 @@
             <version>4.0.0-RC9</version> <!-- only needed when bom is not used -->
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>eu.cloudnetservice.cloudnet</groupId>
+            <artifactId>bridge</artifactId>
+            <version>4.0.0-RC9</version> <!-- only needed when bom is not used -->
+            <scope>provided</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
