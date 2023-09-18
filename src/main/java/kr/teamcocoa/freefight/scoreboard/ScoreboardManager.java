@@ -21,6 +21,7 @@ import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,6 +29,8 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScoreboardManager {
+
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public static void setScoreboard(Player player, List<String> lines) {
         Scoreboard scoreboard = new Scoreboard();
@@ -80,6 +83,9 @@ public class ScoreboardManager {
             return;
         }
 
+        int kills = freeFightPlayer.getStats().getKills();
+        int deaths = freeFightPlayer.getStats().getDeaths();
+
         List<String> lines = new LinkedList<>();
         lines.add("&aMcPvP.kr");
         lines.add("");
@@ -91,6 +97,9 @@ public class ScoreboardManager {
         lines.add("");
         lines.add(KillStreakScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
+        lines.add("");
+        lines.add("K/D:");
+        lines.add(getArrowMessage(decimalFormat.format(kills / deaths)) + "    ");
         lines.add("");
         lines.add(CurrentKitScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(Kits.getNameByEnum(freeFightPlayer.getCurrentKit())));

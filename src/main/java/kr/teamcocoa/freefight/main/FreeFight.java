@@ -1,7 +1,13 @@
 package kr.teamcocoa.freefight.main;
 
-import de.dytanic.cloudnet.driver.CloudNetDriver;
-import de.dytanic.cloudnet.wrapper.Wrapper;
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
+import eu.cloudnetservice.driver.event.EventManager;
+import eu.cloudnetservice.driver.permission.PermissionManagement;
+import eu.cloudnetservice.ext.platforminject.api.PlatformEntrypoint;
+import eu.cloudnetservice.ext.platforminject.api.stereotype.Command;
+import eu.cloudnetservice.ext.platforminject.api.stereotype.Dependency;
+import eu.cloudnetservice.ext.platforminject.api.stereotype.PlatformPlugin;
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.settings.PacketEventsSettings;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
@@ -12,16 +18,62 @@ import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class FreeFight extends JavaPlugin {
+
+@Singleton
+@PlatformPlugin(
+        platform = "bukkit",
+        name = "FreeFight",
+        version = "1.0",
+        authors = "fixca",
+        dependencies = {
+                @Dependency(name = "CloudNet-CloudPerms"),
+                @Dependency(name = "MySQL"),
+                @Dependency(name = "BukkitRetrofit")
+        },
+        pluginFileNames = "plugin.yml",
+        commands = {
+                @Command(name = "forcetp"),
+                @Command(name = "checkmatch")
+        },
+        api = "1.13"
+)
+public class FreeFight implements PlatformEntrypoint {
 
     @Getter
-    private static FreeFight instance;
+    private static EventManager eventManager;
+
+    @Getter
+    private static PermissionManagement permissionManagement;
+
+    private PluginManager pluginManager;
+
+    @Inject
+    public FreeFight(
+            @NonNull JavaPlugin plugin,
+            @NonNull PluginManager pluginManager,
+            @NonNull EventManager eventManager,
+            @NonNull PermissionManagement permissionManagement
+    ) {
+        FreeFight.eventManager = eventManager;
+        FreeFight.permissionManagement = permissionManagement;
+        FreeFight.instance = plugin;
+        this.pluginManager = pluginManager;
+        initPacketEvents();
+        FreeFightDatabase.init();
+        init();
+    }
+
+    @Getter
+    private static JavaPlugin instance;
 
     @Getter
     private static final String prefix = StringUtils.color("&a[&dFreeFight&a] &r");
@@ -31,24 +83,12 @@ public class FreeFight extends JavaPlugin {
     private static boolean forceTPMode = false;
 
     @Override
-    public void onLoad() {
-        instance = this;
-        initPacketEvents();
-        FreeFightDatabase.init();
-    }
-
-    @Override
-    public void onEnable() {
-        init();
-    }
-
-    @Override
     public void onDisable() {
         PacketEvents.get().terminate();
     }
 
     private void initPacketEvents() {
-        PacketEvents.create(this);
+        PacketEvents.create(instance);
         PacketEventsSettings settings = PacketEvents.get().getSettings();
         settings
                 .fallbackServerVersion(ServerVersion.v_1_18_2)
@@ -60,7 +100,7 @@ public class FreeFight extends JavaPlugin {
     private void init() {
         loadCommands();
         loadListeners();
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
+        Bukkit.getScheduler().runTaskTimer(instance, () -> {
             for (World world : Bukkit.getWorlds()) {
                 world.setTime(0);
             }
@@ -72,38 +112,37 @@ public class FreeFight extends JavaPlugin {
     }
 
     private void loadCommands() {
-        getCommand("forcetp").setExecutor(new ForceTPCommand());
-        getCommand("checkmatch").setExecutor(new CheckMatchCommand());
+        instance.getCommand("forcetp").setExecutor(new ForceTPCommand());
+        instance.getCommand("checkmatch").setExecutor(new CheckMatchCommand());
 
-        CloudNetDriver.getInstance().getEventManager().unregisterListeners(this.getClass().getClassLoader());
-        Wrapper.getInstance().unregisterPacketListenersByClassLoader(this.getClass().getClassLoader());
+        eventManager.unregisterListeners(this.getClass().getClassLoader());
     }
 
     private void loadListeners() {
-        getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityRegainHealthListener(), this);
-        getServer().getPluginManager().registerEvents(new FoodLevelChangeListener(), this);
-        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
-        getServer().getPluginManager().registerEvents(new WeatherChangeListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerPickupArrowListener(), this);
-        getServer().getPluginManager().registerEvents(new PotionSplashListener(), this);
-        getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerChangeLanguageListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
-        getServer().getPluginManager().registerEvents(new VulcanListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
-        getServer().getPluginManager().registerEvents(new ExpBottleListener(), this);
+        pluginManager.registerEvents(new PlayerJoinQuitListener(), instance);
+        pluginManager.registerEvents(new PlayerDeathListener(), instance);
+        pluginManager.registerEvents(new EntityDamageByEntityListener(), instance);
+        pluginManager.registerEvents(new EntityRegainHealthListener(), instance);
+        pluginManager.registerEvents(new FoodLevelChangeListener(), instance);
+        pluginManager.registerEvents(new BlockBreakListener(), instance);
+        pluginManager.registerEvents(new PlayerDropItemListener(), instance);
+        pluginManager.registerEvents(new WeatherChangeListener(), instance);
+        pluginManager.registerEvents(new PlayerInteractListener(), instance);
+        pluginManager.registerEvents(new InventoryClickListener(), instance);
+        pluginManager.registerEvents(new PlayerPickupArrowListener(), instance);
+        pluginManager.registerEvents(new PotionSplashListener(), instance);
+        pluginManager.registerEvents(new ProjectileLaunchListener(), instance);
+        pluginManager.registerEvents(new PlayerChangeLanguageListener(), instance);
+        pluginManager.registerEvents(new EntityDamageListener(), instance);
+        pluginManager.registerEvents(new VulcanListener(), instance);
+        pluginManager.registerEvents(new PlayerTeleportListener(), instance);
+        pluginManager.registerEvents(new PlayerMoveListener(), instance);
+        pluginManager.registerEvents(new BlockPlaceListener(), instance);
 
-        TabListener tabListener = new TabListener();
-        getServer().getPluginManager().registerEvents(tabListener, this);
+        TabListener tabListener = new TabListener(permissionManagement);
+        pluginManager.registerEvents(tabListener, instance);
 
-        CloudNetDriver.getInstance().getEventManager().registerListener(tabListener);
+        eventManager.registerListener(tabListener);
 
         // Packet Listeners
         PacketEvents.get().registerListener(new ParticleListener());
