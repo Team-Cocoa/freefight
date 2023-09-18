@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.gui;
 
 import kr.teamcocoa.freefight.items.inventory.icon.IconDiamondPotItem;
+import kr.teamcocoa.freefight.items.inventory.icon.IconNetheritePotItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconOnlySwordItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconShieldItem;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -39,9 +40,10 @@ public class KitSelectGUI extends AbstractGUI {
     public void openInventory(Player player) {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle().getMessage(player)));
         newInventory.setContents(getInventory().getContents());
-        newInventory.setItem(2, IconOnlySwordItem.getInstance().toItemStack(player));
-        newInventory.setItem(4, IconDiamondPotItem.getInstance().toItemStack(player));
-        newInventory.setItem(6, IconShieldItem.getInstance().toItemStack(player));
+        newInventory.setItem(1, IconOnlySwordItem.getInstance().toItemStack(player));
+        newInventory.setItem(3, IconDiamondPotItem.getInstance().toItemStack(player));
+        newInventory.setItem(5, IconNetheritePotItem.getInstance().toItemStack(player));
+        newInventory.setItem(7, IconShieldItem.getInstance().toItemStack(player));
         player.openInventory(newInventory);
     }
 
@@ -69,6 +71,12 @@ public class KitSelectGUI extends AbstractGUI {
                     freeFightPlayer.changeKit(Kits.DIAMOND_POT);
                     player.closeInventory();
                     KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.DIAMOND_POT);
+                    player.sendMessage(kitChangeMessage.getMessage(player));
+                }
+                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lNetherite Pot")) {
+                    freeFightPlayer.changeKit(Kits.NETHERITE_POT);
+                    player.closeInventory();
+                    KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.NETHERITE_POT);
                     player.sendMessage(kitChangeMessage.getMessage(player));
                 }
                 if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {

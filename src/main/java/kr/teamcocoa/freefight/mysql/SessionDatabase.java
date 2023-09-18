@@ -96,7 +96,7 @@ public class SessionDatabase {
 
                 ResultPlayer resultPlayer1;
 
-                if(kit == Kits.DIAMOND_POT) {
+                if(kit == Kits.DIAMOND_POT || kit == Kits.NETHERITE_POT) {
                     resultPlayer1 = new PotResultPlayer(
                             player1UUID,
                             player1Health,
@@ -126,7 +126,7 @@ public class SessionDatabase {
 
                 ResultPlayer resultPlayer2;
 
-                if(kit == Kits.DIAMOND_POT) {
+                if(kit == Kits.DIAMOND_POT || kit == Kits.NETHERITE_POT) {
                     resultPlayer2 = new PotResultPlayer(
                             player2UUID,
                             player2Health,

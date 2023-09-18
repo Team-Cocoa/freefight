@@ -22,6 +22,7 @@ public class MatchTask extends BukkitRunnable {
             case ONLYSWORD -> 3 * 60;
             case SHIELD -> 5 * 60;
             case DIAMOND_POT -> 10 * 60;
+            case NETHERITE_POT -> 10 * 60;
             default -> throw new IllegalStateException();
         };
         this.p1 = session.getFreeFightPlayer1();

@@ -146,7 +146,7 @@ public class FreeFight implements PlatformEntrypoint {
 
         // Packet Listeners
         PacketEvents.get().registerListener(new ParticleListener());
-//        PacketEvents.get().registerListener(new SweepListener());
+        PacketEvents.get().registerListener(new SweepListener());
 
         PacketEvents.get().init();
     }

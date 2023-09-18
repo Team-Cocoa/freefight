@@ -7,6 +7,7 @@ import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
 import kr.teamcocoa.freefight.utils.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -66,8 +67,10 @@ public class EntityDamageByEntityListener implements Listener {
             sessionEnemy.addDamageOut(e.getFinalDamage());
             freeFightPlayer.addDamageIn(e.getFinalDamage());
             if(player.getHealth() - e.getFinalDamage() <= 0.0) {
-                e.setCancelled(true);
-                session.stop(freeFightPlayer);
+                if(player.getInventory().getItemInMainHand().getType() != Material.TOTEM_OF_UNDYING && player.getInventory().getItemInOffHand().getType() != Material.TOTEM_OF_UNDYING) {
+                    e.setCancelled(true);
+                    session.stop(freeFightPlayer);
+                }
             }
         }
     }
