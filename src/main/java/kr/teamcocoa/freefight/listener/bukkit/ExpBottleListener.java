@@ -66,7 +66,7 @@ public class ExpBottleListener implements Listener {
             Class clazz = orb.getClass();
 
             Method repairPlayerItems = clazz.getDeclaredMethod("a", net.minecraft.world.entity.player.Player.class, int.class);
-
+            repairPlayerItems.setAccessible(true);
             int i = ((Integer) repairPlayerItems.invoke(orb, ((CraftPlayer) player).getHandle(), exp));
 
             if (i > 0) {
