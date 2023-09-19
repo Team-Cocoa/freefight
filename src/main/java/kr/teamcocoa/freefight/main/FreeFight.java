@@ -138,6 +138,7 @@ public class FreeFight implements PlatformEntrypoint {
         pluginManager.registerEvents(new PlayerTeleportListener(), instance);
         pluginManager.registerEvents(new PlayerMoveListener(), instance);
         pluginManager.registerEvents(new BlockPlaceListener(), instance);
+        pluginManager.registerEvents(new ExpBottleListener(), instance);
 
         TabListener tabListener = new TabListener(permissionManagement);
         pluginManager.registerEvents(tabListener, instance);

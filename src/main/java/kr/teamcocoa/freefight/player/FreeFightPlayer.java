@@ -218,6 +218,8 @@ public class FreeFightPlayer {
     public void resetPlayer() {
         Utils.catchAsynchronous();
         player.setLevel(0);
+        player.setExp(0);
+        player.setTotalExperience(0);
         for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
             player.removePotionEffect(activePotionEffect.getType());
         }
