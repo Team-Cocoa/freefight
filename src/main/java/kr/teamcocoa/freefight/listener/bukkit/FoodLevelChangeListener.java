@@ -25,7 +25,8 @@ public class FoodLevelChangeListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            e.setCancelled(freeFightPlayer.getCurrentKit() != Kits.DIAMOND_POT);
+            e.setCancelled(freeFightPlayer.getCurrentKit() != Kits.DIAMOND_POT
+                && freeFightPlayer.getCurrentKit() != Kits.NETHERITE_POT);
         }
 
     }
