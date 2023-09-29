@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 
 public class InventoryClickListener implements Listener {
 
@@ -16,6 +17,11 @@ public class InventoryClickListener implements Listener {
     public void onClick(InventoryClickEvent e) {
         KitSelectGUI.getInstance().onClick(e);
         MatchCheckGUI.getInstance().onClick(e);
+
+        if(e.getClickedInventory().getType() == InventoryType.CRAFTING) {
+            e.setCancelled(true);
+        }
+
     }
 
 }
