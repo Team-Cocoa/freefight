@@ -89,11 +89,8 @@ public class ScoreboardManager {
         List<String> lines = new LinkedList<>();
         lines.add("&aMcPvP.kr");
         lines.add("");
-        lines.add(KillsScoreboard.getInstance().getMessage(player) + ":");
-        lines.add(getArrowMessage(freeFightPlayer.getStats().getKills()) + " ");
-        lines.add("");
-        lines.add(DeathsScoreboard.getInstance().getMessage(player) + ":");
-        lines.add(getArrowMessage(freeFightPlayer.getStats().getDeaths()) + "  ");
+        lines.add(KillsScoreboard.getInstance().getMessage(player) + " / " + DeathsScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(getArrowMessage(freeFightPlayer.getStats().getKills() + " / " + freeFightPlayer.getStats().getDeaths()) + " ");
         lines.add("");
         lines.add(KillStreakScoreboard.getInstance().getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
