@@ -191,7 +191,10 @@ public class FreeFightSession {
             KillLogMessage killLogMessage = new KillLogMessage(winner.getPlayer().getName(), loser.getPlayer().getName(), winner.getPlayer().getHealth(), kits);
             for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
                 String message = killLogMessage.getMessage(freeFightPlayer.getPlayer());
-                freeFightPlayer.getPlayer().sendMessage(Component.text(message));
+                Component killLogMessageComponent = Component.text(message)
+                        .clickEvent(ClickEvent.runCommand(("/checkmatch " + id).replace(",", "")))
+                        .hoverEvent(HoverEvent.showText(Component.text(("/checkmatch " + id).replace(",", ""))));
+                freeFightPlayer.getPlayer().sendMessage(killLogMessageComponent);
             }
         }
         else {
