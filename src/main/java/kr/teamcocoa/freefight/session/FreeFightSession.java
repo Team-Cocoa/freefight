@@ -18,6 +18,8 @@ import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import me.nucha.swkilleffect.SWKillEffect;
+import me.nucha.swkilleffect.effects.KillEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -27,6 +29,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -196,6 +199,17 @@ public class FreeFightSession {
                         .hoverEvent(HoverEvent.showText(Component.text(("/checkmatch " + id).replace(",", ""))));
                 freeFightPlayer.getPlayer().sendMessage(killLogMessageComponent);
             }
+
+            Player winnerPlayer = winner.getPlayer();
+            Player loserPlayer = loser.getPlayer();
+
+            if(winnerPlayer.hasPermission("teamcocoa.killeffect")) {
+                KillEffects killEffects = SWKillEffect.killEffectManager.getKillEffect(winnerPlayer);
+                if(killEffects != KillEffects.NONE) {
+                    SWKillEffect.killEffectManager.getKillEffectById(killEffects).play(loserPlayer, Arrays.asList(winnerPlayer, loserPlayer));
+                }
+            }
+
         }
         else {
             PlayerUtils.sendTitle(player1,
