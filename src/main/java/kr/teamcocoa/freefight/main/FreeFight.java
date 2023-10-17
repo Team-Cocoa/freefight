@@ -16,6 +16,7 @@ import kr.teamcocoa.freefight.listener.bukkit.*;
 import kr.teamcocoa.freefight.listener.packet.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
+import kr.teamcocoa.freefight.task.AfkCheckTask;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
 import lombok.NonNull;
@@ -109,6 +110,7 @@ public class FreeFight implements PlatformEntrypoint {
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
         }
+        new AfkCheckTask().runTaskTimer(instance, 0L, 100L);
     }
 
     private void loadCommands() {

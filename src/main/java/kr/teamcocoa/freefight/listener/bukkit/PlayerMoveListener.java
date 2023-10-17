@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.listener.bukkit;
 
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.player.GameState;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ public class PlayerMoveListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         handleFallVoid(e);
+        stampLastMoving(e);
     }
 
     private void handleFallVoid(PlayerMoveEvent e) {
@@ -27,6 +29,22 @@ public class PlayerMoveListener implements Listener {
         if(location.getY() < 0) {
             freeFightPlayer.moveToSpawn();
         }
+    }
+
+    private void stampLastMoving(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+
+        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+        if(freeFightPlayer == null) {
+            return;
+        }
+
+        if(freeFightPlayer.getState() == GameState.INGAME) {
+            return;
+        }
+
+        freeFightPlayer.setLastMovingTime(System.currentTimeMillis());
+
     }
 
 }

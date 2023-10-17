@@ -28,7 +28,6 @@ public class FreeFightPlayer {
 
     private Player player;
 
-    @Setter
     private GameState state;
 
     private Kits currentKit;
@@ -50,6 +49,11 @@ public class FreeFightPlayer {
     @Setter
     private double damageIn;
 
+    @Setter
+    private long lastMovingTime;
+
+    private long lastStateChangeTime;
+
     protected FreeFightPlayer(Player player) {
         this.player = player;
         this.state = GameState.LOBBY;
@@ -62,6 +66,11 @@ public class FreeFightPlayer {
 
         this.damageOut = 0.0;
         this.damageIn = 0.0;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+        this.lastStateChangeTime = System.currentTimeMillis();
     }
 
     public void join() {
