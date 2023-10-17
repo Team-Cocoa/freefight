@@ -104,17 +104,11 @@ public class FreeFightSession {
         freeFightPlayer1.resetPlayer();
         freeFightPlayer2.resetPlayer();
 
-        freeFightPlayer1.setChallengeAble(false);
-        freeFightPlayer2.setChallengeAble(false);
-
         freeFightPlayer1.setState(GameState.INGAME);
         freeFightPlayer2.setState(GameState.INGAME);
 
         freeFightPlayer1.setInventory(GameState.INGAME);
         freeFightPlayer2.setInventory(GameState.INGAME);
-
-        freeFightPlayer1.getChallengedPlayerList().clear();
-        freeFightPlayer2.getChallengedPlayerList().clear();
 
         sessionReplay.startReplay();
 

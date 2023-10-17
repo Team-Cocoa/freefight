@@ -144,6 +144,10 @@ public class FreeFightPlayer {
             return;
         }
 
+        if(!enemyFightPlayer.isChallengeAble()) {
+            return;
+        }
+
         // 내 state 가 LOBBY 인가?
         // 만약 INGAME 이거나 SPECTATE 면 챌린지를 할 수 없음
         if(state != GameState.LOBBY) {
@@ -173,10 +177,16 @@ public class FreeFightPlayer {
 
         // 만약에 상대는 이미 나한테 듀얼을 건 적이 있는지?
         if(enemyFightPlayer.getChallengedPlayerList().contains(this)) {
+
+            // 나한테 챌린지 걸었던 사람들 전부 나 제거
             for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
                 freeFightPlayer.getChallengedPlayerList().remove(this);
                 freeFightPlayer.getChallengedPlayerList().remove(enemyFightPlayer);
             }
+
+            // 서로 챌린지 걸었던 사람들 전부 제거
+            getChallengedPlayerList().clear();
+            enemyFightPlayer.getChallengedPlayerList().clear();
 
             /*
              * 서로의 인벤토리 창을 초기화 함으로써
@@ -184,8 +194,8 @@ public class FreeFightPlayer {
              * 다른 듀얼을 걸지 못하도록 처리
              */
 
-            this.getPlayer().getInventory().clear();
-            enemyFightPlayer.getPlayer().getInventory().clear();
+            challengeAble = false;
+            enemyFightPlayer.setChallengeAble(false);
 
             Executors.newSingleThreadExecutor().execute(() -> {
                 boolean created = SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
@@ -201,25 +211,21 @@ public class FreeFightPlayer {
                     else {
                         player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
                         enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
-                        setInventory(GameState.LOBBY);
-                        enemyFightPlayer.setInventory(GameState.LOBBY);
                     }
                 }
                 else {
                     player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
                     enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
-                    setInventory(GameState.LOBBY);
-                    enemyFightPlayer.setInventory(GameState.LOBBY);
                 }
             });
         }
-
-        challengedPlayerList.add(enemyFightPlayer);
-        ChallengeMessage challengeMessage = new ChallengeMessage(enemyFightPlayer.getPlayer());
-        ChallengedMessage challengedMessage = new ChallengedMessage(player);
-        player.sendMessage(challengeMessage.getMessage(player));
-        enemyFightPlayer.getPlayer().sendMessage(challengedMessage.getMessage(enemyFightPlayer.getPlayer()));
-
+        else {
+            challengedPlayerList.add(enemyFightPlayer);
+            ChallengeMessage challengeMessage = new ChallengeMessage(enemyFightPlayer.getPlayer());
+            ChallengedMessage challengedMessage = new ChallengedMessage(player);
+            player.sendMessage(challengeMessage.getMessage(player));
+            enemyFightPlayer.getPlayer().sendMessage(challengedMessage.getMessage(enemyFightPlayer.getPlayer()));
+        }
     }
 
     public void resetPlayer() {
