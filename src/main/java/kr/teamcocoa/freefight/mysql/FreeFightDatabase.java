@@ -29,8 +29,6 @@ public class FreeFightDatabase {
             mySQL = MySQLManager.createConnection(database);
         }
 
-        SessionDatabase.registerMySQL(mySQL);
-
         mySQL.connect();
     }
 

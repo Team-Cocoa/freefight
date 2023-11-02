@@ -15,6 +15,7 @@ import kr.teamcocoa.freefight.commands.*;
 import kr.teamcocoa.freefight.listener.bukkit.*;
 import kr.teamcocoa.freefight.listener.packet.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
+import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.task.AfkCheckTask;
 import kr.teamcocoa.freefight.utils.StringUtils;
@@ -70,6 +71,7 @@ public class FreeFight implements PlatformEntrypoint {
         this.pluginManager = pluginManager;
         initPacketEvents();
         FreeFightDatabase.init();
+        SessionDatabase.registerConnectionPool();
         init();
     }
 

@@ -8,8 +8,11 @@ import kr.teamcocoa.freefight.session.result.ResultPlayer;
 import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.mysql.mysql.MySQL;
 import kr.teamcocoa.mysql.mysql.PlaceHolder;
+import kr.teamcocoa.mysql.mysql.pool.ConnectionPool;
+import kr.teamcocoa.mysql.mysql.pool.ConnectionPoolManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,17 +22,52 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionDatabase {
 
-    private static MySQL mysql;
+    private static String poolName = "ffSessionPool";
+    private static String dbName = "freefight";
+    private static String lockName = "sessionRegisterLock";
 
-    public static void registerMySQL(MySQL database) {
-        if(mysql != null) {
-            return;
+    private static ConnectionPool connectionPool;
+
+    public static void registerConnectionPool() {
+        connectionPool = ConnectionPoolManager.hasPool(poolName)
+                ? ConnectionPoolManager.getPool(poolName)
+                : ConnectionPoolManager.createConnectionPool(poolName, dbName, 10, 20);
+    }
+
+    private static boolean lockDatabase(MySQL mySQL) {
+        try(    PreparedStatement preparedStatement = mySQL.getPreparedStatement("SELECT GET_LOCK(?, 30) as `lock`;", lockName);
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if(rs.next()) {
+                return rs.getInt("lock") == 1;
+            }
         }
-        mysql = database;
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static boolean unlockDatabase(MySQL mySQL) {
+        try(    PreparedStatement preparedStatement = mySQL.getPreparedStatement("SELECT RELEASE_LOCK(?) as `lock`;", lockName);
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if(rs.next()) {
+                return rs.getInt("lock") == 1;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static synchronized int registerId(FreeFightSession session) {
-        try(    PreparedStatement preparedStatement = mysql.getPreparedStatement("SELECT IFNULL(MAX(id), 0) + 1 AS id FROM sessions;");
+        MySQL mySQL = connectionPool.getConnection();
+        boolean getLock = lockDatabase(mySQL);
+        if(!getLock) {
+            connectionPool.returnConnection(mySQL);
+            return -1;
+        }
+        try(    PreparedStatement preparedStatement = mySQL.getPreparedStatement("SELECT IFNULL(MAX(id), 0) + 1 AS id FROM sessions;");
                 ResultSet resultSet = preparedStatement.executeQuery()) {
             if(resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -37,12 +75,19 @@ public class SessionDatabase {
                 placeHolder.addPlaceHolder(session.getKits().getI());
                 placeHolder.addPlaceHolder(session.getFreeFightPlayer1().getPlayer().getUniqueId().toString());
                 placeHolder.addPlaceHolder(session.getFreeFightPlayer2().getPlayer().getUniqueId().toString());
-                mysql.update("INSERT INTO sessions(kit, player1, player2, start_time) VALUES(?, ?, ?, UNIX_TIMESTAMP());", placeHolder);
+                mySQL.update("INSERT INTO sessions(kit, player1, player2, start_time) VALUES(?, ?, ?, UNIX_TIMESTAMP());", placeHolder);
                 return id;
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally {
+            boolean getUnLock = unlockDatabase(mySQL);
+            if(!getUnLock) {
+                Bukkit.getLogger().info("UNLOCK DATABASE FAILED!!!");
+            }
+            connectionPool.returnConnection(mySQL);
         }
         return -1;
     }
@@ -51,6 +96,7 @@ public class SessionDatabase {
                                   double player1DamageIn, double player1DamageOut, double player2DamageIn, double player2DamageOut,
                                   double player1Health, double player2Health, float player1Saturation, float player2Saturation,
                                   int player1Hunger, int player2Hunger) {
+        MySQL mySQL = connectionPool.getConnection();
         PlaceHolder placeHolder = new PlaceHolder(15);
         placeHolder.addPlaceHolder(winner.toString());
         placeHolder.addPlaceHolder(loser.toString());
@@ -71,12 +117,14 @@ public class SessionDatabase {
                 "player1_inv = ?, player1_health = ?, player1_damage_in = ?, player1_damage_out = ?, player1_saturation = ?, player1_hunger = ?, " +
                 "player2_inv = ?, player2_health = ?, player2_damage_in = ?, player2_damage_out = ?, player2_saturation = ?, player2_hunger = ?, " +
                 "end_time = UNIX_TIMESTAMP() WHERE id = ?";
-        mysql.update(sql, placeHolder);
+        mySQL.update(sql, placeHolder);
+        connectionPool.returnConnection(mySQL);
     }
 
     public static SessionResult getResult(int id) {
+        MySQL mySQL = connectionPool.getConnection();
         String sql = "SELECT * FROM sessions WHERE id = ?";
-        try(    PreparedStatement preparedStatement = mysql.getPreparedStatement(sql, id);
+        try(    PreparedStatement preparedStatement = mySQL.getPreparedStatement(sql, id);
                 ResultSet rs = preparedStatement.executeQuery()) {
             if(rs.next()) {
 
@@ -156,6 +204,9 @@ public class SessionDatabase {
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally {
+            connectionPool.returnConnection(mySQL);
         }
         return null;
     }
