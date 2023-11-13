@@ -25,7 +25,6 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -138,7 +137,7 @@ public class FreeFight implements PlatformEntrypoint {
         pluginManager.registerEvents(new ProjectileLaunchListener(), instance);
         pluginManager.registerEvents(new PlayerChangeLanguageListener(), instance);
         pluginManager.registerEvents(new EntityDamageListener(), instance);
-        pluginManager.registerEvents(new VulcanListener(), instance);
+        pluginManager.registerEvents(new AntiCheatListener(), instance);
         pluginManager.registerEvents(new PlayerTeleportListener(), instance);
         pluginManager.registerEvents(new PlayerMoveListener(), instance);
         pluginManager.registerEvents(new BlockPlaceListener(), instance);
