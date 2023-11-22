@@ -1,9 +1,9 @@
 package kr.teamcocoa.freefight.task;
 
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.translation.actions.RemainTimeAction;
-import kr.teamcocoa.freefight.utils.PlayerUtils;
 import lombok.Getter;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,8 +38,8 @@ public class MatchTask extends BukkitRunnable {
         }
 
         RemainTimeAction remainTimeAction = new RemainTimeAction(time);
-        PlayerUtils.sendBar(p1.getPlayer(), remainTimeAction.getMessage(p1.getPlayer()));
-        PlayerUtils.sendBar(p2.getPlayer(), remainTimeAction.getMessage(p2.getPlayer()));
+        PacketUtils.sendBar(p1.getPlayer(), remainTimeAction.getMessage(p1.getPlayer()));
+        PacketUtils.sendBar(p2.getPlayer(), remainTimeAction.getMessage(p2.getPlayer()));
 
         if(time == 0) {
             if(p1.getDamageOut() > p2.getDamageOut()) {

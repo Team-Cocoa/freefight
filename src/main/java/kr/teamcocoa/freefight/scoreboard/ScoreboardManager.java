@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.scoreboard;
 
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
@@ -7,7 +8,6 @@ import kr.teamcocoa.freefight.translation.scoreboards.CurrentKitScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.DeathsScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillStreakScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillsScoreboard;
-import kr.teamcocoa.freefight.utils.PlayerUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -65,9 +65,9 @@ public class ScoreboardManager {
             fixedIndex--;
         }
 
-        PlayerUtils.sendPackets(player, removeObjective, createObjective, displayObjective);
+        PacketUtils.sendPackets(player, removeObjective, createObjective, displayObjective);
         for (ClientboundSetScorePacket packets : scores) {
-            PlayerUtils.sendPackets(player, packets);
+            PacketUtils.sendPackets(player, packets);
         }
 
     }

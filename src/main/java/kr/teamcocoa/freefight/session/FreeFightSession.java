@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.session;
 
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
@@ -12,7 +13,6 @@ import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchIdMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchInfoButtonMessage;
 import kr.teamcocoa.freefight.translation.titles.*;
-import kr.teamcocoa.freefight.utils.PlayerUtils;
 import kr.teamcocoa.freefight.utils.Serializer;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.EqualsAndHashCode;
@@ -173,13 +173,13 @@ public class FreeFightSession {
 
             FinishGameTitle finishGameTitle = new FinishGameTitle(winner.getPlayer().getName(), winner.getPlayer().getHealth());
 
-            PlayerUtils.sendTitle(
+            PacketUtils.sendTitle(
                     winner.getPlayer(),
                     VictoryTitle.getInstance().getMessage(winner.getPlayer()),
                     finishGameTitle.getMessage(winner.getPlayer()),
                     10, 80, 10);
 
-            PlayerUtils.sendTitle(
+            PacketUtils.sendTitle(
                     loser.getPlayer(),
                     DefeatTitle.getInstance().getMessage(loser.getPlayer()),
                     finishGameTitle.getMessage(loser.getPlayer()),
@@ -206,11 +206,11 @@ public class FreeFightSession {
 
         }
         else {
-            PlayerUtils.sendTitle(player1,
+            PacketUtils.sendTitle(player1,
                     DrawTitle.getInstance().getMessage(player1),
                     DrawGameTitle.getInstance().getMessage(player1),
                     10, 80, 10);
-            PlayerUtils.sendTitle(player2,
+            PacketUtils.sendTitle(player2,
                     DrawTitle.getInstance().getMessage(player2),
                     DrawGameTitle.getInstance().getMessage(player2),
                     10, 80, 10);

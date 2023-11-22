@@ -1,8 +1,8 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
-import kr.teamcocoa.freefight.utils.ItemUtils;
 import kr.teamcocoa.freefight.utils.StringUtils;
 import me.nucha.swkilleffect.SWKillEffect;
 import org.bukkit.Material;

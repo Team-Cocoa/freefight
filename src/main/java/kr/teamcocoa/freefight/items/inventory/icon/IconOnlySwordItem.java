@@ -1,13 +1,10 @@
 package kr.teamcocoa.freefight.items.inventory.icon;
 
+import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
-import kr.teamcocoa.freefight.utils.ItemUtils;
-import kr.teamcocoa.freefight.utils.StringUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class IconOnlySwordItem extends AbstractItem {
 
