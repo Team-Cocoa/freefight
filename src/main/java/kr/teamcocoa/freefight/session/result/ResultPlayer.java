@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.session.result;
 
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.core.network.controllers.mojang.SessionMojangController;
+import kr.teamcocoa.core.network.model.MojangProfile;
 import kr.teamcocoa.freefight.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,10 +29,10 @@ public class ResultPlayer {
         // 실행되면 안됨. catchSync 로 bukkit 스레드 실행 검사 코드가 꼭 필요함.
         Utils.catchSynchronous();
 
-        CompletableFuture<String> completableFuture = SessionMojangController.searchHeadByUUID(uuid);
+        CompletableFuture<MojangProfile> completableFuture = SessionMojangController.searchProfileByUUID(uuid);
         try {
-            String value = completableFuture.get(10, TimeUnit.SECONDS);
-            return ItemUtils.getCustomHead(value);
+            MojangProfile profile = completableFuture.get(10, TimeUnit.SECONDS);
+            return ItemUtils.getCustomHead(profile.getHeadValue());
         }
         catch (Exception e) {
             e.printStackTrace();
