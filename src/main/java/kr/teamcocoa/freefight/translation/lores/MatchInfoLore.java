@@ -1,11 +1,12 @@
 package kr.teamcocoa.freefight.translation.lores;
 
+import kr.teamcocoa.core.network.controllers.mojang.SessionMojangController;
+import kr.teamcocoa.core.network.model.MojangProfile;
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.translation.LoreMessage;
-import kr.teamcocoa.freefight.utils.HeadUtils;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -27,9 +28,17 @@ public class MatchInfoLore extends BaseMessage implements LoreMessage {
     public MatchInfoLore(SessionResult sessionResult, Player toSee) {
         super(Lores.MATCH_INFO);
         this.kit = Kits.getNameByEnum(sessionResult.getKit());
-        this.winner = sessionResult.getWinner() == null
-                ? NoWinnerLore.getInstance().getMessage(toSee)
-                : HeadUtils.getNameCache().get(sessionResult.getWinner());
+
+        if(sessionResult.getWinner() == null) {
+            this.winner = NoWinnerLore.getInstance().getMessage(toSee);
+        }
+        else {
+            MojangProfile profile = SessionMojangController.getUuidToProfileCache().readData(sessionResult.getWinner());
+            this.winner = profile == null
+                    ? sessionResult.getWinner().toString()
+                    : profile.getUserName();
+        }
+
         this.startedTime = StringUtils.getTimestampToDate(sessionResult.getStartTime());
         this.endedTime = StringUtils.getTimestampToDate(sessionResult.getEndTIme());
 

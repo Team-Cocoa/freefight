@@ -14,7 +14,7 @@ import kr.teamcocoa.freefight.translation.messages.MatchIdMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchInfoButtonMessage;
 import kr.teamcocoa.freefight.translation.titles.*;
 import kr.teamcocoa.freefight.utils.Serializer;
-import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

@@ -8,7 +8,7 @@ import kr.teamcocoa.freefight.translation.scoreboards.CurrentKitScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.DeathsScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillStreakScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillsScoreboard;
-import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.network.chat.Component;

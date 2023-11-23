@@ -1,7 +1,7 @@
 package kr.teamcocoa.freefight.translation.actions;
 
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.translation.BaseMessage;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

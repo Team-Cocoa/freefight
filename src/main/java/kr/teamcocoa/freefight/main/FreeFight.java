@@ -18,7 +18,7 @@ import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.task.AfkCheckTask;
-import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;

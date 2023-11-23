@@ -3,7 +3,7 @@ package kr.teamcocoa.freefight.listener.bukkit;
 import kr.teamcocoa.freefight.gui.KitSelectGUI;
 import kr.teamcocoa.freefight.gui.MatchCheckGUI;
 import kr.teamcocoa.freefight.translation.inventories.ResultInventory;
-import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftHumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -1,10 +1,11 @@
 package kr.teamcocoa.freefight.session.result;
 
+import kr.teamcocoa.core.network.controllers.mojang.SessionMojangController;
+import kr.teamcocoa.core.network.model.MojangProfile;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.translation.items.PlayerHeadTitle;
 import kr.teamcocoa.freefight.translation.lores.PlayerInfoLore;
 import kr.teamcocoa.freefight.translation.lores.PotLeftLore;
-import kr.teamcocoa.freefight.utils.HeadUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -52,7 +53,11 @@ public class SessionResult {
 
         itemMeta.lore(lore);
 
-        PlayerHeadTitle title = new PlayerHeadTitle(HeadUtils.getNameCache().get(resultPlayer.getUuid()));
+        MojangProfile profile = SessionMojangController.getUuidToProfileCache().readData(resultPlayer.getUuid());
+
+        PlayerHeadTitle title = new PlayerHeadTitle(
+                profile != null ? profile.getUserName() : resultPlayer.getUuid().toString());
+
         itemMeta.displayName(Component.text(title.getMessage(toSee)));
 
         itemStack.setItemMeta(itemMeta);

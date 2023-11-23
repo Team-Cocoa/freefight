@@ -1,7 +1,7 @@
 package kr.teamcocoa.freefight.commands;
 
 import kr.teamcocoa.freefight.main.FreeFight;
-import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

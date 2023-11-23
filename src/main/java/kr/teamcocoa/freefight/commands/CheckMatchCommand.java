@@ -1,17 +1,16 @@
 package kr.teamcocoa.freefight.commands;
 
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.gui.MatchCheckGUI;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.session.result.ResultCache;
 import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.freefight.translation.messages.InvalidIdMessage;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.eclipse.aether.SessionData;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

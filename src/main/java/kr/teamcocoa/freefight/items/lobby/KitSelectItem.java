@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.gui.KitSelectGUI;
 import kr.teamcocoa.freefight.items.AbstractItem;
@@ -7,7 +8,6 @@ import kr.teamcocoa.freefight.items.ClickAble;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.translation.items.KitSelectTitle;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -48,7 +48,7 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), KitSelectTitle.getInstance().getMessage(player))) {
+        if(ComponentUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), KitSelectTitle.getInstance().getMessage(player))) {
             KitSelectGUI.getInstance().openInventory(player);
         }
     }

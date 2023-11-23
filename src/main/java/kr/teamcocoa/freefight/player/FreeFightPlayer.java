@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.player;
 
+import kr.teamcocoa.core.utils.AsyncDetector;
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
 import kr.teamcocoa.freefight.items.lobby.KillEffectItem;
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
@@ -11,7 +12,6 @@ import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.*;
-import kr.teamcocoa.freefight.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -238,7 +238,7 @@ public class FreeFightPlayer {
     }
 
     public void resetPlayer() {
-        Utils.catchAsynchronous();
+        AsyncDetector.catchAsynchronous();
         player.setLevel(0);
         player.setExp(0);
         player.setTotalExperience(0);

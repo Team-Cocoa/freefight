@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
@@ -10,7 +11,6 @@ import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.translation.items.SpectateTitle;
 import kr.teamcocoa.freefight.translation.messages.StartSpectateMessage;
 import kr.teamcocoa.freefight.translation.messages.StopSpectateMessage;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -62,7 +62,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(!StringUtils.componentEquals(itemInMainHand.getItemMeta().displayName(), SpectateTitle.getInstance().getMessage(player))) {
+        if(!ComponentUtils.componentEquals(itemInMainHand.getItemMeta().displayName(), SpectateTitle.getInstance().getMessage(player))) {
             return;
         }
 

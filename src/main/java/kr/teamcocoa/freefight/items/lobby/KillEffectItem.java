@@ -1,9 +1,9 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import me.nucha.swkilleffect.SWKillEffect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -45,7 +45,7 @@ public class KillEffectItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(StringUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lKill Effects")) {
+        if(ComponentUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lKill Effects")) {
             SWKillEffect.getInstance().getGuiKillEffectSelector().open(player);
         }
 

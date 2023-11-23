@@ -1,16 +1,15 @@
 package kr.teamcocoa.freefight.gui;
 
+import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.freefight.items.inventory.icon.IconDiamondPotItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconNetheritePotItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconOnlySwordItem;
 import kr.teamcocoa.freefight.items.inventory.icon.IconShieldItem;
-import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
-import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.translation.inventories.KitSelectInventories;
 import kr.teamcocoa.freefight.translation.messages.KitChangeMessage;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -61,25 +60,25 @@ public class KitSelectGUI extends AbstractGUI {
                 }
 
                 ItemStack itemStack = e.getCurrentItem();
-                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lOnlySword")) {
+                if(ComponentUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lOnlySword")) {
                     freeFightPlayer.changeKit(Kits.ONLYSWORD);
                     player.closeInventory();
                     KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.ONLYSWORD);
                     player.sendMessage(kitChangeMessage.getMessage(player));
                 }
-                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lDiamond Pot")) {
+                if(ComponentUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lDiamond Pot")) {
                     freeFightPlayer.changeKit(Kits.DIAMOND_POT);
                     player.closeInventory();
                     KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.DIAMOND_POT);
                     player.sendMessage(kitChangeMessage.getMessage(player));
                 }
-                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lNetherite Pot")) {
+                if(ComponentUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lNetherite Pot")) {
                     freeFightPlayer.changeKit(Kits.NETHERITE_POT);
                     player.closeInventory();
                     KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.NETHERITE_POT);
                     player.sendMessage(kitChangeMessage.getMessage(player));
                 }
-                if(StringUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {
+                if(ComponentUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lShieldPvP")) {
                     freeFightPlayer.changeKit(Kits.SHIELD);
                     player.closeInventory();
                     KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.SHIELD);

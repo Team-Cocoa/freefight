@@ -1,12 +1,12 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
+import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
-import kr.teamcocoa.freefight.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -87,7 +87,7 @@ public class EntityDamageByEntityListener implements Listener {
 
         if(mainHandItem.hasItemMeta()
                 && mainHandItem.getItemMeta().hasDisplayName()
-                && StringUtils.componentEquals(mainHandItem.getItemMeta().displayName(), ChallengerTitle.getInstance().getMessage(enemy))) {
+                && ComponentUtils.componentEquals(mainHandItem.getItemMeta().displayName(), ChallengerTitle.getInstance().getMessage(enemy))) {
             FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
             FreeFightPlayer enemyFreeFightPlayer = FreeFightPlayerManager.getPlayer(enemy);
 

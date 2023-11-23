@@ -9,7 +9,7 @@ import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.JoinPlayerMessage;
 import kr.teamcocoa.freefight.translation.messages.LeavePlayerMessage;
-import kr.teamcocoa.freefight.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

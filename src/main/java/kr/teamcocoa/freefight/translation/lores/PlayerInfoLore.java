@@ -3,7 +3,6 @@ package kr.teamcocoa.freefight.translation.lores;
 import kr.teamcocoa.freefight.session.result.ResultPlayer;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.translation.LoreMessage;
-import kr.teamcocoa.freefight.utils.HeadUtils;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
