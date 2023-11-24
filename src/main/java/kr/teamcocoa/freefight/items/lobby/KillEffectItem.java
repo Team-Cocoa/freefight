@@ -15,7 +15,7 @@ public class KillEffectItem extends AbstractItem implements ClickAble {
     private static KillEffectItem instance;
 
     public static KillEffectItem getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new KillEffectItem();
         }
         return instance;
@@ -36,18 +36,16 @@ public class KillEffectItem extends AbstractItem implements ClickAble {
     public void onClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
-        if(!player.hasPermission("teamcocoa.killeffect")) {
-            player.sendMessage("Invalid access.");
+        if (!player.getInventory().getItemInMainHand().hasItemMeta()) {
             return;
         }
 
-        if(!player.getInventory().getItemInMainHand().hasItemMeta()) {
-            return;
-        }
-
-        if(ComponentUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lKill Effects")) {
+        if (ComponentUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), "&6&lKill Effects")) {
+            if (!player.hasPermission("teamcocoa.killeffect")) {
+                player.sendMessage("Invalid access.");
+                return;
+            }
             SWKillEffect.getInstance().getGuiKillEffectSelector().open(player);
         }
-
     }
 }

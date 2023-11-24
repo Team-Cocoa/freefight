@@ -66,6 +66,9 @@ public class FreeFightPlayer {
 
         this.damageOut = 0.0;
         this.damageIn = 0.0;
+
+        this.lastMovingTime = System.currentTimeMillis();
+        this.lastStateChangeTime = System.currentTimeMillis();
     }
 
     public void setState(GameState state) {
