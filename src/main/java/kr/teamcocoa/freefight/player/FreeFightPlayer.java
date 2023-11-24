@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.player;
 
+import com.google.common.base.Preconditions;
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.AsyncDetector;
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
 import kr.teamcocoa.freefight.items.lobby.KillEffectItem;
@@ -14,11 +16,15 @@ import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +60,12 @@ public class FreeFightPlayer {
 
     private long lastStateChangeTime;
 
+    @Getter
+    private List<FreeFightPlayer> spectators;
+
+    @Getter
+    private FreeFightPlayer spectating;
+
     protected FreeFightPlayer(Player player) {
         this.player = player;
         this.state = GameState.LOBBY;
@@ -69,6 +81,8 @@ public class FreeFightPlayer {
 
         this.lastMovingTime = System.currentTimeMillis();
         this.lastStateChangeTime = System.currentTimeMillis();
+
+        this.spectators = new LinkedList<>();
     }
 
     public void setState(GameState state) {
@@ -261,6 +275,40 @@ public class FreeFightPlayer {
 
     public void addDamageOut(double value) {
         this.damageOut += value;
+    }
+
+    public void startSpectate(FreeFightPlayer target) {
+        Preconditions.checkNotNull(target);
+
+        if(this.state != GameState.SPECTATE
+            || target.getState() != GameState.INGAME
+            || this.spectating != null) {
+            return;
+        }
+
+        Player enemy = target.getPlayer();
+
+        this.spectating = target;
+        target.getSpectators().add(this);
+
+        ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) enemy).getHandle());
+        PacketUtils.sendPackets(player, clientboundSetCameraPacket);
+    }
+
+    public void stopSpectate() {
+        if(this.spectating == null) {
+            return;
+        }
+
+        this.spectating.getSpectators().remove(this);
+        this.spectating = null;
+
+        ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) player).getHandle());
+        PacketUtils.sendPackets(player, clientboundSetCameraPacket);
+    }
+
+    public boolean isSpectating() {
+        return this.spectating != null;
     }
 
 }
