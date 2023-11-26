@@ -80,12 +80,12 @@ public class MatchTask extends BukkitRunnable {
 
         time--;
 
-        Bukkit.getLogger().info(MessageFormat.format(
-                "MatchTask({0}, {1}), maximumRunningTime {2} runningTimeElapsed {3}",
-                p1.getPlayer().getName(),
-                p2.getPlayer().getName(),
-                maximumRunningTime,
-                runningTimeElapsed));
+//        Bukkit.getLogger().info(MessageFormat.format(
+//                "MatchTask({0}, {1}), maximumRunningTime {2} runningTimeElapsed {3}",
+//                p1.getPlayer().getName(),
+//                p2.getPlayer().getName(),
+//                maximumRunningTime,
+//                runningTimeElapsed));
 
     }
 
