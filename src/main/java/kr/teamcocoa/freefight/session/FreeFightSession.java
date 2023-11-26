@@ -9,6 +9,7 @@ import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.task.CountDownTask;
+import kr.teamcocoa.freefight.task.MatchTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchIdMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchInfoButtonMessage;
@@ -51,6 +52,9 @@ public class FreeFightSession {
     private boolean damageAble;
 
     private SessionReplay sessionReplay;
+
+    @Setter
+    private MatchTask matchTask;
 
     protected FreeFightSession(FreeFightPlayer freeFightPlayer1, FreeFightPlayer freeFightPlayer2, Kits kit) {
         this.freeFightPlayer1 = freeFightPlayer1;
