@@ -1,10 +1,14 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
 import com.destroystokyo.paper.event.entity.ExperienceOrbMergeEvent;
+import kr.teamcocoa.freefight.listener.packet.ParticleListener;
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,6 +56,18 @@ public class ExpBottleListener implements Listener {
 
         Player player = ((Player) thrownExpBottle.getShooter());
 
+        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+        if(freeFightPlayer == null) {
+            e.setCancelled(true);
+            return;
+        }
+
+        FreeFightSession session = SessionManager.getSession(freeFightPlayer);
+        if(session == null) {
+            e.setCancelled(true);
+            return;
+        }
+
         int exp = e.getExperience();
 
         e.setExperience(0); // cancel exp orb spawning
@@ -77,22 +93,16 @@ public class ExpBottleListener implements Listener {
             e1.printStackTrace();
         }
 
-//        orb.playerTouch(((CraftPlayer) player).getHandle());
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if(session.getFreeFightPlayer1().getPlayer() != onlinePlayer &&
+                    session.getFreeFightPlayer2().getPlayer() != onlinePlayer) {
+                onlinePlayer.hideEntity(FreeFight.getInstance(), e.getEntity());
+            }
+        }
 
+        BlockPos pos = ((CraftThrownExpBottle) e.getEntity()).getHandle().blockPosition();
 
-
-//        CraftPlayer
-//
-//        player.giveExp(exp);
-//
-////        CraftEventFactory
-//
-//
-//        Vec3 vec3 = new Vec3();
-//        playerTable.put(vec3, player);
-
-//        Bukkit.getLogger().info("EXPBottleEvent location : " + vec3.toString());
-//        Bukkit.getLogger().info("ExpBottleOrigin : " + player.getName());
+        ParticleListener.add(pos, session);
 
     }
 
