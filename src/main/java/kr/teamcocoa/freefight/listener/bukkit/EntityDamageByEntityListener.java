@@ -76,6 +76,11 @@ public class EntityDamageByEntityListener implements Listener {
                     session.stop(freeFightPlayer);
                 }
             }
+
+            if(session.getMatchTask() != null) {
+                session.getMatchTask().setHitted(true);
+            }
+
         }
     }
 

@@ -88,8 +88,9 @@ public class CountDownTask extends BukkitRunnable {
                 freeFightSession.setDamageAble(true);
                 freeFightSession.getSessionReplay().addMessage(LogType.ARENA, "The session is started!");
 
-                new MatchTask(freeFightSession).runTaskTimer(FreeFight.getInstance(), 0L, 20L);
-
+                MatchTask matchTask = new MatchTask(freeFightSession);
+                matchTask.runTaskTimer(FreeFight.getInstance(), 0L, 20L);
+                freeFightSession.setMatchTask(matchTask);
                 cancel();
             }
         }
