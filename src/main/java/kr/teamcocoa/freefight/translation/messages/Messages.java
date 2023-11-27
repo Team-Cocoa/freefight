@@ -21,6 +21,7 @@ public enum Messages implements Translatable {
     INVALID_MATCH_ID("id_not_exist"),
     MATCH_ID("match_id"),
     MATCH_INFO_BUTTON("match_info_button"),
+    RUNNING_WARNING("running_warning"),
 
     ;
 
