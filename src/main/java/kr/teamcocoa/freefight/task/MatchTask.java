@@ -1,6 +1,8 @@
 package kr.teamcocoa.freefight.task;
 
+import kr.teamcocoa.core.bukkit.task.AlertNoteBlockTask;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.translation.actions.RemainTimeAction;
@@ -72,6 +74,8 @@ public class MatchTask extends BukkitRunnable {
         if(maximumRunningTime - runningTimeElapsed == 4) {
             p1.getPlayer().sendMessage("Warning! This game will be ended in 5 seconds since no one is fighting!");
             p2.getPlayer().sendMessage("Warning! This game will be ended in 5 seconds since no one is fighting!");
+            AlertNoteBlockTask.newInstance(p1.getPlayer()).start(FreeFight.getInstance());
+            AlertNoteBlockTask.newInstance(p2.getPlayer()).start(FreeFight.getInstance());
         }
 
         if(maximumRunningTime - runningTimeElapsed == -1) {
