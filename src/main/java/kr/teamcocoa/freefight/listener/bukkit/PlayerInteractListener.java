@@ -4,11 +4,9 @@ import kr.teamcocoa.freefight.items.lobby.KillEffectItem;
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
 import kr.teamcocoa.freefight.items.lobby.SpectateItem;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;

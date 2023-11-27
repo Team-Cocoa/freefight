@@ -3,9 +3,7 @@ package kr.teamcocoa.freefight.kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.kitmanager.frontend.main.KitManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class ShieldPvPKit extends AbstractKit {
 

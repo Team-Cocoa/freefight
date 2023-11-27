@@ -1,7 +1,6 @@
 package kr.teamcocoa.freefight.session.result;
 
 import kr.teamcocoa.freefight.utils.Serializer;
-import kr.teamcocoa.kitmanager.frontend.utils.SerialUtils;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

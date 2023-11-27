@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.scoreboard;
 
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
@@ -8,7 +9,6 @@ import kr.teamcocoa.freefight.translation.scoreboards.CurrentKitScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.DeathsScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillStreakScoreboard;
 import kr.teamcocoa.freefight.translation.scoreboards.KillsScoreboard;
-import kr.teamcocoa.core.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.network.chat.Component;

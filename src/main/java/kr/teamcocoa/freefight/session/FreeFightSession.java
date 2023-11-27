@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
@@ -15,7 +16,6 @@ import kr.teamcocoa.freefight.translation.messages.MatchIdMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchInfoButtonMessage;
 import kr.teamcocoa.freefight.translation.titles.*;
 import kr.teamcocoa.freefight.utils.Serializer;
-import kr.teamcocoa.core.utils.StringUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

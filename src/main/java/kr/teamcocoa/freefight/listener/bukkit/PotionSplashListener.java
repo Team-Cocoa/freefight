@@ -11,14 +11,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftThrownPotion;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.SplashPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class PotionSplashListener implements Listener {
 
