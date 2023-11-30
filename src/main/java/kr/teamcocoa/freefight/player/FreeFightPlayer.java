@@ -60,10 +60,9 @@ public class FreeFightPlayer {
 
     private long lastStateChangeTime;
 
-    @Getter
     private List<FreeFightPlayer> spectators;
 
-    @Getter
+    @Setter
     private FreeFightPlayer spectating;
 
     protected FreeFightPlayer(Player player) {

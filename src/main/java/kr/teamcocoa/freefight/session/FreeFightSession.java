@@ -223,6 +223,9 @@ public class FreeFightSession {
         freeFightPlayer1.resetPlayer();
         freeFightPlayer2.resetPlayer();
 
+        freeFightPlayer1.getSpectators().forEach(FreeFightPlayer::stopSpectate);
+        freeFightPlayer2.getSpectators().forEach(FreeFightPlayer::stopSpectate);
+
         player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 5F, 100F);
         player2.playSound(player2.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5F, 100F);
 

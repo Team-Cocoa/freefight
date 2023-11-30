@@ -156,6 +156,7 @@ public class EntityDamageByEntityListener implements Listener {
         }
 
         enemyFightPlayer.getSpectators().add(freeFightPlayer);
+        freeFightPlayer.setSpectating(enemyFightPlayer);
 
         ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) enemy).getHandle());
         PacketUtils.sendPackets(player, clientboundSetCameraPacket);
