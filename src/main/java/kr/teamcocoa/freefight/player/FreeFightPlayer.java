@@ -276,24 +276,6 @@ public class FreeFightPlayer {
         this.damageOut += value;
     }
 
-    public void startSpectate(FreeFightPlayer target) {
-        Preconditions.checkNotNull(target);
-
-        if(this.state != GameState.SPECTATE
-            || target.getState() != GameState.INGAME
-            || this.spectating != null) {
-            return;
-        }
-
-        Player enemy = target.getPlayer();
-
-        this.spectating = target;
-        target.getSpectators().add(this);
-
-        ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) enemy).getHandle());
-        PacketUtils.sendPackets(player, clientboundSetCameraPacket);
-    }
-
     public void stopSpectate() {
         if(this.spectating == null) {
             return;
