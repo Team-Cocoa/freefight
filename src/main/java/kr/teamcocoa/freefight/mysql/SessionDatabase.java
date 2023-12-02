@@ -98,8 +98,8 @@ public class SessionDatabase {
                                   int player1Hunger, int player2Hunger) {
         MySQL mySQL = connectionPool.getConnection();
         PlaceHolder placeHolder = new PlaceHolder(15);
-        placeHolder.addPlaceHolder(winner != null ? winner.toString() : "");
-        placeHolder.addPlaceHolder(loser != null ? loser.toString() : "");
+        placeHolder.addPlaceHolder(winner != null ? winner.toString() : null);
+        placeHolder.addPlaceHolder(loser != null ? loser.toString() : null);
         placeHolder.addPlaceHolder(player1Inv);
         placeHolder.addPlaceHolder(player1Health);
         placeHolder.addPlaceHolder(player1DamageIn);
