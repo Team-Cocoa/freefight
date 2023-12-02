@@ -1,6 +1,5 @@
 package kr.teamcocoa.freefight.player;
 
-import com.google.common.base.Preconditions;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.AsyncDetector;
 import kr.teamcocoa.freefight.items.lobby.ChallengeItem;
@@ -16,13 +15,17 @@ import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
+import net.minecraft.world.level.GameType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -31,6 +34,14 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 public class FreeFightPlayer {
+    @Override
+    public String toString() {
+        return "FreeFightPlayer{" +
+                "player=" + player.getName() +
+                ", state=" + state +
+                ", currentKit=" + currentKit +
+                '}';
+    }
 
     private Player player;
 
@@ -284,8 +295,16 @@ public class FreeFightPlayer {
         this.spectating.getSpectators().remove(this);
         this.spectating = null;
 
+        ClientboundGameEventPacket clientboundGameEventPacket = new ClientboundGameEventPacket(ClientboundGameEventPacket.CHANGE_GAME_MODE, (float) GameType.SURVIVAL.getId());
         ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) player).getHandle());
-        PacketUtils.sendPackets(player, clientboundSetCameraPacket);
+        PacketUtils.sendPackets(player, clientboundGameEventPacket, clientboundSetCameraPacket);
+
+        player.setAllowFlight(true);
+        player.setFlying(true);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false));
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            player.showPlayer(FreeFight.getInstance(), onlinePlayer);
+        }
     }
 
     public boolean isSpectating() {
