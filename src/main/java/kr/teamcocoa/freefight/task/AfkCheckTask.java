@@ -6,6 +6,7 @@ import kr.teamcocoa.freefight.player.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ConcurrentModificationException;
 import java.util.concurrent.TimeUnit;
 
 public class AfkCheckTask extends BukkitRunnable {
@@ -14,17 +15,15 @@ public class AfkCheckTask extends BukkitRunnable {
     public void run() {
         long currentTime = System.currentTimeMillis();
 
-        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+        FreeFightPlayerManager.getPlayerTable().forEach((player, freeFightPlayer) -> {
             if(freeFightPlayer.getState() == GameState.INGAME) {
-                continue;
+                return;
             }
-
-            Player player = freeFightPlayer.getPlayer();
 
             boolean isStaff = player.hasPermission("teamcooca.staff");
 
             if(isStaff) {
-                continue;
+                return;
             }
 
             boolean isPremium = player.hasPermission("teamcocoa.premium");
@@ -33,13 +32,23 @@ public class AfkCheckTask extends BukkitRunnable {
             long lastStateChangeTime = freeFightPlayer.getLastStateChangeTime();
 
             if(currentTime - lastStateChangeTime > TimeUnit.MINUTES.toMillis(isPremium ? 30 : 10)) {
-                player.kick();
+                try {
+                    player.kick();
+                }
+                catch (ConcurrentModificationException e) {
+
+                }
             }
 
             if(currentTime - lastMovingTime > TimeUnit.MINUTES.toMillis(isPremium ? 15 : 5)) {
-                player.kick();
-            }
+                try {
+                    player.kick();
+                }
+                catch (ConcurrentModificationException e) {
 
-        }
+                }
+            }
+        });
+
     }
 }
