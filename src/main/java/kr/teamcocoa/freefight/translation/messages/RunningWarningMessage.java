@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.translation.messages;
 
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
@@ -24,6 +25,9 @@ public class RunningWarningMessage extends BaseMessage {
         for (String string : getArrayMessage(player.getUniqueId())) {
             sb.append(string + "\n");
         }
-        return sb.toString().trim();
+        return
+                StringUtils.color("&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n") +
+                sb.toString().trim() +
+                StringUtils.color("\n&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
     }
 }
