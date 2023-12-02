@@ -1,16 +1,13 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
-import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
-import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -25,7 +22,6 @@ public class EntityDamageByEntityListener implements Listener {
         projectileDamageHandle(e);
         damageHandle(e);
         challengerHandle(e);
-        handleSpectating(e);
     }
 
     private void damageHandle(EntityDamageByEntityEvent e) {
@@ -136,30 +132,6 @@ public class EntityDamageByEntityListener implements Listener {
         }
 
         e.setCancelled(!session1.equals(session2));
-
-    }
-
-    private void handleSpectating(EntityDamageByEntityEvent e) {
-        if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) {
-            return;
-        }
-
-        Player player = (Player) e.getEntity();
-        Player enemy = (Player) e.getDamager();
-
-        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
-        FreeFightPlayer enemyFightPlayer = FreeFightPlayerManager.getPlayer(enemy);
-
-        if(freeFightPlayer.getState() != GameState.SPECTATE ||
-            enemyFightPlayer.getState() != GameState.INGAME) {
-            return;
-        }
-
-        enemyFightPlayer.getSpectators().add(freeFightPlayer);
-        freeFightPlayer.setSpectating(enemyFightPlayer);
-
-        ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) enemy).getHandle());
-        PacketUtils.sendPackets(player, clientboundSetCameraPacket);
 
     }
 
