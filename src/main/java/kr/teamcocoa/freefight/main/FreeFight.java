@@ -105,14 +105,16 @@ public class FreeFight implements PlatformEntrypoint {
     private void init() {
         loadCommands();
         loadListeners();
-        Bukkit.getScheduler().runTaskTimer(instance, () -> {
-            for (World world : Bukkit.getWorlds()) {
-                world.setTime(0);
-            }
-        },0L, 1L);
+//        Bukkit.getScheduler().runTaskTimer(instance, () -> {
+//            for (World world : Bukkit.getWorlds()) {
+//                world.setTime(0);
+//            }
+//        },0L, 1L);
         for (World world : Bukkit.getWorlds()) {
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setTime(0);
         }
         new AfkCheckTask().runTaskTimer(instance, 0L, 100L);
     }
