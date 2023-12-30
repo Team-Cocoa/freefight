@@ -1,12 +1,14 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
+import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -14,6 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.text.MessageFormat;
 
 public class EntityDamageByEntityListener implements Listener {
 
@@ -59,11 +63,23 @@ public class EntityDamageByEntityListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
+
             FreeFightPlayer sessionEnemy = session.getFreeFightPlayer1() == freeFightPlayer ? session.getFreeFightPlayer2() : session.getFreeFightPlayer1();
             if(sessionEnemy != enemyFreeFightPlayer) {
                 e.setCancelled(true);
                 return;
             }
+
+            if(session.getKits() == Kits.DIAMOND_POT) {
+                Bukkit.getLogger().info(MessageFormat.format(
+                        "Before multi Hitter : {0} Victim : {1} Damage : {2} FinalDamage : {3}",
+                        enemy.getName(), player.getName(), e.getDamage(), e.getFinalDamage()));
+                e.setDamage(e.getDamage() * 1.33);
+                Bukkit.getLogger().info(MessageFormat.format(
+                        "After multi Hitter : {0} Victim : {1} Damage : {2} FinalDamage : {3}",
+                        enemy.getName(), player.getName(), e.getDamage(), e.getFinalDamage()));
+            }
+
             sessionEnemy.addDamageOut(e.getFinalDamage());
             freeFightPlayer.addDamageIn(e.getFinalDamage());
             if(player.getHealth() - e.getFinalDamage() <= 0.0) {
