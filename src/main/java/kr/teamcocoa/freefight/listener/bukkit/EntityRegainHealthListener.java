@@ -19,7 +19,9 @@ public class EntityRegainHealthListener implements Listener {
             FreeFightSession freeFightSession = SessionManager.getSession(freeFightPlayer);
             if(e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                 if(freeFightSession != null &&
-                        (freeFightSession.getKits() == Kits.DIAMOND_POT || freeFightSession.getKits() == Kits.NETHERITE_POT)) {
+                        (freeFightSession.getKits() == Kits.DIAMOND_POT ||
+                                freeFightSession.getKits() == Kits.NETHERITE_POT ||
+                                freeFightSession.getKits() == Kits.LOKA_POT)) {
                     return;
                 }
                 e.setCancelled(true);
