@@ -12,11 +12,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CheckMatchCommand implements CommandExecutor {
+
+    private static HashMap<UUID, Long> lastCommandExecutedMap = new HashMap<>();
 
     private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
 
@@ -35,6 +39,14 @@ public class CheckMatchCommand implements CommandExecutor {
         String stringId = strings[0].replaceAll("[^0-9]", "");
         if(stringId.equalsIgnoreCase("")) {
             player.sendMessage(StringUtils.color(FreeFight.getPrefix() + "&cInvalid parameters."));
+            return true;
+        }
+
+        long currentTime = System.currentTimeMillis();
+
+        if(currentTime - lastCommandExecutedMap.getOrDefault(player.getUniqueId(), 0L) < TimeUnit.SECONDS.toMillis(5)) {
+            player.sendMessage(StringUtils.color(
+                    FreeFight.getPrefix() + "&cHold on! You can use this command every 5 seconds!"));
             return true;
         }
 
@@ -57,6 +69,9 @@ public class CheckMatchCommand implements CommandExecutor {
             MatchCheckGUI gui = new MatchCheckGUI(result);
             gui.openInventory(player);
         });
+
+        lastCommandExecutedMap.put(player.getUniqueId(), currentTime);
+
         return true;
     }
 }
