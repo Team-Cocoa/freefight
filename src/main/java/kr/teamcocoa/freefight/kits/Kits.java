@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.kits;
 
+import kr.teamcocoa.kitmanager.frontend.kits.LokaPot;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Kits {
 
-    ONLYSWORD(0), SHIELD(1), DIAMOND_POT(2), NETHERITE_POT(3);
+    ONLYSWORD(0), SHIELD(1), DIAMOND_POT(2), NETHERITE_POT(3), LOKA_POT(4);
 
     private int i;
 
@@ -19,6 +20,7 @@ public enum Kits {
             case SHIELD -> "Shield";
             case DIAMOND_POT -> "Diamond Pot";
             case NETHERITE_POT -> "Netherite Pot";
+            case LOKA_POT -> "Loka Pot";
             default -> "Error : Invalid Kit";
         };
     }
@@ -29,6 +31,7 @@ public enum Kits {
             case SHIELD -> "Shield";
             case DIAMOND_POT -> "DPot";
             case NETHERITE_POT -> "NPot";
+            case LOKA_POT -> "Loka";
             default -> "";
         };
     }
@@ -39,6 +42,7 @@ public enum Kits {
             case 1 -> SHIELD;
             case 2 -> DIAMOND_POT;
             case 3 -> NETHERITE_POT;
+            case 4 -> LOKA_POT;
             default -> throw new IllegalArgumentException("The parameter should be between 0 and 3!");
         };
     }
@@ -49,6 +53,7 @@ public enum Kits {
             case SHIELD -> ShieldPvPKit.getInstance().givePlayerKit(player);
             case DIAMOND_POT -> DiamondPotKit.getInstance().givePlayerKit(player);
             case NETHERITE_POT -> NetheritePotKit.getInstance().givePlayerKit(player);
+            case LOKA_POT -> LokaPotKit.getInstance().givePlayerKit(player);
         }
     }
 

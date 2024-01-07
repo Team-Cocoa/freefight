@@ -1,10 +1,7 @@
 package kr.teamcocoa.freefight.gui;
 
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
-import kr.teamcocoa.freefight.items.inventory.icon.IconDiamondPotItem;
-import kr.teamcocoa.freefight.items.inventory.icon.IconNetheritePotItem;
-import kr.teamcocoa.freefight.items.inventory.icon.IconOnlySwordItem;
-import kr.teamcocoa.freefight.items.inventory.icon.IconShieldItem;
+import kr.teamcocoa.freefight.items.inventory.icon.*;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
@@ -39,10 +36,11 @@ public class KitSelectGUI extends AbstractGUI {
     public void openInventory(Player player) {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle().getMessage(player)));
         newInventory.setContents(getInventory().getContents());
-        newInventory.setItem(1, IconOnlySwordItem.getInstance().toItemStack(player));
-        newInventory.setItem(3, IconDiamondPotItem.getInstance().toItemStack(player));
-        newInventory.setItem(5, IconNetheritePotItem.getInstance().toItemStack(player));
-        newInventory.setItem(7, IconShieldItem.getInstance().toItemStack(player));
+        newInventory.setItem(0, IconOnlySwordItem.getInstance().toItemStack(player));
+        newInventory.setItem(2, IconDiamondPotItem.getInstance().toItemStack(player));
+        newInventory.setItem(4, IconNetheritePotItem.getInstance().toItemStack(player));
+        newInventory.setItem(6, IconShieldItem.getInstance().toItemStack(player));
+        newInventory.setItem(8, IconLokaPotItem.getInstance().toItemStack(player));
         player.openInventory(newInventory);
     }
 
@@ -82,6 +80,12 @@ public class KitSelectGUI extends AbstractGUI {
                     freeFightPlayer.changeKit(Kits.SHIELD);
                     player.closeInventory();
                     KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.SHIELD);
+                    player.sendMessage(kitChangeMessage.getMessage(player));
+                }
+                if(ComponentUtils.componentEquals(itemStack.getItemMeta().displayName(), "&e&lLoka Pot")) {
+                    freeFightPlayer.changeKit(Kits.LOKA_POT);
+                    player.closeInventory();
+                    KitChangeMessage kitChangeMessage = new KitChangeMessage(Kits.LOKA_POT);
                     player.sendMessage(kitChangeMessage.getMessage(player));
                 }
                 e.setCancelled(true);

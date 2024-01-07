@@ -70,11 +70,11 @@ public class EntityDamageByEntityListener implements Listener {
                 return;
             }
 
-            if(session.getKits() == Kits.DIAMOND_POT) {
+            if(session.getKits() == Kits.LOKA_POT) {
                 Bukkit.getLogger().info(MessageFormat.format(
                         "Before multi Hitter : {0} Victim : {1} Damage : {2} FinalDamage : {3}",
                         enemy.getName(), player.getName(), e.getDamage(), e.getFinalDamage()));
-                e.setDamage(e.getDamage() * 1.33);
+                e.setDamage(e.getDamage() * 1.333);
                 Bukkit.getLogger().info(MessageFormat.format(
                         "After multi Hitter : {0} Victim : {1} Damage : {2} FinalDamage : {3}",
                         enemy.getName(), player.getName(), e.getDamage(), e.getFinalDamage()));
