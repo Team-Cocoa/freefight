@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.main;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import dev.derklaro.aerogel.Inject;
 import dev.derklaro.aerogel.Singleton;
 import eu.cloudnetservice.driver.event.EventManager;
@@ -8,9 +9,7 @@ import eu.cloudnetservice.ext.platforminject.api.PlatformEntrypoint;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.Command;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.Dependency;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.PlatformPlugin;
-import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.settings.PacketEventsSettings;
-import io.github.retrooper.packetevents.utils.server.ServerVersion;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.commands.CheckMatchCommand;
 import kr.teamcocoa.freefight.commands.ForceTPCommand;
@@ -89,17 +88,16 @@ public class FreeFight implements PlatformEntrypoint {
 
     @Override
     public void onDisable() {
-        PacketEvents.get().terminate();
+        PacketEvents.getAPI().terminate();
     }
 
     private void initPacketEvents() {
-        PacketEvents.create(instance);
-        PacketEventsSettings settings = PacketEvents.get().getSettings();
-        settings
-                .fallbackServerVersion(ServerVersion.v_1_18_2)
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(instance));
+
+        PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
                 .checkForUpdates(true)
                 .bStats(true);
-        PacketEvents.get().load();
+        PacketEvents.getAPI().load();
     }
 
     private void init() {
@@ -155,10 +153,10 @@ public class FreeFight implements PlatformEntrypoint {
         eventManager.registerListener(tabListener);
 
         // Packet Listeners
-        PacketEvents.get().registerListener(new ParticleListener());
-        PacketEvents.get().registerListener(new SweepListener());
-        PacketEvents.get().registerListener(new PlayerAttackListener());
+        PacketEvents.getAPI().getEventManager().registerListener(new ParticleListener());
+        PacketEvents.getAPI().getEventManager().registerListener(new SweepListener());
+        PacketEvents.getAPI().getEventManager().registerListener(new PlayerAttackListener());
 
-        PacketEvents.get().init();
+        PacketEvents.getAPI().init();
     }
 }
