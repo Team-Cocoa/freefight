@@ -1,51 +1,47 @@
 package kr.teamcocoa.freefight.listener.packet;
 
-import io.github.retrooper.packetevents.event.PacketListenerAbstract;
-import io.github.retrooper.packetevents.event.PacketListenerPriority;
-import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
-import io.github.retrooper.packetevents.packettype.PacketType;
-import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import lombok.Getter;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import net.minecraft.world.level.GameType;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.text.MessageFormat;
+import java.util.HashMap;
 
 public class PlayerAttackListener extends PacketListenerAbstract {
+
+    @Getter
+    private static HashMap<Integer, Player> idAndPlayerMap = new HashMap<>();
 
     public PlayerAttackListener() {
         super(PacketListenerPriority.NORMAL);
     }
 
     @Override
-    public void onPacketPlayReceive(PacketPlayReceiveEvent e) {
-        Player player = e.getPlayer();
+    public void onPacketReceive(PacketReceiveEvent e) {
+        Player player = ((Player) e.getPlayer());
 
-        if (e.getPacketId() != PacketType.Play.Client.USE_ENTITY) {
+        if(e.getPacketType() != PacketType.Play.Client.INTERACT_ENTITY) {
             return;
         }
 
-        WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(e.getNMSPacket());
+        WrapperPlayClientInteractEntity wrappedPacket = new WrapperPlayClientInteractEntity(e);
 
-        if (wrappedPacketInUseEntity.getAction() != WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
+        if(wrappedPacket.getAction() != WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
             return;
         }
 
-        Entity entity = wrappedPacketInUseEntity.getEntity();
-
-        if (!(entity instanceof Player)) {
-            return;
-        }
-
-        Player enemy = ((Player) entity);
+        Player enemy = idAndPlayerMap.get(wrappedPacket.getEntityId());
 
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
         FreeFightPlayer enemyFightPlayer = FreeFightPlayerManager.getPlayer(enemy);
@@ -63,4 +59,5 @@ public class PlayerAttackListener extends PacketListenerAbstract {
         ClientboundSetCameraPacket clientboundSetCameraPacket = new ClientboundSetCameraPacket(((CraftPlayer) enemy).getHandle());
         PacketUtils.sendPackets(player, clientboundGameEventPacket, clientboundSetCameraPacket);
     }
+
 }

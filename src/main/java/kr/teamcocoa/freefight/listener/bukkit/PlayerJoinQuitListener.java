@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
 import kr.teamcocoa.core.utils.StringUtils;
+import kr.teamcocoa.freefight.listener.packet.PlayerAttackListener;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
@@ -40,6 +41,8 @@ public class PlayerJoinQuitListener implements Listener {
             onlinePlayer.sendMessage(joinPlayerMessage.getMessage(onlinePlayer));
         }
 
+        // entity 인스턴스를 entity id (integer) 로 얻을 수 없어서 자체 매핑을 해줘야 함
+        PlayerAttackListener.getIdAndPlayerMap().put(player.getEntityId(), player);
     }
 
     @EventHandler
@@ -65,6 +68,10 @@ public class PlayerJoinQuitListener implements Listener {
             Player onlinePlayer = fightPlayer.getPlayer();
             onlinePlayer.sendMessage(leavePlayerMessage.getMessage(onlinePlayer));
         }
+
+        // entity id (integer) 랑 entity 인스턴스 매핑한거 해제
+        PlayerAttackListener.getIdAndPlayerMap().remove(player.getEntityId());
+
     }
 
 }
