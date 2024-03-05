@@ -59,10 +59,6 @@
                                     <pattern>io.github.retrooper.packetevents</pattern>
                                     <shadedPattern>kr.teamcocoa.freefight.packetevents.impl</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>net.kyori</pattern>
-                                    <shadedPattern>kr.teamcocoa.freefight.packetevents.kyori</shadedPattern>
-                                </relocation>
                             </relocations>
                             <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
