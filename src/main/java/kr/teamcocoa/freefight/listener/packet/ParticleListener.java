@@ -1,17 +1,22 @@
 package kr.teamcocoa.freefight.listener.packet;
 
-import io.github.retrooper.packetevents.event.PacketListenerAbstract;
-import io.github.retrooper.packetevents.event.PacketListenerPriority;
-import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
-import io.github.retrooper.packetevents.packettype.PacketType;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.particle.type.ParticleTypes;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.util.Vector3i;
+import com.github.retrooper.packetevents.wrapper.PacketWrapper;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerParticle;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,17 +36,35 @@ public class ParticleListener extends PacketListenerAbstract {
         super(PacketListenerPriority.HIGHEST);
     }
 
-    @Override
-    public void onPacketPlaySend(PacketPlaySendEvent e) {
-        Player player = e.getPlayer();
+    @Getter
+    @Setter
+    private static class WrapperPlayServerWorldEvent extends PacketWrapper<WrapperPlayServerWorldEvent> {
+        private int dataType;
+        private Vector3i position;
 
-        if(e.getPacketId() == PacketType.Play.Server.WORLD_EVENT) {
-            ClientboundLevelEventPacket rawPacket = ((ClientboundLevelEventPacket) e.getNMSPacket().getRawNMSPacket());
+        public WrapperPlayServerWorldEvent(PacketSendEvent e) {
+            super(e);
+        }
+
+        public void read() {
+            this.dataType = this.readInt();
+            this.position = this.readBlockPosition();
+        }
+    }
+
+    @Override
+    public void onPacketSend(PacketSendEvent e) {
+
+        Player player = ((Player) e.getPlayer());
+
+        if(e.getPacketType() == PacketType.Play.Server.EFFECT) {
+
+            WrapperPlayServerWorldEvent wrappedPacket = new WrapperPlayServerWorldEvent(e);
 
             // 즉시효과투척 : 2007
             // 기간효과투척 : 2002
 
-            int type = rawPacket.getType();
+            int type = wrappedPacket.getDataType();
 
             if(type != 2007 && type != 2002) {
                 return;
@@ -57,7 +80,9 @@ public class ParticleListener extends PacketListenerAbstract {
                 return;
             }
 
-            BlockPos position = rawPacket.getPos();
+            Vector3i vectorOfPosition = wrappedPacket.getPosition();
+
+            BlockPos position = new BlockPos(vectorOfPosition.x, vectorOfPosition.y, vectorOfPosition.z);
 
             FreeFightSession session = splashValid.getOrDefault(position, null);
 
