@@ -4,6 +4,7 @@ import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.settings.FreeFightSetting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class SettingInventoryIcon extends AbstractItem {
@@ -18,5 +19,7 @@ public abstract class SettingInventoryIcon extends AbstractItem {
     public ItemStack toItemStack(Player player) {
         return null;
     }
+
+    public abstract void onClickInInventory(InventoryClickEvent e);
 
 }
