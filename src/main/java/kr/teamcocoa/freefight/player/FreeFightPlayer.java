@@ -11,6 +11,7 @@ import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
+import kr.teamcocoa.freefight.settings.FreeFightSetting;
 import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.*;
 import lombok.Getter;
@@ -76,6 +77,8 @@ public class FreeFightPlayer {
     @Setter
     private FreeFightPlayer spectating;
 
+    private FreeFightSetting settings;
+
     protected FreeFightPlayer(Player player) {
         this.player = player;
         this.state = GameState.LOBBY;
@@ -93,6 +96,7 @@ public class FreeFightPlayer {
         this.lastStateChangeTime = System.currentTimeMillis();
 
         this.spectators = new LinkedList<>();
+        this.settings = new FreeFightSetting();
     }
 
     public void setState(GameState state) {
