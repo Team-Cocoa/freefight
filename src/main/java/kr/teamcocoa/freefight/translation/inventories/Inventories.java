@@ -10,6 +10,7 @@ public enum Inventories implements Translatable {
 
     KIT_SELECT("kit_select"),
     RESULT("result"),
+    SETTING("setting")
     ;
 
     private String node;
