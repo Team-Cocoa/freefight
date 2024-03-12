@@ -3,6 +3,7 @@ package kr.teamcocoa.freefight.items.lobby;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.gui.KitSelectGUI;
+import kr.teamcocoa.freefight.gui.SettingGUI;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
@@ -44,7 +45,7 @@ public class SettingItem extends AbstractItem implements ClickAble {
         if(ComponentUtils.componentEquals(
                 player.getInventory().getItemInMainHand().getItemMeta().displayName(),
                 SettingTitle.getInstance().getMessage(player))) {
-            KitSelectGUI.getInstance().openInventory(player);
+            SettingGUI.getInstance().openInventory(player);
         }
     }
 
