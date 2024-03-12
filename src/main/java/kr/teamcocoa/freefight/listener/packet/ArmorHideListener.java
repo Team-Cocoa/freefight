@@ -9,6 +9,10 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.Equipment;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityEquipment;
+import kr.teamcocoa.freefight.kits.Kits;
+import kr.teamcocoa.freefight.player.FreeFightPlayer;
+import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.player.GameState;
 import org.bukkit.entity.Player;
 
 public class ArmorHideListener extends PacketListenerAbstract {
@@ -17,7 +21,7 @@ public class ArmorHideListener extends PacketListenerAbstract {
         super(PacketListenerPriority.HIGHEST);
     }
 
-    private static ItemStack airItem = new ItemStack.Builder().type(ItemTypes.AIR).build();
+    private static final ItemStack airItem = new ItemStack.Builder().type(ItemTypes.AIR).build();
 
     @Override
     public void onPacketSend(PacketSendEvent e) {
@@ -28,15 +32,21 @@ public class ArmorHideListener extends PacketListenerAbstract {
             return;
         }
 
-        WrapperPlayServerEntityEquipment wrappedPacket = new WrapperPlayServerEntityEquipment(e);
+        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
 
-        for (Equipment equipment : wrappedPacket.getEquipment()) {
-            if(equipment.getSlot() == EquipmentSlot.HELMET ||
-                    equipment.getSlot() == EquipmentSlot.CHEST_PLATE ||
-                    equipment.getSlot() == EquipmentSlot.LEGGINGS ||
-                    equipment.getSlot() == EquipmentSlot.BOOTS) {
-                equipment.setItem(airItem);
+        if(freeFightPlayer.getState() == GameState.INGAME &&
+                (freeFightPlayer.getCurrentKit() == Kits.ONLYSWORD || freeFightPlayer.getCurrentKit() == Kits.SHIELD)) {
+            WrapperPlayServerEntityEquipment wrappedPacket = new WrapperPlayServerEntityEquipment(e);
+
+            for (Equipment equipment : wrappedPacket.getEquipment()) {
+                if(equipment.getSlot() == EquipmentSlot.HELMET ||
+                        equipment.getSlot() == EquipmentSlot.CHEST_PLATE ||
+                        equipment.getSlot() == EquipmentSlot.LEGGINGS ||
+                        equipment.getSlot() == EquipmentSlot.BOOTS) {
+                    equipment.setItem(airItem);
+                }
             }
+
         }
 
     }
