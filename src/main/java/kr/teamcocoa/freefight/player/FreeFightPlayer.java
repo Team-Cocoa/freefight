@@ -135,7 +135,7 @@ public class FreeFightPlayer {
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
                    player.getInventory().setItem(0, ChallengeItem.getInstance().toItemStack(player));
-                    player.getInventory().setItem(3, SpectateItem.getInstance().toItemStack(player));
+                   player.getInventory().setItem(3, SpectateItem.getInstance().toItemStack(player));
                    player.getInventory().setItem(5, KitSelectItem.getInstance().toItemStack(player));
                    player.getInventory().setItem(8, SettingItem.getInstance().toItemStack(player));
                    if(player.hasPermission("teamcocoa.killeffect")) {
