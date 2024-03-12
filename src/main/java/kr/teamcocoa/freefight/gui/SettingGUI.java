@@ -7,7 +7,6 @@ import kr.teamcocoa.freefight.settings.FreeFightSetting;
 import kr.teamcocoa.freefight.translation.inventories.SettingInventory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftHumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -56,7 +55,7 @@ public class SettingGUI extends AbstractGUI {
 
             switch (e.getSlot()) {
                 case 0 -> {
-                    ArmorHideSettingItem.getInstance().onClickInInventory(e);
+                    ArmorHideSettingItem.getInstance().onClickInInventory(e, settings);
                 }
             }
             e.setCancelled(true);

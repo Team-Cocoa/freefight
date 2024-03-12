@@ -20,6 +20,6 @@ public abstract class SettingInventoryIcon extends AbstractItem {
         return null;
     }
 
-    public abstract void onClickInInventory(InventoryClickEvent e);
+    public abstract void onClickInInventory(InventoryClickEvent e, FreeFightSetting settings);
 
 }
