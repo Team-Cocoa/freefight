@@ -11,6 +11,7 @@ public enum Lores implements Translatable {
     POT_LEFT("pot_left"),
     MATCH_INFO("match_info"),
     NO_WINNER("no_winner"),
+    SETTING_HIDE_ARMOR("setting_hide_armor")
     ;
 
     private String node;

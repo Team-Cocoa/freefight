@@ -12,6 +12,7 @@ public enum Items implements Translatable {
     SPECTATE("spectate"),
     PLAYER_HEAD("player_head"),
     MATCH_HEAD("match_head"),
+    SETTING("setting"),
     SETTING_HIDE_ARMOR("setting_hide_armor"),
     SETTING_ENABLE("setting_enable"),
     SETTING_DISABLE("setting_disable")
