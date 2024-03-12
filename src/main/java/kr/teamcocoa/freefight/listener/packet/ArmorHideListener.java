@@ -35,7 +35,8 @@ public class ArmorHideListener extends PacketListenerAbstract {
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
 
         if(freeFightPlayer.getState() == GameState.INGAME &&
-                (freeFightPlayer.getCurrentKit() == Kits.ONLYSWORD || freeFightPlayer.getCurrentKit() == Kits.SHIELD)) {
+                (freeFightPlayer.getCurrentKit() == Kits.ONLYSWORD || freeFightPlayer.getCurrentKit() == Kits.SHIELD) &&
+                freeFightPlayer.getSettings().isHideArmor()) {
             WrapperPlayServerEntityEquipment wrappedPacket = new WrapperPlayServerEntityEquipment(e);
 
             for (Equipment equipment : wrappedPacket.getEquipment()) {
