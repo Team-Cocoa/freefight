@@ -12,6 +12,10 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
+        if(e.getClickedInventory() == null) {
+            return;
+        }
+
         KitSelectGUI.getInstance().onClick(e);
         MatchCheckGUI.getInstance().onClick(e);
         SettingGUI.getInstance().onClick(e);
