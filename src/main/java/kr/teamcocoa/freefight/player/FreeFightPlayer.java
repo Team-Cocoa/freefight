@@ -5,6 +5,7 @@ import kr.teamcocoa.core.utils.AsyncDetector;
 import kr.teamcocoa.freefight.items.lobby.*;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
+import kr.teamcocoa.freefight.mysql.SettingDatabase;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
@@ -93,7 +94,6 @@ public class FreeFightPlayer {
         this.lastStateChangeTime = System.currentTimeMillis();
 
         this.spectators = new LinkedList<>();
-        this.settings = new FreeFightSetting();
     }
 
     public void setState(GameState state) {
@@ -108,6 +108,16 @@ public class FreeFightPlayer {
         Executors.newSingleThreadExecutor().execute(() -> {
             // 비동기 실행할 몇몇 코드들
             stats.loadStats();
+            FreeFightSetting freeFightSetting = SettingDatabase.getSettings(player.getUniqueId());
+
+            if(freeFightSetting == null) {
+                this.settings = FreeFightSetting.builder().build();
+                SettingDatabase.upsertSettings(player.getUniqueId(), settings);
+            }
+            else {
+                this.settings = freeFightSetting;
+            }
+
         });
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> ScoreboardManager.sendScoreboard(player), 0, 1, TimeUnit.SECONDS);
@@ -126,7 +136,9 @@ public class FreeFightPlayer {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             stats.saveStats();
+            SettingDatabase.upsertSettings(player.getUniqueId(), settings);
         });
+
     }
 
     public void setInventory(GameState state) {
