@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -282,6 +281,7 @@ public class FreeFightPlayer {
 
     public void resetPlayer() {
         AsyncDetector.catchAsynchronous();
+        player.closeInventory();
         player.setLevel(0);
         player.setExp(0);
         player.setTotalExperience(0);
