@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
@@ -22,27 +24,32 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.LinkedList;
 import java.util.List;
 
+@Singleton
 public class SpectateItem extends AbstractItem implements ClickAble {
 
-    private static SpectateItem instance;
+    private List<FreeFightPlayer> delayList;
 
-    public static SpectateItem getInstance() {
-        if (instance == null) {
-            instance = new SpectateItem();
-        }
-        return instance;
-    }
+    private SpectateTitle spectateTitle;
+    private StartSpectateMessage startSpectateMessage;
+    private StopSpectateMessage stopSpectateMessage;
 
-    private SpectateItem() {
+    @Inject
+    private SpectateItem(
+            SpectateTitle spectateTitle,
+            StartSpectateMessage startSpectateMessage,
+            StopSpectateMessage stopSpectateMessage
+    ) {
         super(Material.COMPASS);
+        this.delayList = new LinkedList<>();
+        this.spectateTitle = spectateTitle;
+        this.startSpectateMessage = startSpectateMessage;
+        this.stopSpectateMessage = stopSpectateMessage;
     }
-
-    private List<FreeFightPlayer> delayList = new LinkedList<>();
 
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, SpectateTitle.getInstance().getMessage(player));
+        ItemUtils.name(itemStack, spectateTitle.getMessage(player));
         return itemStack;
     }
 
@@ -62,7 +69,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(!ComponentUtils.componentEquals(itemInMainHand.getItemMeta().displayName(), SpectateTitle.getInstance().getMessage(player))) {
+        if(!ComponentUtils.componentEquals(itemInMainHand.getItemMeta().displayName(), spectateTitle.getMessage(player))) {
             return;
         }
 
@@ -84,7 +91,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 player.showPlayer(FreeFight.getInstance(), onlinePlayer);
             }
-            player.sendMessage(StartSpectateMessage.getInstance().getMessage(player));
+            player.sendMessage(startSpectateMessage.getMessage(player));
         }
         else {
             // 아니라면 로비 모드로 바꾸고 기존 로비 위치로 TP + 아이템 지급
@@ -98,7 +105,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
                     fightPlayer.getPlayer().showPlayer(FreeFight.getInstance(), player);
                 }
             }
-            player.sendMessage(StopSpectateMessage.getInstance().getMessage(player));
+            player.sendMessage(stopSpectateMessage.getMessage(player));
         }
 
         delayList.add(freeFightPlayer);

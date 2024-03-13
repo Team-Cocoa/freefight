@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.scoreboards;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class DeathsScoreboard extends BaseMessage {
-
-    private static DeathsScoreboard instance;
-
-    public static DeathsScoreboard getInstance() {
-        if(instance == null) {
-            instance = new DeathsScoreboard();
-        }
-        return instance;
-    }
 
     private DeathsScoreboard() {
         super(Scoreboards.DEATHS);
@@ -20,8 +13,7 @@ public class DeathsScoreboard extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        return message;
+        return getRawMessage(player.getUniqueId());
     }
 
 }

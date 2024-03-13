@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.scoreboards;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class CurrentKitScoreboard extends BaseMessage {
-
-    private static CurrentKitScoreboard instance;
-
-    public static CurrentKitScoreboard getInstance() {
-        if(instance == null) {
-            instance = new CurrentKitScoreboard();
-        }
-        return instance;
-    }
 
     private CurrentKitScoreboard() {
         super(Scoreboards.CURRENT_KIT);
@@ -20,7 +13,6 @@ public class CurrentKitScoreboard extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        return message;
+        return getRawMessage(player.getUniqueId());
     }
 }

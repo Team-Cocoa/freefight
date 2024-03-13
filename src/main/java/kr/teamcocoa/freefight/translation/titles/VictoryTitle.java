@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.titles;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class VictoryTitle extends BaseMessage {
-
-    private static VictoryTitle instance;
-
-    public static VictoryTitle getInstance() {
-        if(instance == null) {
-            instance = new VictoryTitle();
-        }
-        return instance;
-    }
 
     private VictoryTitle() {
         super(Titles.VICTORY);
@@ -20,7 +13,6 @@ public class VictoryTitle extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        return message;
+        return getRawMessage(player.getUniqueId());
     }
 }

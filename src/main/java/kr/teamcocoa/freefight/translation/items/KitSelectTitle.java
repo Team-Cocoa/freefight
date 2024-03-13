@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.items;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class KitSelectTitle extends BaseMessage {
-
-    private static KitSelectTitle instance;
-
-    public static KitSelectTitle getInstance() {
-        if(instance == null) {
-            instance = new KitSelectTitle();
-        }
-        return instance;
-    }
 
     private KitSelectTitle() {
         super(Items.KIT_SELECT);

@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.gui;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.items.inventory.setting.ArmorHideSettingItem;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
@@ -12,19 +14,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
+@Singleton
 public class SettingGUI extends AbstractGUI {
 
-    private static SettingGUI instance;
+    private ArmorHideSettingItem armorHideSettingItem;
 
-    public static SettingGUI getInstance() {
-        if(instance == null) {
-            instance = new SettingGUI();
-        }
-        return instance;
-    }
-
-    private SettingGUI() {
-        super(1 * 9, SettingInventory.getInstance());
+    @Inject
+    private SettingGUI(
+            SettingInventory settingInventory,
+            ArmorHideSettingItem armorHideSettingItem
+    ) {
+        super(1 * 9, settingInventory);
+        this.armorHideSettingItem = armorHideSettingItem;
         fillInventory();
     }
 
@@ -36,7 +37,7 @@ public class SettingGUI extends AbstractGUI {
 
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle().getMessage(player)));
         newInventory.setContents(getInventory().getContents());
-        newInventory.setItem(0, ArmorHideSettingItem.getInstance().toItemStack(player, setting));
+        newInventory.setItem(0, armorHideSettingItem.toItemStack(player, setting));
 
         player.openInventory(newInventory);
     }
@@ -55,7 +56,7 @@ public class SettingGUI extends AbstractGUI {
 
             switch (e.getSlot()) {
                 case 0 -> {
-                    ArmorHideSettingItem.getInstance().onClickInInventory(e, settings);
+                    armorHideSettingItem.onClickInInventory(e, settings);
                 }
             }
             e.setCancelled(true);

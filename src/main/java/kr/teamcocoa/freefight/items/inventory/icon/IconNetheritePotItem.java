@@ -1,21 +1,14 @@
 package kr.teamcocoa.freefight.items.inventory.icon;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class IconNetheritePotItem extends AbstractItem {
-    
-    private static IconNetheritePotItem instance;
-
-    public static IconNetheritePotItem getInstance() {
-        if(instance == null) {
-            instance = new IconNetheritePotItem();
-        }
-        return instance;
-    }
     
     private IconNetheritePotItem() {
         super(Material.NETHERITE_SWORD);

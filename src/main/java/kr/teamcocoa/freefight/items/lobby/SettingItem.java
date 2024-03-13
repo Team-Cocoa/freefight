@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.gui.KitSelectGUI;
@@ -14,19 +16,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class SettingItem extends AbstractItem implements ClickAble {
 
-    private static SettingItem instance;
+    private SettingGUI settingGUI;
+    private SettingTitle settingTitle;
 
-    public static SettingItem getInstance() {
-        if(instance == null) {
-            instance = new SettingItem();
-        }
-        return instance;
-    }
-
-    private SettingItem() {
+    @Inject
+    private SettingItem(
+            SettingGUI settingGUI,
+            SettingTitle settingTitle) {
         super(Material.COMPARATOR);
+        this.settingGUI = settingGUI;
+        this.settingTitle = settingTitle;
     }
 
     @Override
@@ -44,15 +46,15 @@ public class SettingItem extends AbstractItem implements ClickAble {
 
         if(ComponentUtils.componentEquals(
                 player.getInventory().getItemInMainHand().getItemMeta().displayName(),
-                SettingTitle.getInstance().getMessage(player))) {
-            SettingGUI.getInstance().openInventory(player);
+                settingTitle.getMessage(player))) {
+            settingGUI.openInventory(player);
         }
     }
 
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, SettingTitle.getInstance().getMessage(player));
+        ItemUtils.name(itemStack, settingTitle.getMessage(player));
 
         return itemStack;
     }

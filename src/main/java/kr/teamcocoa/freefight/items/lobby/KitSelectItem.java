@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.gui.KitSelectGUI;
@@ -13,25 +15,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class KitSelectItem extends AbstractItem implements ClickAble {
 
-    private static KitSelectItem instance;
+    private KitSelectGUI kitSelectGUI;
+    private KitSelectTitle kitSelectTitle;
 
-    public static KitSelectItem getInstance() {
-        if (instance == null) {
-            instance = new KitSelectItem();
-        }
-        return instance;
-    }
-
-    private KitSelectItem() {
+    @Inject
+    private KitSelectItem(
+            KitSelectGUI kitSelectGUI,
+            KitSelectTitle kitSelectTitle) {
         super(Material.ENDER_EYE);
+        this.kitSelectGUI = kitSelectGUI;
+        this.kitSelectTitle = kitSelectTitle;
     }
 
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, KitSelectTitle.getInstance().getMessage(player));
+        ItemUtils.name(itemStack, kitSelectTitle.getMessage(player));
         return itemStack;
     }
 
@@ -48,8 +50,8 @@ public class KitSelectItem extends AbstractItem implements ClickAble {
             return;
         }
 
-        if(ComponentUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), KitSelectTitle.getInstance().getMessage(player))) {
-            KitSelectGUI.getInstance().openInventory(player);
+        if(ComponentUtils.componentEquals(player.getInventory().getItemInMainHand().getItemMeta().displayName(), kitSelectTitle.getMessage(player))) {
+            kitSelectGUI.openInventory(player);
         }
     }
 }

@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.gui;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.freefight.items.inventory.icon.*;
 import kr.teamcocoa.freefight.kits.Kits;
@@ -16,19 +18,29 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 
+@Singleton
 public class KitSelectGUI extends AbstractGUI {
+    private IconOnlySwordItem iconOnlySwordItem;
+    private IconDiamondPotItem iconDiamondPotItem;
+    private IconNetheritePotItem iconNetheritePotItem;
+    private IconShieldItem iconShieldItem;
+    private IconLokaPotItem iconLokaPotItem;
 
-    private static KitSelectGUI instance;
-
-    public static KitSelectGUI getInstance() {
-        if (instance == null) {
-            instance = new KitSelectGUI();
-        }
-        return instance;
-    }
-
-    private KitSelectGUI() {
-        super(1 * 9, KitSelectInventories.getInstance());
+    @Inject
+    private KitSelectGUI(
+            KitSelectInventories kitSelectInventories,
+            IconOnlySwordItem iconOnlySwordItem,
+            IconDiamondPotItem iconDiamondPotItem,
+            IconNetheritePotItem iconNetheritePotItem,
+            IconShieldItem iconShieldItem,
+            IconLokaPotItem iconLokaPotItem
+    ) {
+        super(1 * 9, kitSelectInventories);
+        this.iconOnlySwordItem = iconOnlySwordItem;
+        this.iconDiamondPotItem = iconDiamondPotItem;
+        this.iconNetheritePotItem = iconNetheritePotItem;
+        this.iconShieldItem = iconShieldItem;
+        this.iconLokaPotItem = iconLokaPotItem;
         fillInventory();
     }
 
@@ -36,11 +48,11 @@ public class KitSelectGUI extends AbstractGUI {
     public void openInventory(Player player) {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle().getMessage(player)));
         newInventory.setContents(getInventory().getContents());
-        newInventory.setItem(0, IconOnlySwordItem.getInstance().toItemStack(player));
-        newInventory.setItem(2, IconDiamondPotItem.getInstance().toItemStack(player));
-        newInventory.setItem(4, IconNetheritePotItem.getInstance().toItemStack(player));
-        newInventory.setItem(6, IconShieldItem.getInstance().toItemStack(player));
-        newInventory.setItem(8, IconLokaPotItem.getInstance().toItemStack(player));
+        newInventory.setItem(0, iconOnlySwordItem.toItemStack(player));
+        newInventory.setItem(2, iconDiamondPotItem.toItemStack(player));
+        newInventory.setItem(4, iconNetheritePotItem.toItemStack(player));
+        newInventory.setItem(6, iconShieldItem.toItemStack(player));
+        newInventory.setItem(8, iconLokaPotItem.toItemStack(player));
         player.openInventory(newInventory);
     }
 

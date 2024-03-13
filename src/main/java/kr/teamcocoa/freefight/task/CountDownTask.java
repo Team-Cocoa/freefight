@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.task;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
@@ -14,6 +15,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
 public class CountDownTask extends BukkitRunnable {
+
+    @Inject
+    private static StartGameTitle startGameTitle;
 
     private FreeFightSession freeFightSession;
 
@@ -73,12 +77,12 @@ public class CountDownTask extends BukkitRunnable {
 
                 PacketUtils.sendTitle(
                         player1,
-                        StartGameTitle.getInstance().getMessage(player1),
+                        startGameTitle.getMessage(player1),
                         enemyTitleForPlayer1.getMessage(player1),
                         5, 20, 5);
                 PacketUtils.sendTitle(
                         player2,
-                        StartGameTitle.getInstance().getMessage(player2),
+                        startGameTitle.getMessage(player2),
                         enemyTitleForPlayer2.getMessage(player2),
                         5, 20, 5);
 

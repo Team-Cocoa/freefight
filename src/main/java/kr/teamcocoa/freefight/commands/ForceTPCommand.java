@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.commands;
 
+import kr.teamcocoa.core.config.MessageConfig;
+import kr.teamcocoa.core.permission.PermissionValidator;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.main.FreeFight;
 import org.bukkit.command.Command;
@@ -16,7 +18,7 @@ public class ForceTPCommand implements CommandExecutor {
             commandSender.sendMessage(FreeFight.getPrefix() + StringUtils.color("&eForce TP Mode is " + (enabled ? "&aEnabled" : "&cDisabled") + "&e."));
         }
         else {
-            commandSender.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &7This command does not exist or is deactivated."));
+            commandSender.sendMessage(MessageConfig.NO_PERMISSION);
         }
         return true;
     }

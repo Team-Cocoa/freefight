@@ -23,8 +23,6 @@ public class FinishGameTitle extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        String formattedMessage = MessageFormat.format(message, arguments);
-        return formattedMessage;
+        return MessageFormat.format(getRawMessage(player.getUniqueId()), arguments);
     }
 }

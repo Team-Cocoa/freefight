@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.translation.lores.settings;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.translation.LoreMessage;
 import kr.teamcocoa.freefight.translation.lores.Lores;
@@ -9,16 +10,8 @@ import org.bukkit.entity.Player;
 import java.util.LinkedList;
 import java.util.List;
 
+@Singleton
 public class HideArmorSettingItemLore extends BaseMessage implements LoreMessage {
-
-    private static HideArmorSettingItemLore instance;
-
-    public static HideArmorSettingItemLore getInstance() {
-        if(instance == null) {
-            instance = new HideArmorSettingItemLore();
-        }
-        return instance;
-    }
 
     private HideArmorSettingItemLore() {
         super(Lores.SETTING_HIDE_ARMOR);
@@ -39,8 +32,8 @@ public class HideArmorSettingItemLore extends BaseMessage implements LoreMessage
         StringBuilder sb = new StringBuilder();
 
         String[] messages = getArrayMessage(player.getUniqueId());
-        for (int i = 0; i < messages.length; i++) {
-            String message = messages[i].trim();
+        for (String string : messages) {
+            String message = string.trim();
             sb.append(message + "\n");
         }
 

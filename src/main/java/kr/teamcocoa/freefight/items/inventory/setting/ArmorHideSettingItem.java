@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.items.inventory.setting;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.gui.SettingGUI;
 import kr.teamcocoa.freefight.settings.FreeFightSetting;
@@ -16,31 +18,41 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
+@Singleton
 public class ArmorHideSettingItem extends SettingInventoryIcon {
 
-    private static ArmorHideSettingItem instance;
+    private SettingGUI settingGUI;
+    private HideArmorSettingItemTitle hideArmorSettingItemTitle;
+    private HideArmorSettingItemLore hideArmorSettingItemLore;
+    private EnableSettingOption enableSettingOption;
+    private DisableSettingOption disableSettingOption;
 
-    public static ArmorHideSettingItem getInstance() {
-        if(instance == null) {
-            instance = new ArmorHideSettingItem();
-        }
-        return instance;
-    }
 
-    private ArmorHideSettingItem() {
+    @Inject
+    private ArmorHideSettingItem(
+            SettingGUI settingGUI,
+            HideArmorSettingItemTitle hideArmorSettingItemTitle,
+            HideArmorSettingItemLore hideArmorSettingItemLore,
+            EnableSettingOption enableSettingOption,
+            DisableSettingOption disableSettingOption) {
         super(Material.DIAMOND_CHESTPLATE);
+        this.settingGUI = settingGUI;
+        this.hideArmorSettingItemTitle = hideArmorSettingItemTitle;
+        this.hideArmorSettingItemLore = hideArmorSettingItemLore;
+        this.enableSettingOption = enableSettingOption;
+        this.disableSettingOption = disableSettingOption;
     }
 
     @Override
     public ItemStack toItemStack(Player player, FreeFightSetting setting) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, HideArmorSettingItemTitle.getInstance().getMessage(player));
-        List<Component> lore = HideArmorSettingItemLore.getInstance().getLoreMessage(player);
+        ItemUtils.name(itemStack, hideArmorSettingItemTitle.getMessage(player));
+        List<Component> lore = hideArmorSettingItemLore.getLoreMessage(player);
         lore.add(Component.empty());
         lore.add(Component.text(
                 setting.isHideArmor()
-                        ? EnableSettingOption.getInstance().getMessage(player)
-                        : DisableSettingOption.getInstance().getMessage(player)));
+                        ? enableSettingOption.getMessage(player)
+                        : disableSettingOption.getMessage(player)));
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.lore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -55,6 +67,6 @@ public class ArmorHideSettingItem extends SettingInventoryIcon {
 
         player.closeInventory();
 
-        SettingGUI.getInstance().openInventory(player);
+        settingGUI.openInventory(player);
     }
 }

@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.session;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
@@ -38,6 +39,21 @@ import java.util.concurrent.TimeUnit;
 @Getter
 @EqualsAndHashCode
 public class FreeFightSession {
+
+    @Inject
+    private static VictoryTitle victoryTitle;
+
+    @Inject
+    private static DefeatTitle defeatTitle;
+
+    @Inject
+    private static DrawTitle drawTitle;
+
+    @Inject
+    private static DrawGameTitle drawGameTitle;
+
+    @Inject
+    private static MatchInfoButtonMessage matchInfoButtonMessage;
 
     private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
 
@@ -179,13 +195,13 @@ public class FreeFightSession {
 
             PacketUtils.sendTitle(
                     winner.getPlayer(),
-                    VictoryTitle.getInstance().getMessage(winner.getPlayer()),
+                    victoryTitle.getMessage(winner.getPlayer()),
                     finishGameTitle.getMessage(winner.getPlayer()),
                     10, 80, 10);
 
             PacketUtils.sendTitle(
                     loser.getPlayer(),
-                    DefeatTitle.getInstance().getMessage(loser.getPlayer()),
+                    defeatTitle.getMessage(loser.getPlayer()),
                     finishGameTitle.getMessage(loser.getPlayer()),
                     10, 80, 10);
 
@@ -211,12 +227,12 @@ public class FreeFightSession {
         }
         else {
             PacketUtils.sendTitle(player1,
-                    DrawTitle.getInstance().getMessage(player1),
-                    DrawGameTitle.getInstance().getMessage(player1),
+                    drawTitle.getMessage(player1),
+                    drawGameTitle.getMessage(player1),
                     10, 80, 10);
             PacketUtils.sendTitle(player2,
-                    DrawTitle.getInstance().getMessage(player2),
-                    DrawGameTitle.getInstance().getMessage(player2),
+                    drawTitle.getMessage(player2),
+                    drawGameTitle.getMessage(player2),
                     10, 80, 10);
         }
 
@@ -238,11 +254,11 @@ public class FreeFightSession {
 
             MatchIdMessage matchIdMessage = new MatchIdMessage(id);
 
-            TextComponent player1InfoButton = Component.text(MatchInfoButtonMessage.getInstance().getMessage(player1))
+            TextComponent player1InfoButton = Component.text(matchInfoButtonMessage.getMessage(player1))
                     .clickEvent(ClickEvent.runCommand(("/checkmatch " + id).replace(",", "")))
                     .hoverEvent(HoverEvent.showText(Component.text(("/checkmatch " + id).replace(",", ""))));
 
-            TextComponent player2InfoButton = Component.text(MatchInfoButtonMessage.getInstance().getMessage(player2))
+            TextComponent player2InfoButton = Component.text(matchInfoButtonMessage.getMessage(player2))
                     .clickEvent(ClickEvent.runCommand(("/checkmatch " + id).replace(",", "")))
                     .hoverEvent(HoverEvent.showText(Component.text(("/checkmatch " + id).replace(",", ""))));
 

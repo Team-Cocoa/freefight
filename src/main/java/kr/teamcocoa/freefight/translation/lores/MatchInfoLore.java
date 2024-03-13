@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.translation.lores;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.network.controllers.mojang.SessionMojangController;
 import kr.teamcocoa.core.network.model.MojangProfile;
 import kr.teamcocoa.core.utils.StringUtils;
@@ -25,12 +26,15 @@ public class MatchInfoLore extends BaseMessage implements LoreMessage {
 
     private Object[] arguments;
 
+    @Inject
+    private static NoWinnerLore noWinnerLore;
+
     public MatchInfoLore(SessionResult sessionResult, Player toSee) {
         super(Lores.MATCH_INFO);
         this.kit = Kits.getNameByEnum(sessionResult.getKit());
 
         if(sessionResult.getWinner() == null) {
-            this.winner = NoWinnerLore.getInstance().getMessage(toSee);
+            this.winner = noWinnerLore.getMessage(toSee);
         }
         else {
             MojangProfile profile = SessionMojangController.getUuidToProfileCache().readData(sessionResult.getWinner());

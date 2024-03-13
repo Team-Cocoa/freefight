@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
@@ -10,16 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class KillEffectItem extends AbstractItem implements ClickAble {
-
-    private static KillEffectItem instance;
-
-    public static KillEffectItem getInstance() {
-        if (instance == null) {
-            instance = new KillEffectItem();
-        }
-        return instance;
-    }
 
     private KillEffectItem() {
         super(Material.GOLDEN_SWORD);

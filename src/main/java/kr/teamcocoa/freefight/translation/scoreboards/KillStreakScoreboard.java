@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.scoreboards;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class KillStreakScoreboard extends BaseMessage {
-
-    private static KillStreakScoreboard instance;
-
-    public static KillStreakScoreboard getInstance() {
-        if(instance == null) {
-            instance = new KillStreakScoreboard();
-        }
-        return instance;
-    }
 
     private KillStreakScoreboard() {
         super(Scoreboards.KILL_STREAK);
@@ -20,8 +13,7 @@ public class KillStreakScoreboard extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        return message;
+        return getRawMessage(player.getUniqueId());
     }
 
 }

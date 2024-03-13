@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.player;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.AsyncDetector;
 import kr.teamcocoa.freefight.items.lobby.*;
@@ -32,6 +33,28 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 public class FreeFightPlayer {
+
+    @Inject
+    private static ChallengeItem challengeItem;
+
+    @Inject
+    private static SettingItem settingItem;
+
+    @Inject
+    private static SpectateItem spectateItem;
+
+    @Inject
+    private static KitSelectItem kitSelectItem;
+
+    @Inject
+    private static KillEffectItem killEffectItem;
+
+    @Inject
+    private static CantDuelMessage cantDuelMessage;
+
+    @Inject
+    private static SessionErrorMessage sessionErrorMessage;
+
     @Override
     public String toString() {
         return "FreeFightPlayer{" +
@@ -119,8 +142,6 @@ public class FreeFightPlayer {
 
         });
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> ScoreboardManager.sendScoreboard(player), 0, 1, TimeUnit.SECONDS);
-
         for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
             if(freeFightPlayer.getState() == GameState.INGAME) {
                 player.hidePlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
@@ -145,17 +166,17 @@ public class FreeFightPlayer {
             case LOBBY, SPECTATE -> {
                 Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                    player.getInventory().clear();
-                   player.getInventory().setItem(0, ChallengeItem.getInstance().toItemStack(player));
+                   player.getInventory().setItem(0, challengeItem.toItemStack(player));
 
-                   player.getInventory().setItem(8, SettingItem.getInstance().toItemStack(player));
+                   player.getInventory().setItem(8, settingItem.toItemStack(player));
                    if(player.hasPermission("teamcocoa.killeffect")) {
-                       player.getInventory().setItem(2, SpectateItem.getInstance().toItemStack(player));
-                       player.getInventory().setItem(6, KitSelectItem.getInstance().toItemStack(player));
-                       player.getInventory().setItem(4, KillEffectItem.getInstance().toItemStack(player));
+                       player.getInventory().setItem(2, spectateItem.toItemStack(player));
+                       player.getInventory().setItem(6, kitSelectItem.toItemStack(player));
+                       player.getInventory().setItem(4, killEffectItem.toItemStack(player));
                    }
                    else {
-                       player.getInventory().setItem(3, SpectateItem.getInstance().toItemStack(player));
-                       player.getInventory().setItem(5, KitSelectItem.getInstance().toItemStack(player));
+                       player.getInventory().setItem(3, spectateItem.toItemStack(player));
+                       player.getInventory().setItem(5, kitSelectItem.toItemStack(player));
                    }
                 });
             }
@@ -204,7 +225,7 @@ public class FreeFightPlayer {
         if(state != GameState.LOBBY) {
             // state 가 SPECTATE 면 듀얼 불가 메시지 보내기
             if(state == GameState.SPECTATE) {
-                player.sendMessage(CantDuelMessage.getInstance().getMessage(player));
+                player.sendMessage(cantDuelMessage.getMessage(player));
             }
             return;
         }
@@ -260,13 +281,13 @@ public class FreeFightPlayer {
                         });
                     }
                     else {
-                        player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
-                        enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
+                        player.sendMessage(sessionErrorMessage.getMessage(player));
+                        enemyFightPlayer.getPlayer().sendMessage(sessionErrorMessage.getMessage(enemyFightPlayer.getPlayer()));
                     }
                 }
                 else {
-                    player.sendMessage(SessionErrorMessage.getInstance().getMessage(player));
-                    enemyFightPlayer.getPlayer().sendMessage(SessionErrorMessage.getInstance().getMessage(enemyFightPlayer.getPlayer()));
+                    player.sendMessage(sessionErrorMessage.getMessage(player));
+                    enemyFightPlayer.getPlayer().sendMessage(sessionErrorMessage.getMessage(enemyFightPlayer.getPlayer()));
                 }
             });
         }

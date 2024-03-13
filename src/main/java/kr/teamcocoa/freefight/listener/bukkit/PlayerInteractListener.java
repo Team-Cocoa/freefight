@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.freefight.items.lobby.KillEffectItem;
 import kr.teamcocoa.freefight.items.lobby.KitSelectItem;
 import kr.teamcocoa.freefight.items.lobby.SettingItem;
@@ -14,7 +15,19 @@ import java.util.List;
 
 public class PlayerInteractListener implements Listener {
 
-    private List<Material> blockedItemList = Arrays.asList(
+    @Inject
+    private static KitSelectItem kitSelectItem;
+
+    @Inject
+    private static SpectateItem spectateItem;
+
+    @Inject
+    private static KillEffectItem killEffectItem;
+
+    @Inject
+    private static SettingItem settingItem;
+
+    private final List<Material> blockedItemList = List.of(
             Material.ENDER_EYE
     );
 
@@ -31,10 +44,10 @@ public class PlayerInteractListener implements Listener {
     }
 
     private void handleItemsClick(PlayerInteractEvent e) {
-        KitSelectItem.getInstance().onClick(e);
-        SpectateItem.getInstance().onClick(e);
-        KillEffectItem.getInstance().onClick(e);
-        SettingItem.getInstance().onClick(e);
+        kitSelectItem.onClick(e);
+        spectateItem.onClick(e);
+        killEffectItem.onClick(e);
+        settingItem.onClick(e);
     }
 
 }

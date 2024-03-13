@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.task;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.bukkit.task.AlertNoteBlockTask;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -13,6 +14,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
 public class MatchTask extends BukkitRunnable {
+
+    @Inject
+    private static RunningWarningMessage runningWarningMessage;
 
     private FreeFightSession session;
     private int time;
@@ -69,8 +73,8 @@ public class MatchTask extends BukkitRunnable {
         hitted = false;
 
         if(maximumRunningTime - runningTimeElapsed == 4) {
-            p1.getPlayer().sendMessage(RunningWarningMessage.getInstance().getMessage(p1.getPlayer()));
-            p2.getPlayer().sendMessage(RunningWarningMessage.getInstance().getMessage(p2.getPlayer()));
+            p1.getPlayer().sendMessage(runningWarningMessage.getMessage(p1.getPlayer()));
+            p2.getPlayer().sendMessage(runningWarningMessage.getMessage(p2.getPlayer()));
             AlertNoteBlockTask.newInstance(p1.getPlayer()).start(FreeFight.getInstance());
             AlertNoteBlockTask.newInstance(p2.getPlayer()).start(FreeFight.getInstance());
         }

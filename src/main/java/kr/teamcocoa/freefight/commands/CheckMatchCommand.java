@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.commands;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.gui.MatchCheckGUI;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -19,6 +20,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CheckMatchCommand implements CommandExecutor {
+
+    @Inject
+    private static InvalidIdMessage invalidIdMessage;
 
     private static HashMap<UUID, Long> lastCommandExecutedMap = new HashMap<>();
 
@@ -62,7 +66,7 @@ public class CheckMatchCommand implements CommandExecutor {
                 // 그럼에도 불구하고 result 가 null 이라면?
                 // 그냥 존재하지 않는 아이디
                 if(result == null) {
-                    player.sendMessage(InvalidIdMessage.getInstance().getMessage(player));
+                    player.sendMessage(invalidIdMessage.getMessage(player));
                     return;
                 }
             }

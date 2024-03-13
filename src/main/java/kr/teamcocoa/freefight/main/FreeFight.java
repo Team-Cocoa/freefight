@@ -20,6 +20,9 @@ import kr.teamcocoa.freefight.listener.packet.PlayerAttackListener;
 import kr.teamcocoa.freefight.listener.packet.SweepListener;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
+import kr.teamcocoa.freefight.player.FreeFightPlayer;
+import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.task.AfkCheckTask;
 import lombok.Getter;
@@ -30,6 +33,9 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 @Singleton
@@ -60,16 +66,20 @@ public class FreeFight implements PlatformEntrypoint {
 
     private PluginManager pluginManager;
 
+    private ScoreboardManager scoreboardManager;
+
     @Inject
     public FreeFight(
             @NonNull JavaPlugin plugin,
             @NonNull PluginManager pluginManager,
             @NonNull EventManager eventManager,
-            @NonNull PermissionManagement permissionManagement
+            @NonNull PermissionManagement permissionManagement,
+            @NonNull ScoreboardManager scoreboardManager
     ) {
         FreeFight.eventManager = eventManager;
         FreeFight.permissionManagement = permissionManagement;
         FreeFight.instance = plugin;
+        this.scoreboardManager = scoreboardManager;
         this.pluginManager = pluginManager;
         initPacketEvents();
         FreeFightDatabase.init();
@@ -115,7 +125,15 @@ public class FreeFight implements PlatformEntrypoint {
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             world.setTime(0);
         }
+
         new AfkCheckTask().runTaskTimer(instance, 0L, 100L);
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                scoreboardManager.sendScoreboard(freeFightPlayer.getPlayer());
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+
     }
 
     private void loadCommands() {

@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.items.lobby;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
@@ -7,25 +9,21 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class ChallengeItem extends AbstractItem {
 
-    private static ChallengeItem instance;
+    private ChallengerTitle challengerTitle;
 
-    public static ChallengeItem getInstance() {
-        if (instance == null) {
-            instance = new ChallengeItem();
-        }
-        return instance;
-    }
-
-    private ChallengeItem() {
+    @Inject
+    private ChallengeItem(ChallengerTitle challengerTitle) {
         super(Material.DIAMOND_SWORD);
+        this.challengerTitle = challengerTitle;
     }
 
     @Override
     public ItemStack toItemStack(Player player) {
         ItemStack itemStack = new ItemStack(getMaterial());
-        ItemUtils.name(itemStack, ChallengerTitle.getInstance().getMessage(player));
+        ItemUtils.name(itemStack, challengerTitle.getMessage(player));
         return itemStack;
     }
 }

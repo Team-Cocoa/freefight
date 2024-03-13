@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.kits;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.main.FreeFight;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -7,16 +8,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class OnlySwordKit extends AbstractKit {
-
-    private static OnlySwordKit instance;
-
-    public static OnlySwordKit getInstance() {
-        if (instance == null) {
-            instance = new OnlySwordKit();
-        }
-        return instance;
-    }
 
     private OnlySwordKit() {
         super(Kits.ONLYSWORD);

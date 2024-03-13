@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
@@ -20,6 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import java.text.MessageFormat;
 
 public class EntityDamageByEntityListener implements Listener {
+
+    @Inject
+    private static ChallengerTitle challengerTitle;
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
@@ -108,7 +112,7 @@ public class EntityDamageByEntityListener implements Listener {
 
         if(mainHandItem.hasItemMeta()
                 && mainHandItem.getItemMeta().hasDisplayName()
-                && ComponentUtils.componentEquals(mainHandItem.getItemMeta().displayName(), ChallengerTitle.getInstance().getMessage(enemy))) {
+                && ComponentUtils.componentEquals(mainHandItem.getItemMeta().displayName(), challengerTitle.getMessage(enemy))) {
             FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
             FreeFightPlayer enemyFreeFightPlayer = FreeFightPlayerManager.getPlayer(enemy);
 

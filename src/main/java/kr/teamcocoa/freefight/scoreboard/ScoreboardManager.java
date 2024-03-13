@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.scoreboard;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
@@ -27,12 +29,30 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Singleton
 public class ScoreboardManager {
 
-    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    private KillsScoreboard killsScoreboard;
+    private KillStreakScoreboard killStreakScoreboard;
+    private CurrentKitScoreboard currentKitScoreboard;
+    private DeathsScoreboard deathsScoreboard;
 
-    public static void setScoreboard(Player player, List<String> lines) {
+    @Inject
+    private ScoreboardManager(
+            KillsScoreboard killsScoreboard,
+            KillStreakScoreboard killStreakScoreboard,
+            CurrentKitScoreboard currentKitScoreboard,
+            DeathsScoreboard deathsScoreboard
+    ) {
+        this.killsScoreboard = killsScoreboard;
+        this.killStreakScoreboard = killStreakScoreboard;
+        this.currentKitScoreboard = currentKitScoreboard;
+        this.deathsScoreboard = deathsScoreboard;
+    }
+
+    private DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+    public void setScoreboard(Player player, List<String> lines) {
         Scoreboard scoreboard = new Scoreboard();
         Objective objective = scoreboard.addObjective("FreeFightSB",
                 ObjectiveCriteria.DUMMY,
@@ -72,11 +92,11 @@ public class ScoreboardManager {
 
     }
 
-    private static ClientboundSetScorePacket getScorePacket(Objective objective, String display, int scoreValue) {
+    private ClientboundSetScorePacket getScorePacket(Objective objective, String display, int scoreValue) {
         return new ClientboundSetScorePacket(ServerScoreboard.Method.CHANGE, objective.getName(), StringUtils.color(display), scoreValue);
     }
 
-    public static void sendScoreboard(Player player) {
+    public void sendScoreboard(Player player) {
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
 
         if(freeFightPlayer == null) {
@@ -89,16 +109,16 @@ public class ScoreboardManager {
         List<String> lines = new LinkedList<>();
         lines.add("&aMcPvP.kr");
         lines.add("");
-        lines.add(KillsScoreboard.getInstance().getMessage(player) + " / " + DeathsScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(killsScoreboard.getMessage(player) + " / " + deathsScoreboard.getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKills() + " / " + freeFightPlayer.getStats().getDeaths()) + " ");
         lines.add("");
-        lines.add(KillStreakScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(killStreakScoreboard.getMessage(player) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
         lines.add("");
         lines.add("K/D:");
         lines.add(getArrowMessage(decimalFormat.format(kills / deaths)) + "    ");
         lines.add("");
-        lines.add(CurrentKitScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(currentKitScoreboard.getMessage(player) + ":");
         lines.add(getArrowMessage(Kits.getNameByEnum(freeFightPlayer.getCurrentKit())));
 
         // getArrowMessage 뒤에 있는 공백들은 제거를 하면 절대 안됨
@@ -107,7 +127,7 @@ public class ScoreboardManager {
         setScoreboard(player, lines);
     }
 
-    private static String getArrowMessage(Object string) {
+    private String getArrowMessage(Object string) {
         return MessageFormat.format("&8» &e{0}", string);
     }
 

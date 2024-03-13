@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.items;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class SettingTitle extends BaseMessage {
-
-    private static SettingTitle instance;
-
-    public static SettingTitle getInstance() {
-        if(instance == null) {
-            instance = new SettingTitle();
-        }
-        return instance;
-    }
 
     private SettingTitle() {
         super(Items.SETTING);

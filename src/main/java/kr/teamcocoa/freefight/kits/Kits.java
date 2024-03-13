@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.kits;
 
+import dev.derklaro.aerogel.Inject;
 import kr.teamcocoa.kitmanager.frontend.kits.LokaPot;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,21 @@ public enum Kits {
     ONLYSWORD(0), SHIELD(1), DIAMOND_POT(2), NETHERITE_POT(3), LOKA_POT(4);
 
     private int i;
+
+    @Inject
+    private static OnlySwordKit onlySwordKit;
+
+    @Inject
+    private static ShieldPvPKit shieldPvPKit;
+
+    @Inject
+    private static DiamondPotKit diamondPotKit;
+
+    @Inject
+    private static NetheritePotKit netheritePotKit;
+
+    @Inject
+    private static LokaPotKit lokaPotKit;
 
     public static String getNameByEnum(Kits kit) {
         return switch (kit) {
@@ -49,11 +65,11 @@ public enum Kits {
 
     public static void makePlayerKit(Player player, Kits kit) {
         switch (kit) {
-            case ONLYSWORD -> OnlySwordKit.getInstance().givePlayerKit(player);
-            case SHIELD -> ShieldPvPKit.getInstance().givePlayerKit(player);
-            case DIAMOND_POT -> DiamondPotKit.getInstance().givePlayerKit(player);
-            case NETHERITE_POT -> NetheritePotKit.getInstance().givePlayerKit(player);
-            case LOKA_POT -> LokaPotKit.getInstance().givePlayerKit(player);
+            case ONLYSWORD -> onlySwordKit.givePlayerKit(player);
+            case SHIELD -> shieldPvPKit.givePlayerKit(player);
+            case DIAMOND_POT -> diamondPotKit.givePlayerKit(player);
+            case NETHERITE_POT -> netheritePotKit.givePlayerKit(player);
+            case LOKA_POT -> lokaPotKit.givePlayerKit(player);
         }
     }
 

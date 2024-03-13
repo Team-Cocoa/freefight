@@ -1,19 +1,12 @@
 package kr.teamcocoa.freefight.translation.messages;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class StartSpectateMessage extends BaseMessage {
-
-    private static StartSpectateMessage instance;
-
-    public static StartSpectateMessage getInstance() {
-        if(instance == null) {
-            instance = new StartSpectateMessage();
-        }
-        return instance;
-    }
 
     private StartSpectateMessage() {
         super(Messages.START_SPECTATE);
@@ -21,7 +14,6 @@ public class StartSpectateMessage extends BaseMessage {
 
     @Override
     public String getMessage(Player player) {
-        String message = getRawMessage(player.getUniqueId());
-        return FreeFight.getPrefix() + message;
+        return FreeFight.getPrefix() + getRawMessage(player.getUniqueId());
     }
 }

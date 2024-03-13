@@ -1,19 +1,12 @@
 package kr.teamcocoa.freefight.translation.messages;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class CantDuelMessage extends BaseMessage {
-
-    private static CantDuelMessage instance;
-
-    public static CantDuelMessage getInstance() {
-        if(instance == null) {
-            instance = new CantDuelMessage();
-        }
-        return instance;
-    }
 
     private CantDuelMessage() {
         super(Messages.CANT_DUEL_WHILE_SPEC);

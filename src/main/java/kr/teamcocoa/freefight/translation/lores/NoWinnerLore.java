@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.lores;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class NoWinnerLore extends BaseMessage {
-
-    private static NoWinnerLore instance;
-
-    public static NoWinnerLore getInstance() {
-        if(instance == null) {
-            instance = new NoWinnerLore();
-        }
-        return instance;
-    }
 
     private NoWinnerLore() {
         super(Lores.NO_WINNER);

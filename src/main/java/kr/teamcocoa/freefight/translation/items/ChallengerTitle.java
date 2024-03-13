@@ -1,18 +1,11 @@
 package kr.teamcocoa.freefight.translation.items;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class ChallengerTitle extends BaseMessage {
-
-    private static ChallengerTitle instance;
-
-    public static ChallengerTitle getInstance() {
-        if(instance == null) {
-            instance = new ChallengerTitle();
-        }
-        return instance;
-    }
 
     private ChallengerTitle() {
         super(Items.CHALLENGER);

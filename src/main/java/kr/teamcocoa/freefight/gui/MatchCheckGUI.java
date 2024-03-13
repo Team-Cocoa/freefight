@@ -1,11 +1,14 @@
 package kr.teamcocoa.freefight.gui;
 
+import dev.derklaro.aerogel.Inject;
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.session.result.SessionResult;
 import kr.teamcocoa.freefight.translation.inventories.ResultInventory;
 import kr.teamcocoa.freefight.translation.items.MatchHeadTitle;
 import kr.teamcocoa.freefight.translation.lores.MatchInfoLore;
+import lombok.Builder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,23 +18,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+
 public class MatchCheckGUI extends AbstractGUI {
 
     private static final String INFO_HEAD_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYzM2U3YmIxMjU2YTEyYjVjODhlNzA1ZjIxMjc0ZmQ4NjE4YmJkZTkzYzBkZDNlMjJkOWRiY2YwYjNhMTJiMyJ9fX0=";
 
-    private static MatchCheckGUI instance;
-
-    public static MatchCheckGUI getInstance() {
-        if(instance == null) {
-            instance = new MatchCheckGUI(null);
-        }
-        return instance;
-    }
-
     private SessionResult sessionResult;
 
+    public static final MatchCheckGUI INSTANCE = new MatchCheckGUI(null);
+
+    @Inject
+    private static ResultInventory resultInventory;
+
     public MatchCheckGUI(SessionResult sessionResult) {
-        super(1 * 9, ResultInventory.getInstance());
+        super(1 * 9, resultInventory);
         this.sessionResult = sessionResult;
         fillInventory();
     }

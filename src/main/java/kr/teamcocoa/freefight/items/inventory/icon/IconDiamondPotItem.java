@@ -1,21 +1,14 @@
 package kr.teamcocoa.freefight.items.inventory.icon;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class IconDiamondPotItem extends AbstractItem {
-
-    private static IconDiamondPotItem instance;
-
-    public static IconDiamondPotItem getInstance() {
-        if (instance == null) {
-            instance = new IconDiamondPotItem();
-        }
-        return instance;
-    }
 
     private IconDiamondPotItem() {
         super(Material.DIAMOND_CHESTPLATE);

@@ -1,19 +1,12 @@
 package kr.teamcocoa.freefight.translation.messages;
 
+import dev.derklaro.aerogel.Singleton;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class RunningWarningMessage extends BaseMessage {
-
-    private static RunningWarningMessage instance;
-
-    public static RunningWarningMessage getInstance() {
-        if(instance == null) {
-            instance = new RunningWarningMessage();
-        }
-        return instance;
-    }
 
     private RunningWarningMessage() {
         super(Messages.RUNNING_WARNING);
