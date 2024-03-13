@@ -13,7 +13,11 @@ import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
 
 public class ArmorHideListener extends PacketListenerAbstract {
 
@@ -21,11 +25,8 @@ public class ArmorHideListener extends PacketListenerAbstract {
         super(PacketListenerPriority.HIGHEST);
     }
 
-    private static final ItemStack airItem = new ItemStack.Builder().type(ItemTypes.AIR).build();
-
     @Override
     public void onPacketSend(PacketSendEvent e) {
-
         Player player = (Player) e.getPlayer();
 
         if(e.getPacketType() != PacketType.Play.Server.ENTITY_EQUIPMENT) {
@@ -44,11 +45,11 @@ public class ArmorHideListener extends PacketListenerAbstract {
                         equipment.getSlot() == EquipmentSlot.CHEST_PLATE ||
                         equipment.getSlot() == EquipmentSlot.LEGGINGS ||
                         equipment.getSlot() == EquipmentSlot.BOOTS) {
-                    equipment.setItem(airItem);
+                    equipment.getItem().setAmount(0);
                 }
             }
 
+            e.markForReEncode(true);
         }
-
     }
 }
