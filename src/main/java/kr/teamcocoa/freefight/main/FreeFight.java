@@ -125,7 +125,12 @@ public class FreeFight implements PlatformEntrypoint {
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
-                ScoreboardManager.sendScoreboard(freeFightPlayer);
+                try {
+                    ScoreboardManager.sendScoreboard(freeFightPlayer);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
