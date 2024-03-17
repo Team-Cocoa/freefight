@@ -119,8 +119,6 @@ public class FreeFightPlayer {
 
         });
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> ScoreboardManager.sendScoreboard(player), 0, 1, TimeUnit.SECONDS);
-
         for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
             if(freeFightPlayer.getState() == GameState.INGAME) {
                 player.hidePlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());

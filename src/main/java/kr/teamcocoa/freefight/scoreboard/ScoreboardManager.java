@@ -76,12 +76,7 @@ public class ScoreboardManager {
         return new ClientboundSetScorePacket(ServerScoreboard.Method.CHANGE, objective.getName(), StringUtils.color(display), scoreValue);
     }
 
-    public static void sendScoreboard(Player player) {
-        FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
-
-        if(freeFightPlayer == null) {
-            return;
-        }
+    public static void sendScoreboard(FreeFightPlayer freeFightPlayer) {
 
         int kills = freeFightPlayer.getStats().getKills();
         int deaths = freeFightPlayer.getStats().getDeaths();
@@ -89,22 +84,22 @@ public class ScoreboardManager {
         List<String> lines = new LinkedList<>();
         lines.add("&aMcPvP.kr");
         lines.add("");
-        lines.add(KillsScoreboard.getInstance().getMessage(player) + " / " + DeathsScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(KillsScoreboard.getInstance().getMessage(freeFightPlayer.getPlayer()) + " / " + DeathsScoreboard.getInstance().getMessage(freeFightPlayer.getPlayer()) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKills() + " / " + freeFightPlayer.getStats().getDeaths()) + " ");
         lines.add("");
-        lines.add(KillStreakScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(KillStreakScoreboard.getInstance().getMessage(freeFightPlayer.getPlayer()) + ":");
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
         lines.add("");
         lines.add("K/D:");
         lines.add(getArrowMessage(decimalFormat.format(kills / deaths)) + "    ");
         lines.add("");
-        lines.add(CurrentKitScoreboard.getInstance().getMessage(player) + ":");
+        lines.add(CurrentKitScoreboard.getInstance().getMessage(freeFightPlayer.getPlayer()) + ":");
         lines.add(getArrowMessage(Kits.getNameByEnum(freeFightPlayer.getCurrentKit())));
 
         // getArrowMessage 뒤에 있는 공백들은 제거를 하면 절대 안됨
         // 만약에 저 모든 값들이 0 이라면 보이지 않는 것이 생기기 때문...
 
-        setScoreboard(player, lines);
+        setScoreboard(freeFightPlayer.getPlayer(), lines);
     }
 
     private static String getArrowMessage(Object string) {

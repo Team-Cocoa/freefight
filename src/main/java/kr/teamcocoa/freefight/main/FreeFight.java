@@ -20,6 +20,9 @@ import kr.teamcocoa.freefight.listener.packet.PlayerAttackListener;
 import kr.teamcocoa.freefight.listener.packet.SweepListener;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
+import kr.teamcocoa.freefight.player.FreeFightPlayer;
+import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.task.AfkCheckTask;
 import lombok.Getter;
@@ -30,6 +33,9 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 @Singleton
@@ -116,6 +122,12 @@ public class FreeFight implements PlatformEntrypoint {
             world.setTime(0);
         }
         new AfkCheckTask().runTaskTimer(instance, 0L, 100L);
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                ScoreboardManager.sendScoreboard(freeFightPlayer);
+            }
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     private void loadCommands() {
