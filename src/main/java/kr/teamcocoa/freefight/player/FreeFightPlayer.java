@@ -28,10 +28,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Getter
 public class FreeFightPlayer {
+
+    private static ThreadPoolExecutor dbLoaderExecutors = new ThreadPoolExecutor(1, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
+
     @Override
     public String toString() {
         return "FreeFightPlayer{" +
@@ -103,8 +107,8 @@ public class FreeFightPlayer {
     public void join() {
         // 동기 실행할 몇몇 코드들
         moveToSpawn();
-        setInventory(GameState.LOBBY);
-        Executors.newSingleThreadExecutor().execute(() -> {
+
+        dbLoaderExecutors.execute(() -> {
             // 비동기 실행할 몇몇 코드들
             stats.loadStats();
             FreeFightSetting freeFightSetting = SettingDatabase.getSettings(player.getUniqueId());
@@ -116,6 +120,8 @@ public class FreeFightPlayer {
             else {
                 this.settings = freeFightSetting;
             }
+
+            Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> setInventory(GameState.LOBBY));
 
         });
 
