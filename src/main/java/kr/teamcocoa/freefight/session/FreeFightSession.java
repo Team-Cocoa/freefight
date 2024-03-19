@@ -97,7 +97,9 @@ public class FreeFightSession {
             if(onlinePlayer == player1 || onlinePlayer == player2) {
                 continue;
             }
-            if(freeFightPlayer.getState() != GameState.SPECTATE) {
+            if(freeFightPlayer.getState() == GameState.INGAME ||
+                    (freeFightPlayer.getState() == GameState.LOBBY &&
+                            !freeFightPlayer.getSettings().isDisplaySessionPlayers())) {
                 onlinePlayer.hidePlayer(FreeFight.getInstance(), player1);
                 onlinePlayer.hidePlayer(FreeFight.getInstance(), player2);
             }
@@ -134,6 +136,14 @@ public class FreeFightSession {
                 freeFightPlayer.getPlayer().showPlayer(FreeFight.getInstance(), player2);
                 player1.showPlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
                 player2.showPlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+            }
+            if(freeFightPlayer.getState() == GameState.INGAME) {
+                if(freeFightPlayer1.getSettings().isDisplaySessionPlayers()) {
+                    player1.showPlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+                }
+                if(freeFightPlayer2.getSettings().isDisplaySessionPlayers()) {
+                    player2.showPlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+                }
             }
         }
 

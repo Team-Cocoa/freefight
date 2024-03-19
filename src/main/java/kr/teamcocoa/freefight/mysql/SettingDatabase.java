@@ -12,13 +12,13 @@ import java.util.UUID;
 public class SettingDatabase {
 
     public static void upsertSettings(UUID uuid, FreeFightSetting settings) {
-        String sql = "INSERT INTO settings(uuid, hide_armor) VALUES(?, ?) ON DUPLICATE KEY UPDATE hide_armor = ?;";
+        String sql = "INSERT INTO settings(uuid) VALUES(?) ON DUPLICATE KEY UPDATE hide_armor = ?, display_session_players = ?;";
         MySQL mysql = FreeFightDatabase.getMySQL();
 
         PlaceHolder placeHolder = new PlaceHolder(3);
         placeHolder.addPlaceHolder(uuid.toString());
         placeHolder.addPlaceHolder(settings.isHideArmor() ? 1 : 0);
-        placeHolder.addPlaceHolder(settings.isHideArmor() ? 1 : 0);
+        placeHolder.addPlaceHolder(settings.isDisplaySessionPlayers() ? 1 : 0);
 
         mysql.update(sql, placeHolder);
     }
@@ -31,11 +31,13 @@ public class SettingDatabase {
                 ResultSet rs = preparedStatement.executeQuery()) {
             if(rs.next()) {
                 boolean hideArmor = rs.getBoolean("hide_armor");
+                boolean displaySessionPlayers = rs.getBoolean("display_session_players");
 
                 // TODO : 컬럼들 추가되면 여기다가 추가
 
                 return FreeFightSetting.builder()
                         .hideArmor(hideArmor)
+                        .displaySessionPlayers(displaySessionPlayers)
                         .build();
             }
         }

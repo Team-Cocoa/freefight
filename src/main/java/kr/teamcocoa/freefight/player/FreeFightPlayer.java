@@ -105,11 +105,7 @@ public class FreeFightPlayer {
     }
 
     public void join() {
-        // 동기 실행할 몇몇 코드들
-        moveToSpawn();
-
         dbLoaderExecutors.execute(() -> {
-            // 비동기 실행할 몇몇 코드들
             stats.loadStats();
             FreeFightSetting freeFightSetting = SettingDatabase.getSettings(player.getUniqueId());
 
@@ -121,17 +117,20 @@ public class FreeFightPlayer {
                 this.settings = freeFightSetting;
             }
 
-            Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> setInventory(GameState.LOBBY));
+            Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
+                setInventory(GameState.LOBBY);
+                moveToSpawn();
+                for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                    if(freeFightPlayer.getState() == GameState.INGAME) {
+                        freeFightPlayer.getPlayer().hidePlayer(FreeFight.getInstance(), player);
+                        if(!settings.isDisplaySessionPlayers()) {
+                            player.hidePlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
+                        }
+                    }
+                }
+            });
 
         });
-
-        for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
-            if(freeFightPlayer.getState() == GameState.INGAME) {
-                player.hidePlayer(FreeFight.getInstance(), freeFightPlayer.getPlayer());
-                freeFightPlayer.getPlayer().hidePlayer(FreeFight.getInstance(), player);
-            }
-        }
-
     }
 
     public void quit() {

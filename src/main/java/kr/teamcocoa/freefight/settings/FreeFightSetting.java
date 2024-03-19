@@ -11,4 +11,6 @@ public class FreeFightSetting {
 
     private boolean hideArmor = false;
 
+    private boolean displaySessionPlayers = true;
+
 }
