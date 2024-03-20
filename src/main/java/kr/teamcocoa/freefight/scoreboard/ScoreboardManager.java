@@ -93,7 +93,7 @@ public class ScoreboardManager {
         lines.add("K/D:");
         lines.add(getArrowMessage(decimalFormat.format((kills == 0 || deaths == 0)
                 ? 0
-                : kills / deaths)) + "    ");
+                : (double) kills / (double) deaths)) + "    ");
         lines.add("");
         lines.add(CurrentKitScoreboard.getInstance().getMessage(freeFightPlayer.getPlayer()) + ":");
         lines.add(getArrowMessage(Kits.getNameByEnum(freeFightPlayer.getCurrentKit())));
