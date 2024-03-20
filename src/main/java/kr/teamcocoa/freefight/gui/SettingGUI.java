@@ -1,6 +1,7 @@
 package kr.teamcocoa.freefight.gui;
 
 import kr.teamcocoa.freefight.items.inventory.setting.ArmorHideSettingItem;
+import kr.teamcocoa.freefight.items.inventory.setting.DisplaySessionPlayersSettingItem;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.settings.FreeFightSetting;
@@ -37,6 +38,7 @@ public class SettingGUI extends AbstractGUI {
         Inventory newInventory = Bukkit.createInventory(null, getSize(), Component.text(getTitle().getMessage(player)));
         newInventory.setContents(getInventory().getContents());
         newInventory.setItem(0, ArmorHideSettingItem.getInstance().toItemStack(player, setting));
+        newInventory.setItem(1, DisplaySessionPlayersSettingItem.getInstance().toItemStack(player, setting));
 
         player.openInventory(newInventory);
     }
@@ -54,9 +56,8 @@ public class SettingGUI extends AbstractGUI {
             FreeFightSetting settings = freeFightPlayer.getSettings();
 
             switch (e.getSlot()) {
-                case 0 -> {
-                    ArmorHideSettingItem.getInstance().onClickInInventory(e, settings);
-                }
+                case 0 -> ArmorHideSettingItem.getInstance().onClickInInventory(e, settings);
+                case 1 -> DisplaySessionPlayersSettingItem.getInstance().onClickInInventory(e, settings);
             }
             e.setCancelled(true);
         }

@@ -14,6 +14,7 @@ public enum Items implements Translatable {
     MATCH_HEAD("match_head"),
     SETTING("setting"),
     SETTING_HIDE_ARMOR("setting_hide_armor"),
+    SETTING_DISPLAY_SESSION_PLAYERS("setting_display_session_players"),
     SETTING_ENABLE("setting_enable"),
     SETTING_DISABLE("setting_disable")
 
