@@ -91,7 +91,9 @@ public class ScoreboardManager {
         lines.add(getArrowMessage(freeFightPlayer.getStats().getKillStreak()) + "   ");
         lines.add("");
         lines.add("K/D:");
-        lines.add(getArrowMessage(decimalFormat.format(kills / deaths)) + "    ");
+        lines.add(getArrowMessage(decimalFormat.format((kills == 0 || deaths == 0)
+                ? 0
+                : kills / deaths)) + "    ");
         lines.add("");
         lines.add(CurrentKitScoreboard.getInstance().getMessage(freeFightPlayer.getPlayer()) + ":");
         lines.add(getArrowMessage(Kits.getNameByEnum(freeFightPlayer.getCurrentKit())));
