@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.items.lobby;
 
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.items.AbstractItem;
 import kr.teamcocoa.freefight.items.ClickAble;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -101,6 +102,7 @@ public class SpectateItem extends AbstractItem implements ClickAble {
                 }
             }
             player.sendMessage(StopSpectateMessage.getInstance().getMessage(player));
+            PacketUtils.sendBar(player, "");
         }
 
         delayList.add(freeFightPlayer);

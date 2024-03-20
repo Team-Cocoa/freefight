@@ -10,6 +10,7 @@ import eu.cloudnetservice.ext.platforminject.api.stereotype.Command;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.Dependency;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.PlatformPlugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.commands.CheckMatchCommand;
 import kr.teamcocoa.freefight.commands.ForceTPCommand;
@@ -22,15 +23,18 @@ import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
+import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.tab.TabListener;
 import kr.teamcocoa.freefight.task.AfkCheckTask;
+import kr.teamcocoa.freefight.translation.actions.SpectateReminderAction;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -123,16 +127,7 @@ public class FreeFight implements PlatformEntrypoint {
         }
         new AfkCheckTask().runTaskTimer(instance, 0L, 100L);
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
-                try {
-                    ScoreboardManager.sendScoreboard(freeFightPlayer);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 1, TimeUnit.SECONDS);
+        executePlayerUpdater();
     }
 
     private void loadCommands() {
@@ -177,5 +172,23 @@ public class FreeFight implements PlatformEntrypoint {
         PacketEvents.getAPI().getEventManager().registerListener(new ArmorHideListener());
 
         PacketEvents.getAPI().init();
+    }
+
+    private void executePlayerUpdater() {
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            for (FreeFightPlayer freeFightPlayer : FreeFightPlayerManager.getPlayerTable().values()) {
+                try {
+                    ScoreboardManager.sendScoreboard(freeFightPlayer);
+                    if(freeFightPlayer.getState() == GameState.SPECTATE) {
+                        Player player = freeFightPlayer.getPlayer();
+                        PacketUtils.sendBar(player,
+                                SpectateReminderAction.getInstance().getMessage(player));
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 500, TimeUnit.MILLISECONDS);
     }
 }
