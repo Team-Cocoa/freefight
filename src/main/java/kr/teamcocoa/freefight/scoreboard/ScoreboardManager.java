@@ -30,7 +30,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScoreboardManager {
 
-    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    private static DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     public static void setScoreboard(Player player, List<String> lines) {
         Scoreboard scoreboard = new Scoreboard();
