@@ -229,6 +229,14 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/TeamCocoa-Core.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>ch.dkrieger.coinsystem</groupId>
+            <artifactId>coinsystem</artifactId>
+            <version>3.2.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/CoinSystem.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>
