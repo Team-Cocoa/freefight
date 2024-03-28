@@ -1,5 +1,7 @@
 package kr.teamcocoa.freefight.session;
 
+import ch.dkrieger.coinsystem.core.CoinSystem;
+import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
@@ -217,6 +219,10 @@ public class FreeFightSession {
                     SWKillEffect.killEffectManager.getKillEffectById(killEffects).play(loserPlayer, Arrays.asList(winnerPlayer, loserPlayer));
                 }
             }
+
+            CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(winnerPlayer.getUniqueId());
+            coinPlayer.addCoins(100);
+            winnerPlayer.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+100 coins!"));
 
         }
         else {
