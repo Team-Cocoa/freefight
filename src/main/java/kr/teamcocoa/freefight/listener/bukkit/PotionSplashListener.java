@@ -8,7 +8,7 @@ import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import net.minecraft.core.BlockPos;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftThrownPotion;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftThrownPotion;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
