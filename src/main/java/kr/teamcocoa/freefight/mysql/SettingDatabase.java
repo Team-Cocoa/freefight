@@ -1,8 +1,8 @@
 package kr.teamcocoa.freefight.mysql;
 
 import kr.teamcocoa.freefight.settings.FreeFightSetting;
-import kr.teamcocoa.mysql.mysql.MySQL;
-import kr.teamcocoa.mysql.mysql.PlaceHolder;
+import kr.teamcocoa.core.mysql.MySQL;
+import kr.teamcocoa.core.mysql.PlaceHolder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
