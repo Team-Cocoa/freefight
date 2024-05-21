@@ -30,10 +30,10 @@ public class OnlySwordKit extends AbstractKit {
         armorContent[1] = new ItemStack(Material.DIAMOND_LEGGINGS);
         armorContent[0] = new ItemStack(Material.DIAMOND_BOOTS);
         for (ItemStack itemStack : armorContent) {
-            itemStack.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
+            itemStack.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
         }
-        ItemStack sword = new ItemStack(Material.STONE_SWORD);
-        sword.addEnchantment(Enchantment.DURABILITY, 3);
+        ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
+        sword.addEnchantment(Enchantment.SWEEPING_EDGE, 3);
         Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
             player.getInventory().clear();
             player.getInventory().setArmorContents(armorContent);
