@@ -49,9 +49,7 @@ import java.util.concurrent.TimeUnit;
         version = "1.0",
         authors = "fixca",
         dependencies = {
-                @Dependency(name = "CloudNet-CloudPerms"),
-                @Dependency(name = "MySQL"),
-                @Dependency(name = "BukkitRetrofit")
+                @Dependency(name = "CloudNet-CloudPerms")
         },
         pluginFileNames = "plugin.yml",
         commands = {
