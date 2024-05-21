@@ -49,7 +49,8 @@ import java.util.concurrent.TimeUnit;
         version = "1.0",
         authors = "fixca",
         dependencies = {
-                @Dependency(name = "CloudNet-CloudPerms")
+                @Dependency(name = "CloudNet-CloudPerms"),
+                @Dependency(name = "TeamCocoa-Core")
         },
         pluginFileNames = "plugin.yml",
         commands = {
