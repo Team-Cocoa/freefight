@@ -60,6 +60,9 @@ public class FreeFightSession {
     @Setter
     private MatchTask matchTask;
 
+    @Setter
+    private boolean antiCheatDetect;
+
     protected FreeFightSession(FreeFightPlayer freeFightPlayer1, FreeFightPlayer freeFightPlayer2, Kits kit) {
         this.freeFightPlayer1 = freeFightPlayer1;
         this.freeFightPlayer2 = freeFightPlayer2;
@@ -315,6 +318,10 @@ public class FreeFightSession {
                         player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
 
                 webhook.addEmbed(WebhookSender.getSessionEndWebhookEmbed(this, winner, loser));
+            }
+
+            if(antiCheatDetect) {
+                webhook.setContent("<@&736123325172154398>\nAnticheat detected.");
             }
 
             try {

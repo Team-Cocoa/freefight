@@ -39,6 +39,8 @@ public class AntiCheatListener implements Listener {
             return;
         }
 
+        session.setAntiCheatDetect(true);
+
         SessionReplay sessionReplay = session.getSessionReplay();
 
         sessionReplay.addMessage(LogType.ANTI_CHEAT,
