@@ -3,6 +3,7 @@ package kr.teamcocoa.freefight.session;
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.core.network.webhook.DiscordWebhook;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -11,6 +12,7 @@ import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
 import kr.teamcocoa.freefight.replay.SessionReplay;
+import kr.teamcocoa.freefight.session.webhook.WebhookSender;
 import kr.teamcocoa.freefight.task.CountDownTask;
 import kr.teamcocoa.freefight.task.MatchTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
@@ -123,6 +125,20 @@ public class FreeFightSession {
         new CountDownTask(this).runTaskTimer(FreeFight.getInstance(), 0L, 20L);
 
         running = true;
+
+        executor.execute(() -> {
+            try {
+                DiscordWebhook webhook = WebhookSender.getNewWebHook();
+
+                webhook.addEmbed(WebhookSender.getSessionStartWebhookEmbed(this));
+
+                webhook.execute();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     public void stop(FreeFightPlayer loser) {
@@ -280,11 +296,15 @@ public class FreeFightSession {
             byte[] serialized1Inv = Serializer.itemStacksToBytes(player1Inventory);
             byte[] serialized2Inv = Serializer.itemStacksToBytes(player2Inventory);
 
+            DiscordWebhook webhook = WebhookSender.getNewWebHook();
+
             // 무승부 일때
             if(loser == null) {
                 SessionDatabase.finishGame(id, null, null,
                         serialized1Inv, serialized2Inv, player1DamageIn, player1DamageOut, player2DamageIn, player2DamageOut,
                         player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
+
+                webhook.addEmbed(WebhookSender.getSessionEndWebhookEmbed(this, null, null));
             }
             else {
                 FreeFightPlayer winner = loser == freeFightPlayer1 ? freeFightPlayer2 : freeFightPlayer1;
@@ -293,6 +313,15 @@ public class FreeFightSession {
                         loser.getPlayer().getUniqueId(),
                         serialized1Inv, serialized2Inv, player1DamageIn, player1DamageOut, player2DamageIn, player2DamageOut,
                         player1Health, player2Health, player1Saturation, player2Saturation, player1Hunger, player2Hunger);
+
+                webhook.addEmbed(WebhookSender.getSessionEndWebhookEmbed(this, winner, loser));
+            }
+
+            try {
+                webhook.execute();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
