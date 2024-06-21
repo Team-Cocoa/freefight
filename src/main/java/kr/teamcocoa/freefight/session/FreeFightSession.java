@@ -35,6 +35,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -63,12 +65,16 @@ public class FreeFightSession {
     @Setter
     private boolean antiCheatDetect;
 
+    private Set<String> detectedAntiCheatFlags;
+
     protected FreeFightSession(FreeFightPlayer freeFightPlayer1, FreeFightPlayer freeFightPlayer2, Kits kit) {
         this.freeFightPlayer1 = freeFightPlayer1;
         this.freeFightPlayer2 = freeFightPlayer2;
         this.kits = kit;
         this.running = false;
         this.damageAble = false;
+        this.antiCheatDetect = false;
+        this.detectedAntiCheatFlags = new HashSet<>();
     }
 
     public boolean initId() {
@@ -321,7 +327,13 @@ public class FreeFightSession {
             }
 
             if(antiCheatDetect) {
-                webhook.setContent("<@&736123325172154398>\nAnticheat detected.");
+                StringBuilder sb = new StringBuilder("<@&736123325172154398>\nAnticheat detected.\n\nFlags:\n");
+
+                for (String flag : detectedAntiCheatFlags) {
+                    sb.append(flag + "\n");
+                }
+
+                webhook.setContent(sb.toString());
             }
 
             try {

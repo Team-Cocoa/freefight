@@ -40,6 +40,7 @@ public class AntiCheatListener implements Listener {
         }
 
         session.setAntiCheatDetect(true);
+        session.getDetectedAntiCheatFlags().add(e.getFlag().getName() + " (" + e.getFlag().getType() + ")");
 
         SessionReplay sessionReplay = session.getSessionReplay();
 
