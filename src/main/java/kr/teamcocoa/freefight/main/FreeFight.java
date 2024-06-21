@@ -50,8 +50,7 @@ import java.util.concurrent.TimeUnit;
         authors = "fixca",
         dependencies = {
                 @Dependency(name = "CloudNet-CloudPerms"),
-                @Dependency(name = "MySQL"),
-                @Dependency(name = "BukkitRetrofit")
+                @Dependency(name = "TeamCocoa-Core")
         },
         pluginFileNames = "plugin.yml",
         commands = {
