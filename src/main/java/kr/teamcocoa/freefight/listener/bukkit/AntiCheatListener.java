@@ -10,6 +10,8 @@ import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import net.minecraft.server.MinecraftServer;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,7 +53,7 @@ public class AntiCheatListener implements Listener {
                     e.getFlag().getType(),
                     e.getFlag().getVl() + 1,
                     e.getFlag().getMaxVl(),
-                    format.format(MinecraftServer.getServer().recentTps[0])));
+                    format.format(((CraftServer) Bukkit.getServer()).getServer().recentTps[0])));
 
     }
 
