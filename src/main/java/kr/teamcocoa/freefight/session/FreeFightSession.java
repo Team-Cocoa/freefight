@@ -35,6 +35,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -65,7 +66,7 @@ public class FreeFightSession {
     @Setter
     private boolean antiCheatDetect;
 
-    private Set<String> detectedAntiCheatFlags;
+    private HashMap<String, Integer> detectedAntiCheatFlags;
 
     protected FreeFightSession(FreeFightPlayer freeFightPlayer1, FreeFightPlayer freeFightPlayer2, Kits kit) {
         this.freeFightPlayer1 = freeFightPlayer1;
@@ -74,7 +75,7 @@ public class FreeFightSession {
         this.running = false;
         this.damageAble = false;
         this.antiCheatDetect = false;
-        this.detectedAntiCheatFlags = new HashSet<>();
+        this.detectedAntiCheatFlags = new HashMap<>();
     }
 
     public boolean initId() {
@@ -329,9 +330,9 @@ public class FreeFightSession {
             if(antiCheatDetect) {
                 StringBuilder sb = new StringBuilder("<@&736123325172154398>\nAnticheat detected.\n\nFlags:\n");
 
-                for (String flag : detectedAntiCheatFlags) {
-                    sb.append(flag + "\n");
-                }
+                detectedAntiCheatFlags.forEach((flag, count) -> {
+                    sb.append(flag + " " + count + (count <= 1 ? "time" : "times") + "\n");
+                });
 
                 webhook.setContent(sb.toString());
             }

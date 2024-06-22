@@ -1,5 +1,6 @@
 package kr.teamcocoa.freefight.listener.bukkit;
 
+import kr.teamcocoa.core.bukkit.events.anticheat.AntiCheatFlag;
 import kr.teamcocoa.core.bukkit.events.anticheat.AntiCheatFlagEvent;
 import kr.teamcocoa.core.bukkit.events.anticheat.AntiCheatPunishEvent;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
@@ -18,6 +19,7 @@ import org.bukkit.event.Listener;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.HashMap;
 
 public class AntiCheatListener implements Listener {
 
@@ -28,6 +30,8 @@ public class AntiCheatListener implements Listener {
 
         Player player = e.getPlayer();
         FreeFightPlayer freeFightPlayer = FreeFightPlayerManager.getPlayer(player);
+
+        AntiCheatFlag flag = e.getFlag();
 
         if(freeFightPlayer == null || freeFightPlayer.getState() != GameState.INGAME) {
             return;
@@ -41,19 +45,26 @@ public class AntiCheatListener implements Listener {
             return;
         }
 
-        session.setAntiCheatDetect(true);
-        session.getDetectedAntiCheatFlags().add(e.getFlag().getName() + " (" + e.getFlag().getType() + ")");
+        HashMap<String, Integer> flags = session.getDetectedAntiCheatFlags();
+
+        String fullFlag = flag.getName() + " (" + flag.getType() + ")";
+
+        flags.put(fullFlag, flags.getOrDefault(fullFlag, 0) + 1);
 
         SessionReplay sessionReplay = session.getSessionReplay();
 
         sessionReplay.addMessage(LogType.ANTI_CHEAT,
                 MessageFormat.format("{0} failed {1} (Type {2}) [ {3} / {4} ] | {5}TPS",
                     player.getName(),
-                    e.getFlag().getName(),
-                    e.getFlag().getType(),
-                    e.getFlag().getVl() + 1,
-                    e.getFlag().getMaxVl(),
+                    flag.getName(),
+                    flag.getType(),
+                    flag.getVl() + 1,
+                    flag.getMaxVl(),
                     format.format(((CraftServer) Bukkit.getServer()).getServer().recentTps[0])));
+
+        if(!flag.getName().equalsIgnoreCase("autoclicker")) {
+            session.setAntiCheatDetect(true);
+        }
 
     }
 
