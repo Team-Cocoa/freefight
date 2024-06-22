@@ -22,8 +22,8 @@ public class WebhookSender {
 
         embed.addField("Kits", Kits.getNameByEnum(freeFightSession.getKits()), true);
 
-        embed.addField("Player 1", freeFightSession.getFreeFightPlayer1().getPlayer().getName(), true);
-        embed.addField("Player 2", freeFightSession.getFreeFightPlayer2().getPlayer().getName(), true);
+        embed.addField("Player 1", "`" + freeFightSession.getFreeFightPlayer1().getPlayer().getName() + "`", true);
+        embed.addField("Player 2", "`" + freeFightSession.getFreeFightPlayer2().getPlayer().getName() + "`", true);
 
         return embed;
     }
@@ -40,8 +40,8 @@ public class WebhookSender {
             embed.addField("Loser", "None", true);
         }
         else {
-            embed.addField("Winner", winner.getPlayer().getName(), true);
-            embed.addField("Loser", loser.getPlayer().getName(), true);
+            embed.addField("Winner", "`" + winner.getPlayer().getName() + "`", true);
+            embed.addField("Loser", "`" + loser.getPlayer().getName() + "`", true);
         }
 
         return embed;
