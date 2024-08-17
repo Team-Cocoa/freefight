@@ -5,11 +5,15 @@ import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
+import kr.teamcocoa.freefight.replay.LogType;
+import kr.teamcocoa.freefight.replay.SessionReplay;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.translation.items.ChallengerTitle;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -17,9 +21,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 
 public class EntityDamageByEntityListener implements Listener {
+
+    private DecimalFormat format = new DecimalFormat("##.####");
+
+    private double getDistance(Location location1, Location location2) {
+        return Math.sqrt(
+                Math.pow(location1.getX() - location2.getX(), 2) +
+                Math.pow(location1.getY() - location2.getY(), 2) +
+                Math.pow(location1.getZ() - location2.getZ(), 2));
+    }
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
@@ -69,6 +83,24 @@ public class EntityDamageByEntityListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
+
+            SessionReplay sessionReplay = session.getSessionReplay();
+
+            Location enemyLocation = enemy.getLocation();
+            Location damagerLocation = player.getLocation();
+
+            Location enemyEyeLocation = enemy.getEyeLocation();
+            Location damagerEyeLocation = player.getEyeLocation();
+
+            sessionReplay.addMessage(LogType.ANTI_CHEAT,
+                    MessageFormat.format("{0}({1}ms) hit {2}({3}ms) coord {4} | head {5} | {6} TPS",
+                            enemy.getName(),
+                            enemy.getPing(),
+                            player.getName(),
+                            player.getPing(),
+                            format.format(enemyLocation.distance(damagerLocation)),
+                            format.format(getDistance(enemyEyeLocation, damagerEyeLocation)),
+                            format.format(((CraftServer) Bukkit.getServer()).getServer().recentTps[0])));
 
             if(session.getKits() == Kits.LOKA_POT) {
 //                Bukkit.getLogger().info(MessageFormat.format(
