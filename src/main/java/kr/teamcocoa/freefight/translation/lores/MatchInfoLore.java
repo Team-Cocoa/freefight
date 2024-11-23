@@ -4,7 +4,7 @@ import kr.teamcocoa.core.network.controllers.mojang.SessionMojangController;
 import kr.teamcocoa.core.network.model.MojangProfile;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.kits.Kits;
-import kr.teamcocoa.freefight.session.result.SessionResult;
+import kr.teamcocoa.freefight.session.SessionResult;
 import kr.teamcocoa.freefight.translation.BaseMessage;
 import kr.teamcocoa.freefight.translation.LoreMessage;
 import lombok.Getter;
