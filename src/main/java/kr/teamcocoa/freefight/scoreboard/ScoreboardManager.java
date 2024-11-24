@@ -78,6 +78,10 @@ public class ScoreboardManager {
 
     public static void sendScoreboard(FreeFightPlayer freeFightPlayer) {
 
+        if(freeFightPlayer.getStats() == null) {
+            return;
+        }
+
         int kills = freeFightPlayer.getStats().getKills();
         int deaths = freeFightPlayer.getStats().getDeaths();
 
