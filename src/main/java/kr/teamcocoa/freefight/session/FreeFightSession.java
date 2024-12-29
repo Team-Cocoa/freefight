@@ -1,10 +1,21 @@
 package kr.teamcocoa.freefight.session;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.network.webhook.DiscordWebhook;
 import kr.teamcocoa.core.utils.StringUtils;
+import kr.teamcocoa.core.utils.ThreadUtils;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
@@ -18,7 +29,11 @@ import kr.teamcocoa.freefight.task.MatchTask;
 import kr.teamcocoa.freefight.translation.messages.KillLogMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchIdMessage;
 import kr.teamcocoa.freefight.translation.messages.MatchInfoButtonMessage;
-import kr.teamcocoa.freefight.translation.titles.*;
+import kr.teamcocoa.freefight.translation.titles.DefeatTitle;
+import kr.teamcocoa.freefight.translation.titles.DrawGameTitle;
+import kr.teamcocoa.freefight.translation.titles.DrawTitle;
+import kr.teamcocoa.freefight.translation.titles.FinishGameTitle;
+import kr.teamcocoa.freefight.translation.titles.VictoryTitle;
 import kr.teamcocoa.freefight.utils.Serializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,24 +44,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Getter
 @EqualsAndHashCode
 public class FreeFightSession {
 
-    private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
+    private static ThreadPoolExecutor executor = ThreadUtils.getThreadPool(20, 1, TimeUnit.SECONDS, "freefight-ffsession");
 
     private int id;
 

@@ -9,8 +9,12 @@ import lombok.Setter;
 @Builder
 public class FreeFightSetting {
 
+    public final static FreeFightSetting DEFAULT = new FreeFightSetting(false, true);
+
     private boolean hideArmor = false;
 
     private boolean displaySessionPlayers = true;
+
+    
 
 }

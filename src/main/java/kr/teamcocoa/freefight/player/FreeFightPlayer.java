@@ -2,6 +2,7 @@ package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.AsyncDetector;
+import kr.teamcocoa.core.utils.ThreadUtils;
 import kr.teamcocoa.freefight.items.lobby.*;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
@@ -29,7 +30,6 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +37,9 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class FreeFightPlayer {
 
-    private static ThreadPoolExecutor dbLoaderExecutors = new ThreadPoolExecutor(1, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
+    private static ThreadPoolExecutor dbLoaderExecutors = ThreadUtils.getThreadPool(20, 1, TimeUnit.SECONDS, "freefight-ffp-joinDBLoader");
+
+    private static ThreadPoolExecutor idRegisterExecutors = ThreadUtils.getThreadPool(15, 1, TimeUnit.SECONDS, "freefight-ffp-idRegister");
 
     @Override
     public String toString() {
@@ -98,6 +100,7 @@ public class FreeFightPlayer {
         this.lastStateChangeTime = System.currentTimeMillis();
 
         this.spectators = new LinkedList<>();
+        this.settings = FreeFightSetting.DEFAULT;
     }
 
     public void setState(GameState state) {
@@ -146,7 +149,7 @@ public class FreeFightPlayer {
     public void quit() {
         // 동기 실행할 몇몇 코드들
 
-        Executors.newSingleThreadExecutor().execute(() -> {
+        dbLoaderExecutors.execute(() -> {
             StatsDatabase.updateStats(player.getUniqueId(), stats);
             SettingDatabase.upsertSettings(player.getUniqueId(), settings);
         });
@@ -261,7 +264,7 @@ public class FreeFightPlayer {
             challengeAble = false;
             enemyFightPlayer.setChallengeAble(false);
 
-            Executors.newSingleThreadExecutor().execute(() -> {
+            idRegisterExecutors.execute(() -> {
                 boolean created = SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
                 if(created) {
                     FreeFightSession session = SessionManager.getSession(this);

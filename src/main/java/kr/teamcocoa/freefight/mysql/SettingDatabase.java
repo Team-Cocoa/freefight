@@ -45,7 +45,7 @@ public class SettingDatabase {
             e.printStackTrace();
         }
 
-        return null;
+        return FreeFightSetting.DEFAULT;
     }
 
 }

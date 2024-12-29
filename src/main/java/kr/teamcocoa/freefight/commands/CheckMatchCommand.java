@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import kr.teamcocoa.core.utils.StringUtils;
+import kr.teamcocoa.core.utils.ThreadUtils;
 import kr.teamcocoa.freefight.gui.MatchCheckGUI;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
@@ -23,7 +24,7 @@ public class CheckMatchCommand implements CommandExecutor {
 
     private static HashMap<UUID, Long> lastCommandExecutedMap = new HashMap<>();
 
-    private static ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
+    private static ThreadPoolExecutor executor = ThreadUtils.getThreadPool(20, 1, TimeUnit.SECONDS, "freefight-checkmatchcommand");
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {

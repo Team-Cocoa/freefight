@@ -1,5 +1,14 @@
 package kr.teamcocoa.freefight.replay;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import lombok.Getter;
 import me.jumper251.replay.api.ReplayAPI;
@@ -9,16 +18,11 @@ import me.jumper251.replay.replaysystem.data.ActionType;
 import me.jumper251.replay.replaysystem.data.types.ChatData;
 import me.jumper251.replay.replaysystem.data.types.LocationData;
 import me.jumper251.replay.replaysystem.data.types.WorldChangeData;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Getter
 public class SessionReplay {
+
+    private static ScheduledExecutorService sessionScheduler = Executors.newScheduledThreadPool(20);
 
     private FreeFightSession session;
 
@@ -55,7 +59,7 @@ public class SessionReplay {
         replay.setId(id);
         ReplayAPI.getInstance().stopReplay(id, true);
 
-        Executors.newSingleThreadScheduledExecutor().schedule(() -> SessionReplayManager.unregister(id), 5, TimeUnit.MINUTES);
+        sessionScheduler.schedule(() -> SessionReplayManager.unregister(id), 5, TimeUnit.MINUTES);
     }
 
     public void addMessage(LogType logType, String message) {
