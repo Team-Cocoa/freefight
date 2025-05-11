@@ -2,14 +2,17 @@ package kr.teamcocoa.freefight.player;
 
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.AsyncDetector;
+import kr.teamcocoa.core.utils.ThreadUtils;
 import kr.teamcocoa.freefight.items.lobby.*;
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SettingDatabase;
+import kr.teamcocoa.freefight.mysql.StatsDatabase;
 import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.settings.FreeFightSetting;
+import kr.teamcocoa.freefight.storages.FreeFightPlayerStorage;
 import kr.teamcocoa.freefight.tab.TabManager;
 import kr.teamcocoa.freefight.translation.messages.*;
 import lombok.Getter;
@@ -26,7 +29,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Executors;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +37,9 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class FreeFightPlayer {
 
-    private static ThreadPoolExecutor dbLoaderExecutors = new ThreadPoolExecutor(1, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
+    private static ThreadPoolExecutor dbLoaderExecutors = ThreadUtils.getThreadPool(20, 1, TimeUnit.SECONDS, "freefight-ffp-joinDBLoader");
+
+    private static ThreadPoolExecutor idRegisterExecutors = ThreadUtils.getThreadPool(15, 1, TimeUnit.SECONDS, "freefight-ffp-idRegister");
 
     @Override
     public String toString() {
@@ -51,7 +56,7 @@ public class FreeFightPlayer {
 
     private Kits currentKit;
 
-    private Stats stats;
+    private FreeFightStat stats;
 
     @Setter
     private boolean challengeAble;
@@ -88,8 +93,6 @@ public class FreeFightPlayer {
         this.challengeAble = true;
         this.pearlThrowable = true;
 
-        this.stats = new Stats(player.getUniqueId());
-
         this.damageOut = 0.0;
         this.damageIn = 0.0;
 
@@ -97,6 +100,7 @@ public class FreeFightPlayer {
         this.lastStateChangeTime = System.currentTimeMillis();
 
         this.spectators = new LinkedList<>();
+        this.settings = FreeFightSetting.DEFAULT;
     }
 
     public void setState(GameState state) {
@@ -105,17 +109,26 @@ public class FreeFightPlayer {
     }
 
     public void join() {
+        UUID uuid = this.player.getUniqueId();
         dbLoaderExecutors.execute(() -> {
-            stats.loadStats();
-            FreeFightSetting freeFightSetting = SettingDatabase.getSettings(player.getUniqueId());
+            
+            // loading a stat from cache and db
 
-            if(freeFightSetting == null) {
-                this.settings = FreeFightSetting.builder().build();
-                SettingDatabase.upsertSettings(player.getUniqueId(), settings);
+            this.stats = FreeFightPlayerStorage.getStatByUUID(uuid);
+
+            if(this.stats == null) {
+                this.stats = StatsDatabase.getStatsByUUID(uuid);
             }
-            else {
-                this.settings = freeFightSetting;
+
+            // loading a setting from cache and db
+
+            this.settings = FreeFightPlayerStorage.getSettingByUUID(uuid);
+
+            if(this.settings == null) {
+                this.settings = SettingDatabase.getSettings(uuid);
             }
+
+            // bukkit layer
 
             Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
                 setInventory(GameState.LOBBY);
@@ -136,8 +149,8 @@ public class FreeFightPlayer {
     public void quit() {
         // 동기 실행할 몇몇 코드들
 
-        Executors.newSingleThreadExecutor().execute(() -> {
-            stats.saveStats();
+        dbLoaderExecutors.execute(() -> {
+            StatsDatabase.updateStats(player.getUniqueId(), stats);
             SettingDatabase.upsertSettings(player.getUniqueId(), settings);
         });
 
@@ -251,7 +264,7 @@ public class FreeFightPlayer {
             challengeAble = false;
             enemyFightPlayer.setChallengeAble(false);
 
-            Executors.newSingleThreadExecutor().execute(() -> {
+            idRegisterExecutors.execute(() -> {
                 boolean created = SessionManager.addSession(this, enemyFightPlayer, this.currentKit);
                 if(created) {
                     FreeFightSession session = SessionManager.getSession(this);

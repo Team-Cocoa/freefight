@@ -1,8 +1,10 @@
-package kr.teamcocoa.freefight.session.result;
+package kr.teamcocoa.freefight.session;
 
 import kr.teamcocoa.core.network.controllers.mojang.SessionMojangController;
 import kr.teamcocoa.core.network.model.MojangProfile;
 import kr.teamcocoa.freefight.kits.Kits;
+import kr.teamcocoa.freefight.session.result.PotResultPlayer;
+import kr.teamcocoa.freefight.session.result.ResultPlayer;
 import kr.teamcocoa.freefight.translation.items.PlayerHeadTitle;
 import kr.teamcocoa.freefight.translation.lores.PlayerInfoLore;
 import kr.teamcocoa.freefight.translation.lores.PotLeftLore;

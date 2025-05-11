@@ -2,7 +2,7 @@ package kr.teamcocoa.freefight.gui;
 
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.freefight.main.FreeFight;
-import kr.teamcocoa.freefight.session.result.SessionResult;
+import kr.teamcocoa.freefight.session.SessionResult;
 import kr.teamcocoa.freefight.translation.inventories.ResultInventory;
 import kr.teamcocoa.freefight.translation.items.MatchHeadTitle;
 import kr.teamcocoa.freefight.translation.lores.MatchInfoLore;

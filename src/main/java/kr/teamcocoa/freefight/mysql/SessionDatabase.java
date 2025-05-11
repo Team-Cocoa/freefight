@@ -1,23 +1,24 @@
 package kr.teamcocoa.freefight.mysql;
 
-import kr.teamcocoa.freefight.kits.Kits;
-import kr.teamcocoa.freefight.session.FreeFightSession;
-import kr.teamcocoa.freefight.session.result.PotResultPlayer;
-import kr.teamcocoa.freefight.session.result.ResultCache;
-import kr.teamcocoa.freefight.session.result.ResultPlayer;
-import kr.teamcocoa.freefight.session.result.SessionResult;
-import kr.teamcocoa.core.mysql.MySQL;
-import kr.teamcocoa.core.mysql.PlaceHolder;
-import kr.teamcocoa.core.mysql.pool.ConnectionPool;
-import kr.teamcocoa.core.mysql.pool.ConnectionPoolManager;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.bukkit.Bukkit;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+
+import kr.teamcocoa.core.mysql.MySQL;
+import kr.teamcocoa.core.mysql.PlaceHolder;
+import kr.teamcocoa.core.mysql.pool.ConnectionPool;
+import kr.teamcocoa.core.mysql.pool.ConnectionPoolManager;
+import kr.teamcocoa.freefight.kits.Kits;
+import kr.teamcocoa.freefight.session.FreeFightSession;
+import kr.teamcocoa.freefight.session.SessionResult;
+import kr.teamcocoa.freefight.session.result.PotResultPlayer;
+import kr.teamcocoa.freefight.session.result.ResultPlayer;
+import kr.teamcocoa.freefight.storages.SessionResultStorage;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionDatabase {
@@ -200,7 +201,7 @@ public class SessionDatabase {
 
                 SessionResult sessionResult = new SessionResult(id, kit, winner, startTime, endTime, resultPlayer1, resultPlayer2);
 
-                ResultCache.getResultCache().put(id, sessionResult);
+                SessionResultStorage.register(sessionResult);
 
                 return sessionResult;
 

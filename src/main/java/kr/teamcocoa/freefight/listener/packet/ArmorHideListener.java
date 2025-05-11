@@ -1,23 +1,19 @@
 package kr.teamcocoa.freefight.listener.packet;
 
+import org.bukkit.entity.Player;
+
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
-import com.github.retrooper.packetevents.protocol.item.ItemStack;
-import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.Equipment;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityEquipment;
+
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
 import kr.teamcocoa.freefight.player.GameState;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
 
 public class ArmorHideListener extends PacketListenerAbstract {
 
