@@ -31,7 +31,6 @@ public class EntityDamageByEntityListener implements Listener {
     private double getDistance(Location location1, Location location2) {
         return Math.sqrt(
                 Math.pow(location1.getX() - location2.getX(), 2) +
-                Math.pow(location1.getY() - location2.getY(), 2) +
                 Math.pow(location1.getZ() - location2.getZ(), 2));
     }
 
@@ -98,8 +97,8 @@ public class EntityDamageByEntityListener implements Listener {
                             enemy.getPing(),
                             player.getName(),
                             player.getPing(),
-                            format.format(enemyLocation.distance(damagerLocation)),
-                            format.format(getDistance(enemyEyeLocation, damagerEyeLocation)),
+                            format.format(getDistance(enemyLocation, damagerLocation)),
+                            format.format(enemyEyeLocation.distance(damagerEyeLocation)),
                             format.format(((CraftServer) Bukkit.getServer()).getServer().recentTps[0])));
 
             if(session.getKits() == Kits.LOKA_POT) {
