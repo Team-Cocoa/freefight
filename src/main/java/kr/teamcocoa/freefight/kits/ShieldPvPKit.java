@@ -24,7 +24,7 @@ public class ShieldPvPKit extends AbstractKit {
     public void givePlayerKit(Player player) {
         Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
             player.getInventory().clear();
-            KitManager.getKitManagerAPI().loadPlayerKit(player, kr.teamcocoa.kitmanager.frontend.kits.Kits.CLASSIC);
+            KitManager.getKitManagerAPI().loadPlayerKit(player, kr.teamcocoa.kitmanager.backend.Kits.CLASSIC);
         });
     }
 }

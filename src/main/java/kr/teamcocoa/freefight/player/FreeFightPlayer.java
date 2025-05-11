@@ -8,7 +8,6 @@ import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.main.FreeFight;
 import kr.teamcocoa.freefight.mysql.SettingDatabase;
 import kr.teamcocoa.freefight.mysql.StatsDatabase;
-import kr.teamcocoa.freefight.scoreboard.ScoreboardManager;
 import kr.teamcocoa.freefight.session.FreeFightSession;
 import kr.teamcocoa.freefight.session.SessionManager;
 import kr.teamcocoa.freefight.settings.FreeFightSetting;

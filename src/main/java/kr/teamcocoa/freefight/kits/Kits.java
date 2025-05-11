@@ -1,6 +1,5 @@
 package kr.teamcocoa.freefight.kits;
 
-import kr.teamcocoa.kitmanager.frontend.kits.LokaPot;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
