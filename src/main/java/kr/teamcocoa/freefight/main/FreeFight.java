@@ -15,10 +15,7 @@ import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.commands.CheckMatchCommand;
 import kr.teamcocoa.freefight.commands.ForceTPCommand;
 import kr.teamcocoa.freefight.listener.bukkit.*;
-import kr.teamcocoa.freefight.listener.packet.ArmorHideListener;
-import kr.teamcocoa.freefight.listener.packet.ParticleListener;
-import kr.teamcocoa.freefight.listener.packet.PlayerAttackListener;
-import kr.teamcocoa.freefight.listener.packet.SweepListener;
+import kr.teamcocoa.freefight.listener.packet.*;
 import kr.teamcocoa.freefight.mysql.FreeFightDatabase;
 import kr.teamcocoa.freefight.mysql.SessionDatabase;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
@@ -171,6 +168,7 @@ public class FreeFight implements PlatformEntrypoint {
         PacketEvents.getAPI().getEventManager().registerListener(new SweepListener());
         PacketEvents.getAPI().getEventManager().registerListener(new PlayerAttackListener());
         PacketEvents.getAPI().getEventManager().registerListener(new ArmorHideListener());
+        PacketEvents.getAPI().getEventManager().registerListener(new HideDamageListener());
 
         PacketEvents.getAPI().init();
     }
