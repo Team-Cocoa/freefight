@@ -24,7 +24,7 @@ public class DiamondPotKit extends AbstractKit {
     public void givePlayerKit(Player player) {
         Bukkit.getScheduler().runTask(FreeFight.getInstance(), () -> {
            player.getInventory().clear();
-           KitManager.getKitManagerAPI().loadPlayerKit(player, kr.teamcocoa.kitmanager.backend.Kits.DIAMOND_POT);
+           kitAPI.loadPlayerKit(player, kr.teamcocoa.kitmanager.backend.Kits.DIAMOND_POT);
         });
 
     }
