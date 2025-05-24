@@ -32,6 +32,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -122,6 +123,7 @@ public class FreeFight implements PlatformEntrypoint {
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setDifficulty(Difficulty.HARD);
             world.setTime(0);
         }
         new AfkCheckTask().runTaskTimer(instance, 0L, 100L);
