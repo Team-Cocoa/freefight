@@ -40,33 +40,6 @@
         <finalName>FreeFight</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.github.retrooper.packetevents</pattern>
-                                    <shadedPattern>kr.teamcocoa.freefight.packetevents.api</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.github.retrooper.packetevents</pattern>
-                                    <shadedPattern>kr.teamcocoa.freefight.packetevents.impl</shadedPattern>
-                                </relocation>
-                            </relocations>
-                            <minimizeJar>true</minimizeJar>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>net.md-5</groupId>
                 <artifactId>specialsource-maven-plugin</artifactId>
                 <version>1.2.4</version>
@@ -201,12 +174,6 @@
             <version>1.8.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/Replay.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.github.retrooper.packetevents</groupId>
-            <artifactId>spigot</artifactId>
-            <version>2.2.1</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>kr.teamcocoa</groupId>
