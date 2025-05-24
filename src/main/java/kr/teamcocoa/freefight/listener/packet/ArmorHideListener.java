@@ -2,13 +2,13 @@ package kr.teamcocoa.freefight.listener.packet;
 
 import org.bukkit.entity.Player;
 
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.github.retrooper.packetevents.event.PacketSendEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.Equipment;
-import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityEquipment;
+import kr.teamcocoa.core.bukkit.packetevents.api.event.PacketListenerAbstract;
+import kr.teamcocoa.core.bukkit.packetevents.api.event.PacketListenerPriority;
+import kr.teamcocoa.core.bukkit.packetevents.api.event.PacketSendEvent;
+import kr.teamcocoa.core.bukkit.packetevents.api.protocol.packettype.PacketType;
+import kr.teamcocoa.core.bukkit.packetevents.api.protocol.player.Equipment;
+import kr.teamcocoa.core.bukkit.packetevents.api.protocol.player.EquipmentSlot;
+import kr.teamcocoa.core.bukkit.packetevents.api.wrapper.play.server.WrapperPlayServerEntityEquipment;
 
 import kr.teamcocoa.freefight.kits.Kits;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;

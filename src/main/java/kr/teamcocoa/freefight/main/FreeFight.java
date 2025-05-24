@@ -1,6 +1,5 @@
 package kr.teamcocoa.freefight.main;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import dev.derklaro.aerogel.Inject;
 import dev.derklaro.aerogel.Singleton;
 import eu.cloudnetservice.driver.event.EventManager;
@@ -9,7 +8,8 @@ import eu.cloudnetservice.ext.platforminject.api.PlatformEntrypoint;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.Command;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.Dependency;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.PlatformPlugin;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import kr.teamcocoa.core.bukkit.packetevents.api.PacketEvents;
+import kr.teamcocoa.core.bukkit.packetevents.impl.factory.spigot.SpigotPacketEventsBuilder;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.freefight.commands.CheckMatchCommand;

@@ -1,10 +1,10 @@
 package kr.teamcocoa.freefight.listener.packet;
 
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
+import kr.teamcocoa.core.bukkit.packetevents.api.event.PacketListenerAbstract;
+import kr.teamcocoa.core.bukkit.packetevents.api.event.PacketListenerPriority;
+import kr.teamcocoa.core.bukkit.packetevents.api.event.PacketReceiveEvent;
+import kr.teamcocoa.core.bukkit.packetevents.api.protocol.packettype.PacketType;
+import kr.teamcocoa.core.bukkit.packetevents.api.wrapper.play.client.WrapperPlayClientInteractEntity;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.freefight.player.FreeFightPlayer;
 import kr.teamcocoa.freefight.player.FreeFightPlayerManager;
