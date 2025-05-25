@@ -20,6 +20,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -39,6 +41,14 @@ public class EntityDamageByEntityListener implements Listener {
         projectileDamageHandle(e);
         damageHandle(e);
         challengerHandle(e);
+    }
+
+    // enhanced-distance : credit to https://github.com/JustDoom/FlappyAC
+
+    private double getDistanceBB(BoundingBox origin, Vector attacker) {
+        double x = Math.min(Math.pow(attacker.getX() - origin.getMinX(),2.0), Math.pow(attacker.getX() - origin.getMaxX(),2.0));
+        double z = Math.min(Math.pow(attacker.getZ() - origin.getMinZ(),2.0), Math.pow(attacker.getZ() - origin.getMaxZ(),2.0));
+        return Math.sqrt(x + z);
     }
 
     private void damageHandle(EntityDamageByEntityEvent e) {
@@ -85,30 +95,22 @@ public class EntityDamageByEntityListener implements Listener {
 
             SessionReplay sessionReplay = session.getSessionReplay();
 
-            Location enemyLocation = enemy.getLocation();
-            Location damagerLocation = player.getLocation();
+            Vector enemyEyeLocation = enemy.getEyeLocation().toVector();
+            BoundingBox victimBB = player.getBoundingBox();
 
-            Location enemyEyeLocation = enemy.getEyeLocation();
-            Location damagerEyeLocation = player.getEyeLocation();
+            getDistanceBB(victimBB, enemyEyeLocation);
 
             sessionReplay.addMessage(LogType.ANTI_CHEAT,
-                    MessageFormat.format("{0}({1}ms) hit {2}({3}ms) coord {4} | head {5} | {6} TPS",
+                    MessageFormat.format("{0}({1}ms) hit {2}({3}ms) distance : {4} | {5} TPS",
                             enemy.getName(),
                             enemy.getPing(),
                             player.getName(),
                             player.getPing(),
-                            format.format(getDistance(enemyLocation, damagerLocation)),
-                            format.format(enemyEyeLocation.distance(damagerEyeLocation)),
+                            format.format(getDistanceBB(victimBB, enemyEyeLocation)),
                             format.format(((CraftServer) Bukkit.getServer()).getServer().recentTps[0])));
 
             if(session.getKits() == Kits.LOKA_POT) {
-//                Bukkit.getLogger().info(MessageFormat.format(
-//                        "Before multi Hitter : {0} Victim : {1} Damage : {2} FinalDamage : {3}",
-//                        enemy.getName(), player.getName(), e.getDamage(), e.getFinalDamage()));
                 e.setDamage(e.getDamage() * 1.333);
-//                Bukkit.getLogger().info(MessageFormat.format(
-//                        "After multi Hitter : {0} Victim : {1} Damage : {2} FinalDamage : {3}",
-//                        enemy.getName(), player.getName(), e.getDamage(), e.getFinalDamage()));
             }
 
             sessionEnemy.addDamageOut(e.getFinalDamage());
