@@ -13,8 +13,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -106,32 +104,25 @@ public class TabManager {
             team = all.getScoreboard().registerNewTeam(teamName);
         }
 
+
         String prefix = permissionGroup.prefix();
         String color = permissionGroup.color();
         String suffix = String.format("&8 | &b[%s]", Kits.getShortNameByEnum(kits));
 
-        try {
-            Method method = team.getClass().getDeclaredMethod("setColor", ChatColor.class);
-            method.setAccessible(true);
-
-            if (color != null && !color.isEmpty()) {
+        if (color != null && !color.isEmpty()) {
+            ChatColor chatColor = ChatColor.getByChar(color.replaceAll("&", "").replaceAll("§", ""));
+            if (chatColor != null) {
+                team.setColor(chatColor);
+            }
+        } else {
+            color = ChatColor.getLastColors(prefix.replace('&', '§'));
+            if (!color.isEmpty()) {
                 ChatColor chatColor = ChatColor.getByChar(color.replaceAll("&", "").replaceAll("§", ""));
                 if (chatColor != null) {
-                    method.invoke(team, chatColor);
-                }
-            } else {
-                color = ChatColor.getLastColors(prefix.replace('&', '§'));
-                if (!color.isEmpty()) {
-                    ChatColor chatColor = ChatColor.getByChar(color.replaceAll("&", "").replaceAll("§", ""));
-                    if (chatColor != null) {
-                        FreeFight.getPermissionManagement().updateGroup(PermissionGroup.builder(permissionGroup).color(color).build());
-                        method.invoke(team, chatColor);
-                    }
+                    FreeFight.getPermissionManagement().updateGroup(PermissionGroup.builder(permissionGroup).color(color).build());
+                    team.setColor(chatColor);
                 }
             }
-        } catch (NoSuchMethodException ignored) {
-        } catch (IllegalAccessException | InvocationTargetException exception) {
-            exception.printStackTrace();
         }
 
         team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix));
