@@ -20,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class HideDamageListener extends PacketListenerAbstract {
@@ -62,11 +63,11 @@ public class HideDamageListener extends PacketListenerAbstract {
             }
 
             // 조건 넣어야 할듯
-            List<EntityData<?>> entityMetadatas = wrapper.getEntityMetadata();
 
-            for (EntityData entityMetadata : entityMetadatas) {
-                if(entityMetadata.getIndex() == 9 || entityMetadata.getIndex() == 15) {
-                    entityMetadata.setValue(0.5F);
+            for (EntityData entityMetadata : wrapper.getEntityMetadata()) {
+                if((entityMetadata.getIndex() == 9 || entityMetadata.getIndex() == 15) &&
+                        entityMetadata.getValue() instanceof Float) {
+                    entityMetadata.setValue(0.5f);
                     e.markForReEncode(true);
                 }
             }
