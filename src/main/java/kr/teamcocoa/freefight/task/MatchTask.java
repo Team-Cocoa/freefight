@@ -40,7 +40,8 @@ public class MatchTask extends BukkitRunnable {
 
         this.maximumRunningTime = switch (session.getKits()) {
             case ONLYSWORD -> 20;
-            case SHIELD, DIAMOND_POT, LOKA_POT -> 30;
+            case SHIELD -> 30;
+            case DIAMOND_POT, LOKA_POT -> 60;
             case NETHERITE_POT -> 10 * 60;
             default -> throw new IllegalStateException();
         };
